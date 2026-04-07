@@ -1,12 +1,49 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Header, BreathingCircle, Controls, PatternSelector, SessionStats } from './components';
-import { useBreathingEngine } from './hooks';
+import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts } from './hooks';
 
 export function App() {
   const engine = useBreathingEngine();
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const { playPhaseSound, playCompletionSound } = useAudioFeedback(soundEnabled);
+  const prevPhaseRef = useRef(engine.phase);
+  const prevIsActiveRef = useRef(engine.isActive);
+
+  useKeyboardShortcuts({
+    onStart: engine.start,
+    onPause: engine.pause,
+    onReset: engine.reset,
+    isActive: engine.isActive,
+  });
+
+  // Play audio on phase transitions
+  useEffect(() => {
+    const prevPhase = prevPhaseRef.current;
+    const newPhase = engine.phase;
+
+    // Detect phase change to an active phase
+    if (newPhase !== prevPhase && newPhase !== 'idle') {
+      playPhaseSound(newPhase);
+    }
+
+    // Detect session pause after active (completion)
+    if (prevIsActiveRef.current && !engine.isActive && prevPhase !== 'idle') {
+      if (engine.cyclesCompleted > 0) {
+        playCompletionSound();
+      }
+    }
+
+    prevPhaseRef.current = newPhase;
+    prevIsActiveRef.current = engine.isActive;
+  }, [engine.phase, engine.isActive, engine.cyclesCompleted, playPhaseSound, playCompletionSound]);
+
+  const handleToggleSound = useCallback(() => {
+    setSoundEnabled((prev) => !prev);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col">
-      <Header />
+      <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} />
 
       <main className="flex-1 flex flex-col items-center justify-center gap-8 sm:gap-10 px-4 py-6 sm:py-8">
         {/* Breathing visualization */}
@@ -25,6 +62,7 @@ export function App() {
           onStart={engine.start}
           onPause={engine.pause}
           onReset={engine.reset}
+          totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
         />
 
         {/* Pattern selector */}

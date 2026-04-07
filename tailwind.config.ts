@@ -40,26 +40,11 @@ const config: Config = {
         ],
       },
       animation: {
-        'breathe-in': 'breatheIn 4s ease-in-out forwards',
-        'breathe-hold': 'breatheHold 4s ease-in-out forwards',
-        'breathe-out': 'breatheOut 4s ease-in-out forwards',
         'pulse-ring': 'pulseRing 3s ease-in-out infinite',
         'fade-in': 'fadeIn 300ms ease-out',
         'fade-in-up': 'fadeInUp 500ms ease-out',
       },
       keyframes: {
-        breatheIn: {
-          '0%': { transform: 'scale(0.4)', opacity: '0.6' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        breatheHold: {
-          '0%': { transform: 'scale(1)', opacity: '1' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        breatheOut: {
-          '0%': { transform: 'scale(1)', opacity: '1' },
-          '100%': { transform: 'scale(0.4)', opacity: '0.6' },
-        },
         pulseRing: {
           '0%, 100%': { transform: 'scale(1)', opacity: '0.3' },
           '50%': { transform: 'scale(1.1)', opacity: '0.6' },

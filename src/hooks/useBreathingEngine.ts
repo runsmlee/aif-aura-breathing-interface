@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { BreathingPattern, BreathingPhase, SessionStats } from '../types';
+import { BREATHING_PATTERNS } from '../types';
 
 interface UseBreathingEngineReturn {
   phase: BreathingPhase;
@@ -13,6 +14,7 @@ interface UseBreathingEngineReturn {
   reset: () => void;
   setPattern: (pattern: BreathingPattern) => void;
   currentPattern: BreathingPattern;
+  totalCyclesEverCompleted: number;
 }
 
 interface PhaseConfig {
@@ -20,14 +22,36 @@ interface PhaseConfig {
   duration: number;
 }
 
+const STORAGE_KEY = 'aura-pattern-preference';
+
+function loadPatternPreference(): string | null {
+  try {
+    return localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function savePatternPreference(name: string): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, name);
+  } catch {
+    // Storage unavailable, silently ignore
+  }
+}
+
 const DEFAULT_PATTERN: BreathingPattern = {
   name: 'Box Breathing',
-  description: 'Equal parts inhale, hold, exhale, hold.',
+  description: 'Equal parts inhale, hold, exhale, hold. Used by Navy SEALs for calm focus.',
   inhale: 4,
   hold: 4,
   exhale: 4,
   holdAfterExhale: 4,
 };
+
+function findPatternByName(name: string): BreathingPattern {
+  return BREATHING_PATTERNS.find((p) => p.name === name) ?? DEFAULT_PATTERN;
+}
 
 function buildPhaseSequence(pattern: BreathingPattern): PhaseConfig[] {
   const phases: PhaseConfig[] = [];
@@ -49,18 +73,33 @@ function buildPhaseSequence(pattern: BreathingPattern): PhaseConfig[] {
 }
 
 export function useBreathingEngine(): UseBreathingEngineReturn {
-  const [currentPattern, setCurrentPattern] = useState<BreathingPattern>(DEFAULT_PATTERN);
+  // Initialize from localStorage preference
+  const savedPatternName = useRef<string | null>(loadPatternPreference());
+  const [currentPattern, setCurrentPattern] = useState<BreathingPattern>(() => {
+    if (savedPatternName.current) {
+      return findPatternByName(savedPatternName.current);
+    }
+    return DEFAULT_PATTERN;
+  });
+
   const [phase, setPhase] = useState<BreathingPhase>('idle');
   const [secondsRemaining, setSecondsRemaining] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [cyclesCompleted, setCyclesCompleted] = useState(0);
+  const [totalCyclesEverCompleted, setTotalCyclesEverCompleted] = useState(0);
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
 
   const phaseIndexRef = useRef(0);
   const phaseElapsedRef = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const phaseSequenceRef = useRef<PhaseConfig[]>(buildPhaseSequence(DEFAULT_PATTERN));
+  const phaseSequenceRef = useRef<PhaseConfig[]>(
+    buildPhaseSequence(
+      savedPatternName.current
+        ? findPatternByName(savedPatternName.current)
+        : DEFAULT_PATTERN
+    )
+  );
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current !== null) {
@@ -75,6 +114,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
 
     if (phaseIndexRef.current === 0) {
       setCyclesCompleted((prev) => prev + 1);
+      setTotalCyclesEverCompleted((prev) => prev + 1);
     }
 
     const nextPhaseConfig = sequence[phaseIndexRef.current];
@@ -85,7 +125,6 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   }, []);
 
   const start = useCallback(() => {
-    phaseSequenceRef.current = buildPhaseSequence(currentPattern);
     phaseIndexRef.current = 0;
     phaseElapsedRef.current = 0;
 
@@ -111,7 +150,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
         setSecondsRemaining(Math.ceil(durationSeconds - elapsed));
       }
     }, 100);
-  }, [currentPattern, clearTimer, advancePhase]);
+  }, [clearTimer, advancePhase]);
 
   const pause = useCallback(() => {
     clearTimer();
@@ -137,6 +176,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
       reset();
       setCurrentPattern(pattern);
       phaseSequenceRef.current = buildPhaseSequence(pattern);
+      savePatternPreference(pattern.name);
       if (wasActive) {
         start();
       }
@@ -176,5 +216,6 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     reset,
     setPattern: handleSetPattern,
     currentPattern,
+    totalCyclesEverCompleted,
   };
 }

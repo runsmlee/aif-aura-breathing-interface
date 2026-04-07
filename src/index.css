@@ -40,3 +40,15 @@
     display: none;
   }
 }
+
+/* Particle floating animation — not suitable for Tailwind config due to variable transforms */
+@keyframes particleFloat {
+  0%, 100% {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) translateY(0px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) translateY(-8px);
+  }
+}

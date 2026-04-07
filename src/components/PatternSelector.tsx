@@ -7,6 +7,15 @@ interface PatternSelectorProps {
   disabled: boolean;
 }
 
+function formatPatternTiming(pattern: BreathingPattern): string {
+  const parts: string[] = [];
+  if (pattern.inhale > 0) parts.push(`${pattern.inhale}s in`);
+  if (pattern.hold > 0) parts.push(`${pattern.hold}s hold`);
+  if (pattern.exhale > 0) parts.push(`${pattern.exhale}s out`);
+  if (pattern.holdAfterExhale > 0) parts.push(`${pattern.holdAfterExhale}s hold`);
+  return parts.join(' · ');
+}
+
 export function PatternSelector({
   currentPattern,
   onSelectPattern,
@@ -17,7 +26,11 @@ export function PatternSelector({
       <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3 text-center">
         Breathing Pattern
       </h2>
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide" role="radiogroup" aria-label="Select breathing pattern">
+      <div
+        className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
+        role="radiogroup"
+        aria-label="Select breathing pattern"
+      >
         {BREATHING_PATTERNS.map((pattern) => {
           const isSelected = pattern.name === currentPattern.name;
           return (
@@ -34,6 +47,7 @@ export function PatternSelector({
                     : 'bg-gray-800/60 text-gray-400 hover:bg-gray-700/60 hover:text-gray-300'
                 }
                 ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950
               `}
             >
               {pattern.name}
@@ -41,9 +55,14 @@ export function PatternSelector({
           );
         })}
       </div>
-      <p className="text-xs text-gray-500 mt-2 text-center leading-relaxed">
-        {currentPattern.description}
-      </p>
+      <div className="mt-2 text-center">
+        <p className="text-xs text-gray-500 leading-relaxed">
+          {currentPattern.description}
+        </p>
+        <p className="text-[10px] text-gray-600 mt-1 tracking-wide">
+          {formatPatternTiming(currentPattern)}
+        </p>
+      </div>
     </div>
   );
 }
