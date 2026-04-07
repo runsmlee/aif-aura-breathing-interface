@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Header, BreathingCircle, Controls, PatternSelector, SessionStats } from './components';
+import { Header, BreathingCircle, Controls, PatternSelector, SessionStats, SessionSummary, OnboardingTip } from './components';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts } from './hooks';
 
 export function App() {
@@ -8,6 +8,9 @@ export function App() {
   const { playPhaseSound, playCompletionSound } = useAudioFeedback(soundEnabled);
   const prevPhaseRef = useRef(engine.phase);
   const prevIsActiveRef = useRef(engine.isActive);
+  const [showSummary, setShowSummary] = useState(false);
+  const [summaryStats, setSummaryStats] = useState(engine.stats);
+  const hasCompletedSession = useRef(false);
 
   useKeyboardShortcuts({
     onStart: engine.start,
@@ -30,16 +33,28 @@ export function App() {
     if (prevIsActiveRef.current && !engine.isActive && prevPhase !== 'idle') {
       if (engine.cyclesCompleted > 0) {
         playCompletionSound();
+        hasCompletedSession.current = true;
+        setSummaryStats(engine.stats);
+        setShowSummary(true);
       }
     }
 
     prevPhaseRef.current = newPhase;
     prevIsActiveRef.current = engine.isActive;
-  }, [engine.phase, engine.isActive, engine.cyclesCompleted, playPhaseSound, playCompletionSound]);
+  }, [engine.phase, engine.isActive, engine.cyclesCompleted, engine.stats, playPhaseSound, playCompletionSound]);
 
   const handleToggleSound = useCallback(() => {
     setSoundEnabled((prev) => !prev);
   }, []);
+
+  const handleDismissSummary = useCallback(() => {
+    setShowSummary(false);
+  }, []);
+
+  const handleReset = useCallback(() => {
+    engine.reset();
+    setShowSummary(false);
+  }, [engine]);
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col">
@@ -61,7 +76,7 @@ export function App() {
           isActive={engine.isActive}
           onStart={engine.start}
           onPause={engine.pause}
-          onReset={engine.reset}
+          onReset={handleReset}
           totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
         />
 
@@ -78,6 +93,17 @@ export function App() {
           Focus on your breath. Find your calm.
         </p>
       </footer>
+
+      {/* Session summary overlay */}
+      <SessionSummary
+        stats={summaryStats}
+        pattern={engine.currentPattern}
+        isVisible={showSummary}
+        onDismiss={handleDismissSummary}
+      />
+
+      {/* Onboarding tips for new users */}
+      <OnboardingTip hasCompletedASession={hasCompletedSession.current} />
     </div>
   );
 }

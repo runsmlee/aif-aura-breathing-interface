@@ -8,9 +8,7 @@ interface BreathingCircleProps {
   secondsRemaining: number;
 }
 
-function ParticleRing({ color, isActive }: { color: string; isActive: boolean }) {
-  if (!isActive) return null;
-
+function ParticleRing({ color }: { color: string }) {
   const particles = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => ({
       id: i,
@@ -68,8 +66,16 @@ export function BreathingCircle({
               className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-15 blur-2xl animate-pulse-ring"
               style={{ backgroundColor: color }}
             />
-            <ParticleRing color={color} isActive={isActive} />
+            <ParticleRing color={color} />
           </>
+        )}
+
+        {/* Ambient ring for idle state */}
+        {!isActive && (
+          <div
+            className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-5 blur-xl border border-gray-700/30"
+            aria-hidden="true"
+          />
         )}
 
         {/* Main circle */}
