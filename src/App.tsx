@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Header, BreathingCircle, Controls, PatternSelector, SessionStats, SessionSummary, OnboardingTip } from './components';
+import { Header, BreathingCircle, Controls, PatternSelector, SessionStats, SessionSummary, OnboardingTip, DurationSelector, SessionHistory } from './components';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts } from './hooks';
 
 export function App() {
@@ -44,7 +44,7 @@ export function App() {
   }, [engine.phase, engine.isActive, engine.cyclesCompleted, engine.stats, playPhaseSound, playCompletionSound]);
 
   const handleToggleSound = useCallback(() => {
-    setSoundEnabled((prev) => !prev);
+    setSoundEnabled((prev: boolean) => !prev);
   }, []);
 
   const handleDismissSummary = useCallback(() => {
@@ -57,10 +57,10 @@ export function App() {
   }, [engine]);
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col">
+    <div className="min-h-screen bg-gray-950 flex flex-col relative">
       <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} />
 
-      <main className="flex-1 flex flex-col items-center justify-center gap-8 sm:gap-10 px-4 py-6 sm:py-8">
+      <main className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 px-4 py-4 sm:py-6">
         {/* Breathing visualization */}
         <BreathingCircle
           phase={engine.phase}
@@ -80,11 +80,25 @@ export function App() {
           totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
         />
 
+        {/* Duration selector */}
+        <DurationSelector
+          targetDuration={engine.targetDuration}
+          onSelect={engine.setTargetDuration}
+          disabled={engine.isActive}
+          timeRemaining={engine.timeRemaining}
+        />
+
         {/* Pattern selector */}
         <PatternSelector
           currentPattern={engine.currentPattern}
           onSelectPattern={engine.setPattern}
           disabled={engine.isActive}
+        />
+
+        {/* Session history */}
+        <SessionHistory
+          history={engine.sessionHistory}
+          onClear={engine.clearHistory}
         />
       </main>
 
@@ -100,6 +114,7 @@ export function App() {
         pattern={engine.currentPattern}
         isVisible={showSummary}
         onDismiss={handleDismissSummary}
+        targetDuration={engine.targetDuration}
       />
 
       {/* Onboarding tips for new users */}

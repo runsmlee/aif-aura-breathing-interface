@@ -15,6 +15,30 @@ export interface SessionStats {
   breathsPerMinute: number;
 }
 
+export type SessionDuration = 0 | 2 | 5 | 10 | 15 | 20;
+
+export interface SessionDurationOption {
+  value: SessionDuration;
+  label: string;
+}
+
+export const SESSION_DURATION_OPTIONS: SessionDurationOption[] = [
+  { value: 0, label: 'Free' },
+  { value: 2, label: '2 min' },
+  { value: 5, label: '5 min' },
+  { value: 10, label: '10 min' },
+  { value: 15, label: '15 min' },
+  { value: 20, label: '20 min' },
+];
+
+export interface SessionRecord {
+  date: string;
+  pattern: string;
+  cycles: number;
+  duration: number;
+  targetDuration: number;
+}
+
 export const BREATHING_PATTERNS: BreathingPattern[] = [
   {
     name: 'Box Breathing',

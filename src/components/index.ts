@@ -5,3 +5,5 @@ export { SessionStats } from './SessionStats';
 export { SessionSummary } from './SessionSummary';
 export { OnboardingTip } from './OnboardingTip';
 export { Header } from './Header';
+export { DurationSelector } from './DurationSelector';
+export { SessionHistory } from './SessionHistory';

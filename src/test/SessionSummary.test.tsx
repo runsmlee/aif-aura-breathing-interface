@@ -27,6 +27,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={false}
         onDismiss={vi.fn()}
+        targetDuration={0}
       />
     );
     expect(container.innerHTML).toBe('');
@@ -39,6 +40,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        targetDuration={0}
       />
     );
     expect(screen.getByText('Session Complete')).toBeInTheDocument();
@@ -51,6 +53,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        targetDuration={0}
       />
     );
     expect(screen.getByText('5')).toBeInTheDocument();
@@ -65,6 +68,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        targetDuration={0}
       />
     );
     expect(screen.getByText('Cycles')).toBeInTheDocument();
@@ -79,6 +83,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        targetDuration={0}
       />
     );
     expect(screen.getByText(/Pattern: Box Breathing/)).toBeInTheDocument();
@@ -93,6 +98,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={onDismiss}
+        targetDuration={0}
       />
     );
 
@@ -107,6 +113,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        targetDuration={0}
       />
     );
     expect(screen.getByRole('dialog', { name: /session summary/i })).toBeInTheDocument();
@@ -119,8 +126,35 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        targetDuration={0}
       />
     );
     expect(screen.getByText('Impressive dedication.')).toBeInTheDocument();
+  });
+
+  it('shows target reached message when target was met', () => {
+    render(
+      <SessionSummary
+        stats={{ ...mockStats, totalDuration: 180 }}
+        pattern={mockPattern}
+        isVisible={true}
+        onDismiss={vi.fn()}
+        targetDuration={3} // 3 min target, 180s actual
+      />
+    );
+    expect(screen.getByText(/Target reached/)).toBeInTheDocument();
+  });
+
+  it('does not show target reached when no target set', () => {
+    render(
+      <SessionSummary
+        stats={mockStats}
+        pattern={mockPattern}
+        isVisible={true}
+        onDismiss={vi.fn()}
+        targetDuration={0}
+      />
+    );
+    expect(screen.queryByText(/Target reached/)).not.toBeInTheDocument();
   });
 });

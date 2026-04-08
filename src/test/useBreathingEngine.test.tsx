@@ -4,6 +4,7 @@ import { useBreathingEngine } from '../hooks/useBreathingEngine';
 
 describe('useBreathingEngine', () => {
   beforeEach(() => {
+    localStorage.clear();
     vi.useFakeTimers();
   });
 
@@ -170,5 +171,68 @@ describe('useBreathingEngine', () => {
     // Stats should be reasonable
     expect(result.current.stats.totalDuration).toBeGreaterThanOrEqual(9);
     expect(result.current.stats.breathsPerMinute).toBeGreaterThan(0);
+  });
+
+  it('initializes with default target duration of 0 (free)', () => {
+    const { result } = renderHook(() => useBreathingEngine());
+    expect(result.current.targetDuration).toBe(0);
+  });
+
+  it('sets target duration and persists it', () => {
+    const { result } = renderHook(() => useBreathingEngine());
+
+    act(() => {
+      result.current.setTargetDuration(5);
+    });
+
+    expect(result.current.targetDuration).toBe(5);
+    expect(localStorage.getItem('aura-duration-preference')).toBe('5');
+  });
+
+  it('shows time remaining when target is set and active', () => {
+    const { result } = renderHook(() => useBreathingEngine());
+
+    act(() => {
+      result.current.setTargetDuration(2);
+    });
+
+    act(() => {
+      result.current.start();
+    });
+
+    // 2 min = 120 seconds remaining
+    expect(result.current.timeRemaining).toBe(120);
+  });
+
+  it('decrements time remaining during session', () => {
+    const { result } = renderHook(() => useBreathingEngine());
+
+    act(() => {
+      result.current.setTargetDuration(2);
+    });
+
+    act(() => {
+      result.current.start();
+    });
+
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+
+    expect(result.current.timeRemaining).toBeLessThan(120);
+    expect(result.current.timeRemaining).toBeGreaterThan(0);
+  });
+
+  it('has empty session history initially', () => {
+    const { result } = renderHook(() => useBreathingEngine());
+    expect(result.current.sessionHistory).toEqual([]);
+  });
+
+  it('clears history', () => {
+    const { result } = renderHook(() => useBreathingEngine());
+    act(() => {
+      result.current.clearHistory();
+    });
+    expect(result.current.sessionHistory).toEqual([]);
   });
 });

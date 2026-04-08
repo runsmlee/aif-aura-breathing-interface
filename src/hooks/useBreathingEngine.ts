@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { BreathingPattern, BreathingPhase, SessionStats } from '../types';
+import type { BreathingPattern, BreathingPhase, SessionStats, SessionDuration, SessionRecord } from '../types';
 import { BREATHING_PATTERNS } from '../types';
 
 interface UseBreathingEngineReturn {
@@ -15,6 +15,11 @@ interface UseBreathingEngineReturn {
   setPattern: (pattern: BreathingPattern) => void;
   currentPattern: BreathingPattern;
   totalCyclesEverCompleted: number;
+  targetDuration: SessionDuration;
+  setTargetDuration: (duration: SessionDuration) => void;
+  timeRemaining: number;
+  sessionHistory: readonly SessionRecord[];
+  clearHistory: () => void;
 }
 
 interface PhaseConfig {
@@ -22,21 +27,46 @@ interface PhaseConfig {
   duration: number;
 }
 
-const STORAGE_KEY = 'aura-pattern-preference';
+const PATTERN_KEY = 'aura-pattern-preference';
+const DURATION_KEY = 'aura-duration-preference';
+const HISTORY_KEY = 'aura-session-history';
 
-function loadPatternPreference(): string | null {
+function loadFromStorage(key: string): string | null {
   try {
-    return localStorage.getItem(STORAGE_KEY);
+    return localStorage.getItem(key);
   } catch {
     return null;
   }
 }
 
-function savePatternPreference(name: string): void {
+function saveToStorage(key: string, value: string): void {
   try {
-    localStorage.setItem(STORAGE_KEY, name);
+    localStorage.setItem(key, value);
   } catch {
-    // Storage unavailable, silently ignore
+    // Storage unavailable
+  }
+}
+
+function loadHistory(): SessionRecord[] {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (raw) {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed as SessionRecord[];
+    }
+  } catch {
+    // Ignore
+  }
+  return [];
+}
+
+function saveHistory(records: SessionRecord[]): void {
+  try {
+    // Keep only last 50 sessions
+    const trimmed = records.slice(-50);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+  } catch {
+    // Storage unavailable
   }
 }
 
@@ -74,7 +104,17 @@ function buildPhaseSequence(pattern: BreathingPattern): PhaseConfig[] {
 
 export function useBreathingEngine(): UseBreathingEngineReturn {
   // Initialize from localStorage preference
-  const savedPatternName = useRef<string | null>(loadPatternPreference());
+  const savedPatternName = useRef<string | null>(loadFromStorage(PATTERN_KEY));
+  const savedDuration = useRef<SessionDuration>(
+    ((): SessionDuration => {
+      const val = loadFromStorage(DURATION_KEY);
+      if (val === null) return 0;
+      const num = parseInt(val, 10);
+      if ([0, 2, 5, 10, 15, 20].includes(num)) return num as SessionDuration;
+      return 0;
+    })()
+  );
+
   const [currentPattern, setCurrentPattern] = useState<BreathingPattern>(() => {
     if (savedPatternName.current) {
       return findPatternByName(savedPatternName.current);
@@ -89,6 +129,9 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   const [cyclesCompleted, setCyclesCompleted] = useState(0);
   const [totalCyclesEverCompleted, setTotalCyclesEverCompleted] = useState(0);
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
+  const [targetDuration, setTargetDurationState] = useState<SessionDuration>(savedDuration.current);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [sessionHistory, setSessionHistory] = useState<SessionRecord[]>(() => loadHistory());
 
   const phaseIndexRef = useRef(0);
   const phaseElapsedRef = useRef(0);
@@ -108,13 +151,34 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     }
   }, []);
 
+  const recordSession = useCallback((
+    cycles: number,
+    totalSeconds: number,
+    patternName: string,
+    target: SessionDuration,
+  ) => {
+    if (cycles === 0) return;
+    const record: SessionRecord = {
+      date: new Date().toISOString(),
+      pattern: patternName,
+      cycles,
+      duration: totalSeconds,
+      targetDuration: target,
+    };
+    setSessionHistory((prev) => {
+      const next = [...prev, record];
+      saveHistory(next);
+      return next;
+    });
+  }, []);
+
   const advancePhase = useCallback(() => {
     const sequence = phaseSequenceRef.current;
     phaseIndexRef.current = (phaseIndexRef.current + 1) % sequence.length;
 
     if (phaseIndexRef.current === 0) {
-      setCyclesCompleted((prev) => prev + 1);
-      setTotalCyclesEverCompleted((prev) => prev + 1);
+      setCyclesCompleted((prev: number) => prev + 1);
+      setTotalCyclesEverCompleted((prev: number) => prev + 1);
     }
 
     const nextPhaseConfig = sequence[phaseIndexRef.current];
@@ -134,7 +198,16 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     setProgress(0);
     setIsActive(true);
     setCyclesCompleted(0);
-    setSessionStartTime(Date.now());
+
+    const now = Date.now();
+    setSessionStartTime(now);
+
+    // Set time remaining based on target duration
+    if (savedDuration.current > 0) {
+      setTimeRemaining(savedDuration.current * 60);
+    } else {
+      setTimeRemaining(0);
+    }
 
     clearTimer();
     intervalRef.current = setInterval(() => {
@@ -149,6 +222,13 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
         setProgress(Math.min(elapsed / durationSeconds, 1));
         setSecondsRemaining(Math.ceil(durationSeconds - elapsed));
       }
+
+      // Update time remaining for target duration
+      setTimeRemaining((prev: number) => {
+        if (prev <= 0) return 0;
+        const nextVal = Math.max(0, prev - 0.1);
+        return Math.round(nextVal * 10) / 10;
+      });
     }, 100);
   }, [clearTimer, advancePhase]);
 
@@ -166,9 +246,21 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     setProgress(0);
     setCyclesCompleted(0);
     setSessionStartTime(null);
+    setTimeRemaining(0);
     phaseIndexRef.current = 0;
     phaseElapsedRef.current = 0;
   }, [clearTimer]);
+
+  const setTargetDuration = useCallback((duration: SessionDuration) => {
+    setTargetDurationState(duration);
+    savedDuration.current = duration;
+    saveToStorage(DURATION_KEY, String(duration));
+  }, []);
+
+  const clearHistory = useCallback(() => {
+    setSessionHistory([]);
+    try { localStorage.removeItem(HISTORY_KEY); } catch { /* ignore */ }
+  }, []);
 
   const handleSetPattern = useCallback(
     (pattern: BreathingPattern) => {
@@ -176,7 +268,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
       reset();
       setCurrentPattern(pattern);
       phaseSequenceRef.current = buildPhaseSequence(pattern);
-      savePatternPreference(pattern.name);
+      saveToStorage(PATTERN_KEY, pattern.name);
       if (wasActive) {
         start();
       }
@@ -184,6 +276,16 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     [reset, isActive, start]
   );
 
+  // Auto-stop when target duration is reached
+  useEffect(() => {
+    if (isActive && targetDuration > 0 && timeRemaining <= 0 && sessionStartTime !== null) {
+      const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+      recordSession(cyclesCompleted, elapsed, currentPattern.name, targetDuration);
+      pause();
+    }
+  }, [isActive, targetDuration, timeRemaining, sessionStartTime, cyclesCompleted, currentPattern, pause, recordSession]);
+
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       clearTimer();
@@ -191,7 +293,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   }, [clearTimer]);
 
   const totalCycleDuration = phaseSequenceRef.current.reduce(
-    (sum, p) => sum + p.duration,
+    (sum: number, p: PhaseConfig) => sum + p.duration,
     0
   );
 
@@ -217,5 +319,10 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     setPattern: handleSetPattern,
     currentPattern,
     totalCyclesEverCompleted,
+    targetDuration,
+    setTargetDuration,
+    timeRemaining: Math.ceil(timeRemaining),
+    sessionHistory,
+    clearHistory,
   };
 }

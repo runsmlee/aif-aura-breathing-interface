@@ -6,6 +6,7 @@ interface SessionSummaryProps {
   pattern: BreathingPattern;
   isVisible: boolean;
   onDismiss: () => void;
+  targetDuration: number;
 }
 
 function formatDuration(totalSeconds: number): string {
@@ -23,7 +24,14 @@ function getMotivationalMessage(cycles: number): string {
   return 'Incredible commitment. You are a breathing master.';
 }
 
-export function SessionSummary({ stats, pattern, isVisible, onDismiss }: SessionSummaryProps) {
+function getCompletionEmoji(cycles: number): string {
+  if (cycles <= 2) return '🌱';
+  if (cycles <= 5) return '🌿';
+  if (cycles <= 10) return '🌳';
+  return '🏔️';
+}
+
+export function SessionSummary({ stats, pattern, isVisible, onDismiss, targetDuration }: SessionSummaryProps) {
   const [animateIn, setAnimateIn] = useState(false);
 
   useEffect(() => {
@@ -35,7 +43,22 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss }: Session
     }
   }, [isVisible]);
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!isVisible) return;
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onDismiss();
+      }
+    }
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isVisible, onDismiss]);
+
   if (!isVisible) return null;
+
+  const hitTarget = targetDuration > 0 && stats.totalDuration >= targetDuration * 60 - 5;
 
   return (
     <div
@@ -48,21 +71,21 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss }: Session
     >
       <div
         className={`w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 transition-all duration-300 ${
-          animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          animateIn ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
         }`}
       >
         {/* Header */}
         <div className="text-center mb-6">
           <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary-500/20 flex items-center justify-center" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
-              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-              <line x1="9" y1="9" x2="9.01" y2="9" />
-              <line x1="15" y1="9" x2="15.01" y2="9" />
-            </svg>
+            <span className="text-xl">{getCompletionEmoji(stats.cyclesCompleted)}</span>
           </div>
           <h2 className="text-xl font-medium text-white">Session Complete</h2>
           <p className="text-sm text-gray-400 mt-1">{getMotivationalMessage(stats.cyclesCompleted)}</p>
+          {hitTarget && (
+            <p className="text-xs text-primary-400 mt-1 font-medium">
+              Target reached — {targetDuration} min
+            </p>
+          )}
         </div>
 
         {/* Stats grid */}
