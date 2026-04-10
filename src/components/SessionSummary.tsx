@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { SessionStats as SessionStatsType, BreathingPattern } from '../types';
+import { formatDuration } from '../utils/format';
+import { useFocusTrap, usePrefersReducedMotion } from '../hooks';
 
 interface SessionSummaryProps {
   stats: SessionStatsType;
@@ -7,13 +9,6 @@ interface SessionSummaryProps {
   isVisible: boolean;
   onDismiss: () => void;
   targetDuration: number;
-}
-
-function formatDuration(totalSeconds: number): string {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  if (minutes === 0) return `${seconds}s`;
-  return `${minutes}m ${seconds}s`;
 }
 
 function getMotivationalMessage(cycles: number): string {
@@ -33,15 +28,18 @@ function getCompletionEmoji(cycles: number): string {
 
 export function SessionSummary({ stats, pattern, isVisible, onDismiss, targetDuration }: SessionSummaryProps) {
   const [animateIn, setAnimateIn] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const focusTrapRef = useFocusTrap(isVisible);
 
   useEffect(() => {
     if (isVisible) {
-      const timer = setTimeout(() => setAnimateIn(true), 50);
+      const delay = prefersReducedMotion ? 0 : 50;
+      const timer = setTimeout(() => setAnimateIn(true), delay);
       return () => clearTimeout(timer);
     } else {
       setAnimateIn(false);
     }
-  }, [isVisible]);
+  }, [isVisible, prefersReducedMotion]);
 
   // Close on Escape key
   useEffect(() => {
@@ -59,6 +57,11 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, targetDur
   if (!isVisible) return null;
 
   const hitTarget = targetDuration > 0 && stats.totalDuration >= targetDuration * 60 - 5;
+  const animationClass = prefersReducedMotion
+    ? 'opacity-100 translate-y-0 scale-100'
+    : animateIn
+      ? 'opacity-100 translate-y-0 scale-100'
+      : 'opacity-0 translate-y-4 scale-95';
 
   return (
     <div
@@ -70,9 +73,8 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, targetDur
       aria-label="Session summary"
     >
       <div
-        className={`w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 transition-all duration-300 ${
-          animateIn ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
-        }`}
+        ref={focusTrapRef}
+        className={`w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 transition-all duration-300 ${animationClass}`}
       >
         {/* Header */}
         <div className="text-center mb-6">

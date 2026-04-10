@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { SessionRecord } from '../types';
+import { formatDuration } from '../utils/format';
 
 interface SessionHistoryProps {
   history: readonly SessionRecord[];
@@ -22,13 +23,6 @@ function formatDate(iso: string): string {
     return `${days}d ago`;
   }
   return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-}
-
-function formatDuration(totalSeconds: number): string {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  if (minutes === 0) return `${seconds}s`;
-  return `${minutes}m ${seconds}s`;
 }
 
 function getStreakCount(records: readonly SessionRecord[]): number {

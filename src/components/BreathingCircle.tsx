@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { BreathingPhase } from '../types';
 import { PHASE_LABELS, PHASE_COLORS } from '../types';
+import { usePrefersReducedMotion } from '../hooks';
 
 interface BreathingCircleProps {
   phase: BreathingPhase;
@@ -61,8 +62,9 @@ export function BreathingCircle({
   progress,
   secondsRemaining,
 }: BreathingCircleProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const scaleValue = useMemo(() => {
-    if (phase === 'idle') return 0.4;
+    if (phase === 'idle') return 0.45;
     if (phase === 'inhale') return 0.4 + progress * 0.6;
     if (phase === 'exhale') return 1 - progress * 0.6;
     return 1;
@@ -71,6 +73,7 @@ export function BreathingCircle({
   const color = PHASE_COLORS[phase];
   const label = PHASE_LABELS[phase];
   const isActive = phase !== 'idle';
+  const transitionDuration = prefersReducedMotion ? '0ms' : '100ms';
 
   return (
     <>
@@ -78,7 +81,7 @@ export function BreathingCircle({
       <div className="flex flex-col items-center justify-center gap-6" role="img" aria-label={`Breathing phase: ${label}`}>
         {/* Outer glow + particle ring */}
         <div className="relative flex items-center justify-center">
-          {isActive && (
+          {isActive && !prefersReducedMotion && (
             <>
               <div
                 className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-15 blur-2xl animate-pulse-ring"
@@ -92,9 +95,22 @@ export function BreathingCircle({
               <ParticleRing color={color} />
             </>
           )}
+          {isActive && prefersReducedMotion && (
+            <div
+              className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-[0.08] blur-2xl"
+              style={{ backgroundColor: color }}
+            />
+          )}
 
-          {/* Ambient ring for idle state */}
-          {!isActive && (
+          {/* Ambient ring for idle state — subtle pulsing glow */}
+          {!isActive && !prefersReducedMotion && (
+            <div
+              className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-[0.06] blur-xl animate-pulse-ring"
+              style={{ backgroundColor: '#6B7280' }}
+              aria-hidden="true"
+            />
+          )}
+          {!isActive && prefersReducedMotion && (
             <div
               className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-5 blur-xl border border-gray-700/30"
               aria-hidden="true"
@@ -106,13 +122,13 @@ export function BreathingCircle({
             className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center"
             style={{
               transform: `scale(${scaleValue})`,
-              transition: 'transform 100ms linear',
+              transition: `transform ${transitionDuration} linear`,
               background: isActive
                 ? `radial-gradient(circle at 35% 35%, ${color}dd, ${color}88 60%, ${color}44)`
                 : 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
               boxShadow: isActive
                 ? `0 0 40px ${color}55, 0 0 80px ${color}33, 0 0 120px ${color}11, inset 0 0 30px ${color}22`
-                : '0 0 20px rgba(0,0,0,0.3), inset 0 0 20px rgba(0,0,0,0.2)',
+                : '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
             }}
           >
             {/* Inner highlight */}
@@ -127,7 +143,7 @@ export function BreathingCircle({
             />
 
             {/* Ripple effect on phase change */}
-            {isActive && (
+            {isActive && !prefersReducedMotion && (
               <div
                 className="absolute inset-0 rounded-full animate-ping opacity-10"
                 style={{ backgroundColor: color }}

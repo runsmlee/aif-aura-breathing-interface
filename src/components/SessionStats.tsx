@@ -1,14 +1,9 @@
 import type { SessionStats as SessionStatsType } from '../types';
+import { formatCountdown } from '../utils/format';
 
 interface SessionStatsProps {
   stats: SessionStatsType;
   isVisible: boolean;
-}
-
-function formatDuration(totalSeconds: number): string {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
 export function SessionStats({ stats, isVisible }: SessionStatsProps) {
@@ -34,7 +29,7 @@ export function SessionStats({ stats, isVisible }: SessionStatsProps) {
       <div className="w-px h-8 bg-gray-800/60" aria-hidden="true" />
       <div className="text-center">
         <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">
-          {formatDuration(stats.totalDuration)}
+          {formatCountdown(stats.totalDuration)}
         </p>
         <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">
           Duration

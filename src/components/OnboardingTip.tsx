@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useFocusTrap, usePrefersReducedMotion } from '../hooks';
 
 interface OnboardingTipProps {
   hasCompletedASession: boolean;
@@ -43,13 +44,16 @@ function markDismissed(): void {
 export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [currentTip, setCurrentTip] = useState(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const focusTrapRef = useFocusTrap(isVisible);
 
   useEffect(() => {
     if (!hasBeenDismissed() && !hasCompletedASession) {
-      const timer = setTimeout(() => setIsVisible(true), 1200);
+      const delay = prefersReducedMotion ? 0 : 1200;
+      const timer = setTimeout(() => setIsVisible(true), delay);
       return () => clearTimeout(timer);
     }
-  }, [hasCompletedASession]);
+  }, [hasCompletedASession, prefersReducedMotion]);
 
   const handleDismiss = useCallback(() => {
     setIsVisible(false);
@@ -73,6 +77,7 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
   if (!isVisible) return null;
 
   const tip = TIPS[currentTip];
+  const enterAnimation = prefersReducedMotion ? '' : 'animate-fade-in-up';
 
   return (
     <div
@@ -81,7 +86,7 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
       aria-modal="true"
       aria-label="Quick tips"
     >
-      <div className="w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 animate-fade-in-up">
+      <div ref={focusTrapRef} className={`w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 ${enterAnimation}`}>
         {/* Tip content */}
         <div className="text-center mb-5">
           <span className="text-3xl" role="img" aria-hidden="true">{tip.icon}</span>

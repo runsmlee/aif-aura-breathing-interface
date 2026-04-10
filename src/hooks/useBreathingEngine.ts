@@ -20,6 +20,7 @@ interface UseBreathingEngineReturn {
   timeRemaining: number;
   sessionHistory: readonly SessionRecord[];
   clearHistory: () => void;
+  lastSessionSummary: { stats: SessionStats; completedAt: number } | null;
 }
 
 interface PhaseConfig {
@@ -132,6 +133,8 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   const [targetDuration, setTargetDurationState] = useState<SessionDuration>(savedDuration.current);
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [sessionHistory, setSessionHistory] = useState<SessionRecord[]>(() => loadHistory());
+  const [lastSessionSummary, setLastSessionSummary] = useState<{ stats: SessionStats; completedAt: number } | null>(null);
+  const cyclesCompletedRef = useRef(0);
 
   const phaseIndexRef = useRef(0);
   const phaseElapsedRef = useRef(0);
@@ -143,6 +146,15 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
         : DEFAULT_PATTERN
     )
   );
+
+  // Compute cycle duration from the phase sequence
+  const getBPM = useCallback((sequence: PhaseConfig[]): number => {
+    const totalCycleDur = sequence.reduce(
+      (sum: number, p: PhaseConfig) => sum + p.duration,
+      0
+    );
+    return totalCycleDur > 0 ? Math.round((60 / totalCycleDur) * 10) / 10 : 0;
+  }, []);
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current !== null) {
@@ -177,7 +189,8 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     phaseIndexRef.current = (phaseIndexRef.current + 1) % sequence.length;
 
     if (phaseIndexRef.current === 0) {
-      setCyclesCompleted((prev: number) => prev + 1);
+      cyclesCompletedRef.current += 1;
+      setCyclesCompleted(cyclesCompletedRef.current);
       setTotalCyclesEverCompleted((prev: number) => prev + 1);
     }
 
@@ -191,6 +204,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   const start = useCallback(() => {
     phaseIndexRef.current = 0;
     phaseElapsedRef.current = 0;
+    cyclesCompletedRef.current = 0;
 
     const firstPhase = phaseSequenceRef.current[0];
     setPhase(firstPhase.phase);
@@ -198,13 +212,14 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     setProgress(0);
     setIsActive(true);
     setCyclesCompleted(0);
+    setLastSessionSummary(null);
 
     const now = Date.now();
     setSessionStartTime(now);
 
     // Set time remaining based on target duration
-    if (savedDuration.current > 0) {
-      setTimeRemaining(savedDuration.current * 60);
+    if (targetDuration > 0) {
+      setTimeRemaining(targetDuration * 60);
     } else {
       setTimeRemaining(0);
     }
@@ -230,13 +245,21 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
         return Math.round(nextVal * 10) / 10;
       });
     }, 100);
-  }, [clearTimer, advancePhase]);
+  }, [clearTimer, advancePhase, targetDuration]);
 
   const pause = useCallback(() => {
     clearTimer();
+
+    // Record session if any cycles were completed
+    if (cyclesCompletedRef.current > 0 && sessionStartTime !== null) {
+      const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+      recordSession(cyclesCompletedRef.current, elapsed, currentPattern.name, targetDuration);
+      setLastSessionSummary({ completedAt: Date.now(), stats: { cyclesCompleted: cyclesCompletedRef.current, totalDuration: elapsed, breathsPerMinute: getBPM(phaseSequenceRef.current) } });
+    }
+
     setIsActive(false);
     setPhase('idle');
-  }, [clearTimer]);
+  }, [clearTimer, sessionStartTime, currentPattern.name, targetDuration, recordSession, getBPM]);
 
   const reset = useCallback(() => {
     clearTimer();
@@ -245,8 +268,10 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     setSecondsRemaining(0);
     setProgress(0);
     setCyclesCompleted(0);
+    cyclesCompletedRef.current = 0;
     setSessionStartTime(null);
     setTimeRemaining(0);
+    setLastSessionSummary(null);
     phaseIndexRef.current = 0;
     phaseElapsedRef.current = 0;
   }, [clearTimer]);
@@ -280,10 +305,15 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   useEffect(() => {
     if (isActive && targetDuration > 0 && timeRemaining <= 0 && sessionStartTime !== null) {
       const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
-      recordSession(cyclesCompleted, elapsed, currentPattern.name, targetDuration);
-      pause();
+      if (cyclesCompletedRef.current > 0) {
+        recordSession(cyclesCompletedRef.current, elapsed, currentPattern.name, targetDuration);
+        setLastSessionSummary({ completedAt: Date.now(), stats: { cyclesCompleted: cyclesCompletedRef.current, totalDuration: elapsed, breathsPerMinute: getBPM(phaseSequenceRef.current) } });
+      }
+      clearTimer();
+      setIsActive(false);
+      setPhase('idle');
     }
-  }, [isActive, targetDuration, timeRemaining, sessionStartTime, cyclesCompleted, currentPattern, pause, recordSession]);
+  }, [isActive, targetDuration, timeRemaining, sessionStartTime, currentPattern, recordSession, clearTimer, getBPM]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -292,18 +322,12 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     };
   }, [clearTimer]);
 
-  const totalCycleDuration = phaseSequenceRef.current.reduce(
-    (sum: number, p: PhaseConfig) => sum + p.duration,
-    0
-  );
-
   const stats: SessionStats = {
     cyclesCompleted,
     totalDuration: sessionStartTime
       ? Math.floor((Date.now() - sessionStartTime) / 1000)
       : 0,
-    breathsPerMinute:
-      totalCycleDuration > 0 ? Math.round((60 / totalCycleDuration) * 10) / 10 : 0,
+    breathsPerMinute: getBPM(phaseSequenceRef.current),
   };
 
   return {
@@ -324,5 +348,6 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     timeRemaining: Math.ceil(timeRemaining),
     sessionHistory,
     clearHistory,
+    lastSessionSummary,
   };
 }

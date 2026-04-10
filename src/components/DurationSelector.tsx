@@ -1,17 +1,12 @@
 import { SESSION_DURATION_OPTIONS } from '../types';
 import type { SessionDuration } from '../types';
+import { formatCountdown } from '../utils/format';
 
 interface DurationSelectorProps {
   targetDuration: SessionDuration;
   onSelect: (duration: SessionDuration) => void;
   disabled: boolean;
   timeRemaining: number;
-}
-
-function formatTimeRemaining(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
 export function DurationSelector({
@@ -61,7 +56,7 @@ export function DurationSelector({
           <p className="text-xs text-gray-500">
             Time remaining:{' '}
             <span className="text-primary-400 tabular-nums font-medium">
-              {formatTimeRemaining(timeRemaining)}
+              {formatCountdown(timeRemaining)}
             </span>
           </p>
         </div>

@@ -7,7 +7,6 @@ export function App() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const { playPhaseSound, playCompletionSound } = useAudioFeedback(soundEnabled);
   const prevPhaseRef = useRef(engine.phase);
-  const prevIsActiveRef = useRef(engine.isActive);
   const [showSummary, setShowSummary] = useState(false);
   const [summaryStats, setSummaryStats] = useState(engine.stats);
   const hasCompletedSession = useRef(false);
@@ -19,29 +18,27 @@ export function App() {
     isActive: engine.isActive,
   });
 
+  // Show summary when engine reports a completed session
+  useEffect(() => {
+    if (engine.lastSessionSummary !== null) {
+      hasCompletedSession.current = true;
+      setSummaryStats(engine.lastSessionSummary.stats);
+      setShowSummary(true);
+      playCompletionSound();
+    }
+  }, [engine.lastSessionSummary, playCompletionSound]);
+
   // Play audio on phase transitions
   useEffect(() => {
     const prevPhase = prevPhaseRef.current;
     const newPhase = engine.phase;
 
-    // Detect phase change to an active phase
     if (newPhase !== prevPhase && newPhase !== 'idle') {
       playPhaseSound(newPhase);
     }
 
-    // Detect session pause after active (completion)
-    if (prevIsActiveRef.current && !engine.isActive && prevPhase !== 'idle') {
-      if (engine.cyclesCompleted > 0) {
-        playCompletionSound();
-        hasCompletedSession.current = true;
-        setSummaryStats(engine.stats);
-        setShowSummary(true);
-      }
-    }
-
     prevPhaseRef.current = newPhase;
-    prevIsActiveRef.current = engine.isActive;
-  }, [engine.phase, engine.isActive, engine.cyclesCompleted, engine.stats, playPhaseSound, playCompletionSound]);
+  }, [engine.phase, playPhaseSound]);
 
   const handleToggleSound = useCallback(() => {
     setSoundEnabled((prev: boolean) => !prev);
@@ -60,7 +57,7 @@ export function App() {
     <div className="min-h-screen bg-gray-950 flex flex-col relative">
       <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} />
 
-      <main className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 px-4 py-4 sm:py-6">
+      <main className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto">
         {/* Breathing visualization */}
         <BreathingCircle
           phase={engine.phase}
