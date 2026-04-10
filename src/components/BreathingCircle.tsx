@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { BreathingPhase } from '../types';
-import { PHASE_LABELS, PHASE_COLORS } from '../types';
+import { PHASE_LABELS, PHASE_COLORS, PHASE_GUIDANCE } from '../types';
 import { usePrefersReducedMotion } from '../hooks';
 
 interface BreathingCircleProps {
@@ -72,13 +72,14 @@ export function BreathingCircle({
 
   const color = PHASE_COLORS[phase];
   const label = PHASE_LABELS[phase];
+  const guidance = PHASE_GUIDANCE[phase];
   const isActive = phase !== 'idle';
   const transitionDuration = prefersReducedMotion ? '0ms' : '100ms';
 
   return (
     <>
       <AmbientBackground phase={phase} />
-      <div className="flex flex-col items-center justify-center gap-6" role="img" aria-label={`Breathing phase: ${label}`}>
+      <div className="flex flex-col items-center justify-center gap-4 sm:gap-6" role="img" aria-label={`Breathing phase: ${label}. ${guidance}`}>
         {/* Outer glow + particle ring */}
         <div className="relative flex items-center justify-center">
           {isActive && !prefersReducedMotion && (
@@ -172,6 +173,16 @@ export function BreathingCircle({
             </div>
           </div>
         </div>
+
+        {/* Phase guidance text */}
+        <p
+          className={`text-xs sm:text-sm transition-all duration-300 max-w-xs text-center leading-relaxed ${
+            isActive ? 'text-gray-400' : 'text-gray-500'
+          }`}
+          aria-live="polite"
+        >
+          {guidance}
+        </p>
 
         {/* Phase progress bar */}
         {isActive && (

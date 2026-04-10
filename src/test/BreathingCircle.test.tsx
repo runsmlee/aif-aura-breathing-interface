@@ -8,10 +8,20 @@ describe('BreathingCircle', () => {
     expect(screen.getByText('Ready')).toBeInTheDocument();
   });
 
+  it('renders idle guidance text', () => {
+    render(<BreathingCircle phase="idle" progress={0} secondsRemaining={0} />);
+    expect(screen.getByText('Press Start to begin your session')).toBeInTheDocument();
+  });
+
   it('renders the inhale phase with correct label and countdown', () => {
     render(<BreathingCircle phase="inhale" progress={0.5} secondsRemaining={2} />);
     expect(screen.getByText('Breathe In')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
+  });
+
+  it('renders inhale guidance text', () => {
+    render(<BreathingCircle phase="inhale" progress={0.5} secondsRemaining={2} />);
+    expect(screen.getByText('Slowly breathe in through your nose')).toBeInTheDocument();
   });
 
   it('renders the hold phase with correct label', () => {

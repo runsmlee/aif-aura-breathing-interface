@@ -27,6 +27,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={false}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -40,6 +41,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -53,6 +55,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -68,6 +71,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -83,13 +87,14 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
     expect(screen.getByText(/Pattern: Box Breathing/)).toBeInTheDocument();
   });
 
-  it('calls onDismiss when Continue button is clicked', async () => {
+  it('calls onDismiss when I\'m Done button is clicked', async () => {
     const user = userEvent.setup();
     const onDismiss = vi.fn();
     render(
@@ -98,12 +103,31 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={onDismiss}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
 
     await user.click(screen.getByRole('button', { name: /close session summary/i }));
     expect(onDismiss).toHaveBeenCalledOnce();
+  });
+
+  it('calls onStartAgain when Breathe Again button is clicked', async () => {
+    const user = userEvent.setup();
+    const onStartAgain = vi.fn();
+    render(
+      <SessionSummary
+        stats={mockStats}
+        pattern={mockPattern}
+        isVisible={true}
+        onDismiss={vi.fn()}
+        onStartAgain={onStartAgain}
+        targetDuration={0}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: /start another breathing session/i }));
+    expect(onStartAgain).toHaveBeenCalledOnce();
   });
 
   it('has accessible dialog role', () => {
@@ -113,6 +137,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -126,6 +151,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -139,6 +165,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={3} // 3 min target, 180s actual
       />
     );
@@ -152,6 +179,7 @@ describe('SessionSummary', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={vi.fn()}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );

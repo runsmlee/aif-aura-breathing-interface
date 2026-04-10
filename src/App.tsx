@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Header, BreathingCircle, Controls, PatternSelector, SessionStats, SessionSummary, OnboardingTip, DurationSelector, SessionHistory } from './components';
-import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts } from './hooks';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Header, BreathingCircle, Controls, PatternSelector, SessionStats, DurationSelector, SessionHistory } from './components';
+import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFeedback } from './hooks';
+
+const SessionSummary = lazy(() => import('./components/SessionSummary').then((m) => ({ default: m.SessionSummary })));
+const OnboardingTip = lazy(() => import('./components/OnboardingTip').then((m) => ({ default: m.OnboardingTip })));
 
 export function App() {
   const engine = useBreathingEngine();
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [hapticEnabled] = useState(true);
   const { playPhaseSound, playCompletionSound } = useAudioFeedback(soundEnabled);
+  const { vibratePhase, vibrateCompletion } = useHapticFeedback(hapticEnabled);
   const prevPhaseRef = useRef(engine.phase);
   const [showSummary, setShowSummary] = useState(false);
   const [summaryStats, setSummaryStats] = useState(engine.stats);
@@ -25,20 +30,22 @@ export function App() {
       setSummaryStats(engine.lastSessionSummary.stats);
       setShowSummary(true);
       playCompletionSound();
+      vibrateCompletion();
     }
-  }, [engine.lastSessionSummary, playCompletionSound]);
+  }, [engine.lastSessionSummary, playCompletionSound, vibrateCompletion]);
 
-  // Play audio on phase transitions
+  // Play audio and haptic on phase transitions
   useEffect(() => {
     const prevPhase = prevPhaseRef.current;
     const newPhase = engine.phase;
 
     if (newPhase !== prevPhase && newPhase !== 'idle') {
       playPhaseSound(newPhase);
+      vibratePhase(newPhase);
     }
 
     prevPhaseRef.current = newPhase;
-  }, [engine.phase, playPhaseSound]);
+  }, [engine.phase, playPhaseSound, vibratePhase]);
 
   const handleToggleSound = useCallback(() => {
     setSoundEnabled((prev: boolean) => !prev);
@@ -47,6 +54,11 @@ export function App() {
   const handleDismissSummary = useCallback(() => {
     setShowSummary(false);
   }, []);
+
+  const handleStartAgain = useCallback(() => {
+    setShowSummary(false);
+    engine.start();
+  }, [engine]);
 
   const handleReset = useCallback(() => {
     engine.reset();
@@ -106,16 +118,21 @@ export function App() {
       </footer>
 
       {/* Session summary overlay */}
-      <SessionSummary
-        stats={summaryStats}
-        pattern={engine.currentPattern}
-        isVisible={showSummary}
-        onDismiss={handleDismissSummary}
-        targetDuration={engine.targetDuration}
-      />
+      <Suspense fallback={null}>
+        <SessionSummary
+          stats={summaryStats}
+          pattern={engine.currentPattern}
+          isVisible={showSummary}
+          onDismiss={handleDismissSummary}
+          onStartAgain={handleStartAgain}
+          targetDuration={engine.targetDuration}
+        />
+      </Suspense>
 
       {/* Onboarding tips for new users */}
-      <OnboardingTip hasCompletedASession={hasCompletedSession.current} />
+      <Suspense fallback={null}>
+        <OnboardingTip hasCompletedASession={hasCompletedSession.current} />
+      </Suspense>
     </div>
   );
 }

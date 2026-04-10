@@ -8,6 +8,7 @@ interface SessionSummaryProps {
   pattern: BreathingPattern;
   isVisible: boolean;
   onDismiss: () => void;
+  onStartAgain: () => void;
   targetDuration: number;
 }
 
@@ -26,7 +27,7 @@ function getCompletionEmoji(cycles: number): string {
   return '🏔️';
 }
 
-export function SessionSummary({ stats, pattern, isVisible, onDismiss, targetDuration }: SessionSummaryProps) {
+export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAgain, targetDuration }: SessionSummaryProps) {
   const [animateIn, setAnimateIn] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const focusTrapRef = useFocusTrap(isVisible);
@@ -111,14 +112,23 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, targetDur
           Pattern: {pattern.name}
         </p>
 
-        {/* Dismiss button */}
-        <button
-          onClick={onDismiss}
-          className="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
-          aria-label="Close session summary"
-        >
-          Continue
-        </button>
+        {/* Action buttons */}
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={onStartAgain}
+            className="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
+            aria-label="Start another breathing session"
+          >
+            Breathe Again
+          </button>
+          <button
+            onClick={onDismiss}
+            className="w-full px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-2xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
+            aria-label="Close session summary"
+          >
+            I&apos;m Done
+          </button>
+        </div>
       </div>
     </div>
   );

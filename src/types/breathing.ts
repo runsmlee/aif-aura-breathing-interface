@@ -81,6 +81,13 @@ export const PHASE_LABELS: Record<BreathingPhase, string> = {
   exhale: 'Breathe Out',
 };
 
+export const PHASE_GUIDANCE: Record<BreathingPhase, string> = {
+  idle: 'Press Start to begin your session',
+  inhale: 'Slowly breathe in through your nose',
+  hold: 'Hold your breath gently',
+  exhale: 'Slowly release through your mouth',
+};
+
 export const PHASE_COLORS: Record<BreathingPhase, string> = {
   idle: '#6B7280',
   inhale: '#14B8A6',

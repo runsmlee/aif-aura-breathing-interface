@@ -29,6 +29,7 @@ describe('Focus Trap (via SessionSummary)', () => {
         pattern={mockPattern}
         isVisible={false}
         onDismiss={onDismiss}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -40,6 +41,7 @@ describe('Focus Trap (via SessionSummary)', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={onDismiss}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
@@ -47,9 +49,9 @@ describe('Focus Trap (via SessionSummary)', () => {
     // Wait for animation
     await screen.findByRole('dialog', { name: /session summary/i });
 
-    // The Continue button should be focused
-    const dismissButton = screen.getByRole('button', { name: /close session summary/i });
-    expect(dismissButton).toHaveFocus();
+    // The Breathe Again button should be focused (first focusable element)
+    const startAgainButton = screen.getByRole('button', { name: /start another breathing session/i });
+    expect(startAgainButton).toHaveFocus();
   });
 
   it('allows dismissing with the focused button', async () => {
@@ -62,6 +64,7 @@ describe('Focus Trap (via SessionSummary)', () => {
         pattern={mockPattern}
         isVisible={true}
         onDismiss={onDismiss}
+        onStartAgain={vi.fn()}
         targetDuration={0}
       />
     );
