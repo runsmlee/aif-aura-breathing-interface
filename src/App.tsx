@@ -1,9 +1,13 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { Header, BreathingCircle, Controls, PatternSelector, SessionStats, DurationSelector, SessionHistory } from './components';
+import { Header, BreathingCircle, Controls } from './components';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFeedback } from './hooks';
 
+const SessionStats = lazy(() => import('./components/SessionStats').then((m) => ({ default: m.SessionStats })));
+const PatternSelector = lazy(() => import('./components/PatternSelector').then((m) => ({ default: m.PatternSelector })));
+const DurationSelector = lazy(() => import('./components/DurationSelector').then((m) => ({ default: m.DurationSelector })));
 const SessionSummary = lazy(() => import('./components/SessionSummary').then((m) => ({ default: m.SessionSummary })));
 const OnboardingTip = lazy(() => import('./components/OnboardingTip').then((m) => ({ default: m.OnboardingTip })));
+const SessionHistory = lazy(() => import('./components/SessionHistory').then((m) => ({ default: m.SessionHistory })));
 
 export function App() {
   const engine = useBreathingEngine();
@@ -78,7 +82,9 @@ export function App() {
         />
 
         {/* Session stats */}
-        <SessionStats stats={engine.stats} isVisible={engine.isActive} />
+        <Suspense fallback={null}>
+          <SessionStats stats={engine.stats} isVisible={engine.isActive} />
+        </Suspense>
 
         {/* Controls */}
         <Controls
@@ -90,25 +96,31 @@ export function App() {
         />
 
         {/* Duration selector */}
-        <DurationSelector
-          targetDuration={engine.targetDuration}
-          onSelect={engine.setTargetDuration}
-          disabled={engine.isActive}
-          timeRemaining={engine.timeRemaining}
-        />
+        <Suspense fallback={null}>
+          <DurationSelector
+            targetDuration={engine.targetDuration}
+            onSelect={engine.setTargetDuration}
+            disabled={engine.isActive}
+            timeRemaining={engine.timeRemaining}
+          />
+        </Suspense>
 
         {/* Pattern selector */}
-        <PatternSelector
-          currentPattern={engine.currentPattern}
-          onSelectPattern={engine.setPattern}
-          disabled={engine.isActive}
-        />
+        <Suspense fallback={null}>
+          <PatternSelector
+            currentPattern={engine.currentPattern}
+            onSelectPattern={engine.setPattern}
+            disabled={engine.isActive}
+          />
+        </Suspense>
 
         {/* Session history */}
-        <SessionHistory
-          history={engine.sessionHistory}
-          onClear={engine.clearHistory}
-        />
+        <Suspense fallback={null}>
+          <SessionHistory
+            history={engine.sessionHistory}
+            onClear={engine.clearHistory}
+          />
+        </Suspense>
       </main>
 
       <footer className="py-4 text-center">

@@ -70,7 +70,7 @@ describe('DurationSelector', () => {
       />
     );
     const radios = screen.getAllByRole('radio');
-    radios.forEach((radio) => {
+    radios.forEach((radio: HTMLElement) => {
       expect(radio).toBeDisabled();
     });
   });
