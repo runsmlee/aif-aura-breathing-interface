@@ -6,6 +6,19 @@ interface SessionStatsProps {
   isVisible: boolean;
 }
 
+function StatItem({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="text-center">
+      <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">
+        {value}
+      </p>
+      <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">
+        {label}
+      </p>
+    </div>
+  );
+}
+
 export function SessionStats({ stats, isVisible }: SessionStatsProps) {
   if (!isVisible) {
     return null;
@@ -18,32 +31,11 @@ export function SessionStats({ stats, isVisible }: SessionStatsProps) {
       aria-live="polite"
       aria-label="Session statistics"
     >
-      <div className="text-center">
-        <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">
-          {stats.cyclesCompleted}
-        </p>
-        <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">
-          Cycles
-        </p>
-      </div>
+      <StatItem value={String(stats.cyclesCompleted)} label="Cycles" />
       <div className="w-px h-8 bg-gray-800/60" aria-hidden="true" />
-      <div className="text-center">
-        <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">
-          {formatCountdown(stats.totalDuration)}
-        </p>
-        <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">
-          Duration
-        </p>
-      </div>
+      <StatItem value={formatCountdown(stats.totalDuration)} label="Duration" />
       <div className="w-px h-8 bg-gray-800/60" aria-hidden="true" />
-      <div className="text-center">
-        <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">
-          {stats.breathsPerMinute}
-        </p>
-        <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">
-          BPM
-        </p>
-      </div>
+      <StatItem value={String(stats.breathsPerMinute)} label="BPM" />
     </div>
   );
 }

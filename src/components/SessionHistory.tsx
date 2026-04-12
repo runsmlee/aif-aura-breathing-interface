@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { SessionRecord } from '../types';
 import { formatDuration } from '../utils/format';
 
@@ -49,7 +49,7 @@ function getStreakCount(records: readonly SessionRecord[]): number {
 
 export function SessionHistory({ history, onClear }: SessionHistoryProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const streak = getStreakCount(history);
+  const streak = useMemo(() => getStreakCount(history), [history]);
 
   if (history.length === 0) return null;
 

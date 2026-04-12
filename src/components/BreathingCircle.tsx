@@ -9,6 +9,14 @@ interface BreathingCircleProps {
   secondsRemaining: number;
 }
 
+const CIRCLE_SIZE = 224; // 56 * 4 for crisp SVG
+const CIRCLE_RADIUS = 108;
+const STROKE_WIDTH = 3;
+const CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS;
+const RESPONSIVE_CIRCLE_SIZE = 256; // 64 * 4 for sm
+const RESPONSIVE_CIRCLE_RADIUS = 124;
+const RESPONSIVE_CIRCUMFERENCE = 2 * Math.PI * RESPONSIVE_CIRCLE_RADIUS;
+
 function ParticleRing({ color }: { color: string }) {
   const particles = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => ({
@@ -54,6 +62,59 @@ function AmbientBackground({ phase }: { phase: BreathingPhase }) {
         }}
       />
     </div>
+  );
+}
+
+function CircularProgressRing({
+  progress,
+  color,
+  size,
+  radius,
+  circumference,
+}: {
+  progress: number;
+  color: string;
+  size: number;
+  radius: number;
+  circumference: number;
+}) {
+  const strokeDashoffset = circumference * (1 - progress);
+
+  return (
+    <svg
+      width={size / 4}
+      height={size / 4}
+      viewBox={`0 0 ${size} ${size}`}
+      className="absolute pointer-events-none"
+      style={{ transform: 'rotate(-90deg)' }}
+      aria-hidden="true"
+    >
+      {/* Background track */}
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke="rgba(255,255,255,0.06)"
+        strokeWidth={STROKE_WIDTH}
+      />
+      {/* Progress arc */}
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke={color}
+        strokeWidth={STROKE_WIDTH}
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={strokeDashoffset}
+        style={{
+          transition: 'stroke-dashoffset 100ms linear, stroke 300ms ease-out',
+          filter: `drop-shadow(0 0 6px ${color}66)`,
+        }}
+      />
+    </svg>
   );
 }
 
@@ -103,11 +164,14 @@ export function BreathingCircle({
             />
           )}
 
-          {/* Ambient ring for idle state — subtle pulsing glow */}
+          {/* Ambient ring for idle state — subtle pulsing glow with breathing animation */}
           {!isActive && !prefersReducedMotion && (
             <div
-              className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-[0.06] blur-xl animate-pulse-ring"
-              style={{ backgroundColor: '#6B7280' }}
+              className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-[0.06] blur-xl"
+              style={{
+                backgroundColor: '#6B7280',
+                animation: 'idleBreath 6s ease-in-out infinite',
+              }}
               aria-hidden="true"
             />
           )}
@@ -120,7 +184,9 @@ export function BreathingCircle({
 
           {/* Main circle */}
           <div
-            className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center"
+            className={`relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center ${
+              !isActive && !prefersReducedMotion ? 'idle-glow' : ''
+            }`}
             style={{
               transform: `scale(${scaleValue})`,
               transition: `transform ${transitionDuration} linear`,
@@ -172,6 +238,30 @@ export function BreathingCircle({
               )}
             </div>
           </div>
+
+          {/* Circular progress ring overlay */}
+          {isActive && (
+            <>
+              <div className="absolute w-56 h-56">
+                <CircularProgressRing
+                  progress={progress}
+                  color={color}
+                  size={CIRCLE_SIZE}
+                  radius={CIRCLE_RADIUS}
+                  circumference={CIRCUMFERENCE}
+                />
+              </div>
+              <div className="absolute w-64 h-64 hidden sm:block">
+                <CircularProgressRing
+                  progress={progress}
+                  color={color}
+                  size={RESPONSIVE_CIRCLE_SIZE}
+                  radius={RESPONSIVE_CIRCLE_RADIUS}
+                  circumference={RESPONSIVE_CIRCUMFERENCE}
+                />
+              </div>
+            </>
+          )}
         </div>
 
         {/* Phase guidance text */}
@@ -184,7 +274,7 @@ export function BreathingCircle({
           {guidance}
         </p>
 
-        {/* Phase progress bar */}
+        {/* Phase progress bar (kept as secondary indicator) */}
         {isActive && (
           <div
             className="w-48 sm:w-56 h-1.5 bg-gray-800/80 rounded-full overflow-hidden backdrop-blur-sm"
