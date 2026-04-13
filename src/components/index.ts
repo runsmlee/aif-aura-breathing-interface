@@ -7,3 +7,5 @@ export { OnboardingTip } from './OnboardingTip';
 export { Header } from './Header';
 export { DurationSelector } from './DurationSelector';
 export { SessionHistory } from './SessionHistory';
+export { SessionCalendar } from './SessionCalendar';
+export { WeeklyGoal } from './WeeklyGoal';

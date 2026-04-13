@@ -54,7 +54,14 @@ describe('PatternSelector', () => {
     );
 
     await user.click(screen.getByRole('radio', { name: 'Coherent Breathing' }));
-    expect(onSelect).toHaveBeenCalledWith(BREATHING_PATTERNS[2]);
+    expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({
+      name: 'Coherent Breathing',
+      inhale: 5,
+      hold: 0,
+      exhale: 5,
+      holdAfterExhale: 0,
+      isCustom: false,
+    }));
   });
 
   it('disables all radio buttons when disabled prop is true', () => {

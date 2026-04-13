@@ -4,6 +4,8 @@ export type {
   SessionStats,
   SessionDuration,
   SessionRecord,
+  CustomPattern,
+  StreakData,
 } from './breathing';
 export {
   BREATHING_PATTERNS,
@@ -11,4 +13,9 @@ export {
   PHASE_COLORS,
   PHASE_GUIDANCE,
   SESSION_DURATION_OPTIONS,
+  CUSTOM_PATTERNS_KEY,
+  STREAK_KEY,
+  WEEKLY_GOAL_KEY,
+  MAX_CUSTOM_PATTERNS,
+  DEFAULT_WEEKLY_GOAL,
 } from './breathing';

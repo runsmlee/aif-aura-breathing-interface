@@ -1,6 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Header, BreathingCircle, Controls } from './components';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFeedback } from './hooks';
+import { useStreakTracker } from './hooks/useStreakTracker';
+import { useWeeklyGoal } from './hooks/useWeeklyGoal';
 
 const SessionStats = lazy(() => import('./components/SessionStats').then((m) => ({ default: m.SessionStats })));
 const PatternSelector = lazy(() => import('./components/PatternSelector').then((m) => ({ default: m.PatternSelector })));
@@ -8,6 +10,7 @@ const DurationSelector = lazy(() => import('./components/DurationSelector').then
 const SessionSummary = lazy(() => import('./components/SessionSummary').then((m) => ({ default: m.SessionSummary })));
 const OnboardingTip = lazy(() => import('./components/OnboardingTip').then((m) => ({ default: m.OnboardingTip })));
 const SessionHistory = lazy(() => import('./components/SessionHistory').then((m) => ({ default: m.SessionHistory })));
+const WeeklyGoal = lazy(() => import('./components/WeeklyGoal').then((m) => ({ default: m.WeeklyGoal })));
 
 export function App() {
   const engine = useBreathingEngine();
@@ -19,6 +22,17 @@ export function App() {
   const [showSummary, setShowSummary] = useState(false);
   const [summaryStats, setSummaryStats] = useState(engine.stats);
   const hasCompletedSession = useRef(false);
+
+  // Streak and weekly goal tracking
+  const { streakData, recordSession: recordStreak } = useStreakTracker();
+  const {
+    weeklyGoal,
+    sessionsThisWeek,
+    goalReached,
+    justReachedGoal,
+    setWeeklyGoal,
+    incrementSessions,
+  } = useWeeklyGoal();
 
   useKeyboardShortcuts({
     onStart: engine.start,
@@ -35,8 +49,11 @@ export function App() {
       setShowSummary(true);
       playCompletionSound();
       vibrateCompletion();
+      // Record streak and increment weekly sessions on session completion
+      recordStreak();
+      incrementSessions();
     }
-  }, [engine.lastSessionSummary, playCompletionSound, vibrateCompletion]);
+  }, [engine.lastSessionSummary, playCompletionSound, vibrateCompletion, recordStreak, incrementSessions]);
 
   // Play audio and haptic on phase transitions
   useEffect(() => {
@@ -71,7 +88,7 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col relative">
-      <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} />
+      <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} streakData={streakData} />
 
       <main className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto">
         {/* Breathing visualization */}
@@ -114,7 +131,18 @@ export function App() {
           />
         </Suspense>
 
-        {/* Session history */}
+        {/* Weekly goal nudge */}
+        <Suspense fallback={null}>
+          <WeeklyGoal
+            weeklyGoal={weeklyGoal}
+            sessionsThisWeek={sessionsThisWeek}
+            goalReached={goalReached}
+            justReachedGoal={justReachedGoal}
+            onSetGoal={setWeeklyGoal}
+          />
+        </Suspense>
+
+        {/* Session history with 28-day calendar */}
         <Suspense fallback={null}>
           <SessionHistory
             history={engine.sessionHistory}

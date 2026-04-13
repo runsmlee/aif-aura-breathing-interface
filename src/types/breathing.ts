@@ -39,6 +39,29 @@ export interface SessionRecord {
   targetDuration: number;
 }
 
+export interface CustomPattern {
+  id: string;
+  name: string;
+  inhale: number;
+  holdIn: number;
+  exhale: number;
+  holdOut: number;
+  savedAt: string;
+}
+
+export interface StreakData {
+  currentStreak: number;
+  longestStreak: number;
+  lastSessionDate: string;
+  totalDays: number;
+}
+
+export const CUSTOM_PATTERNS_KEY = 'aura-custom-patterns';
+export const STREAK_KEY = 'aura-streaks';
+export const WEEKLY_GOAL_KEY = 'aura-weekly-goal';
+export const MAX_CUSTOM_PATTERNS = 5;
+export const DEFAULT_WEEKLY_GOAL = 5;
+
 export const BREATHING_PATTERNS: BreathingPattern[] = [
   {
     name: 'Box Breathing',

@@ -1,9 +1,12 @@
+import type { StreakData } from '../types';
+
 interface HeaderProps {
   soundEnabled: boolean;
   onToggleSound: () => void;
+  streakData?: StreakData;
 }
 
-export function Header({ soundEnabled, onToggleSound }: HeaderProps) {
+export function Header({ soundEnabled, onToggleSound, streakData }: HeaderProps) {
   return (
     <header className="flex items-center justify-between px-4 py-4 sm:py-6" role="banner">
       <div className="flex items-center gap-2.5">
@@ -18,7 +21,30 @@ export function Header({ soundEnabled, onToggleSound }: HeaderProps) {
         </div>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        {streakData && (
+          <div
+            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 ${
+              streakData.currentStreak > 0
+                ? 'bg-primary-500/10 text-primary-400'
+                : 'text-gray-600'
+            }`}
+            role="status"
+            aria-live="polite"
+            aria-label={`Streak: ${streakData.currentStreak} days`}
+          >
+            {streakData.currentStreak > 0 ? (
+              <>
+                <span aria-hidden="true">🔥</span>
+                <span className="tabular-nums">{streakData.currentStreak}</span>
+                <span className="hidden sm:inline"> day{streakData.currentStreak !== 1 ? 's' : ''} streak</span>
+              </>
+            ) : (
+              <span>Start your streak</span>
+            )}
+          </div>
+        )}
+
         <button
           onClick={onToggleSound}
           className="p-2.5 rounded-xl text-gray-500 hover:text-gray-300 hover:bg-gray-800/60 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"

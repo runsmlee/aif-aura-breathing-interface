@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback, useRef } from 'react';
 import type { SessionRecord } from '../types';
 import { formatDuration } from '../utils/format';
+import { SessionCalendar } from './SessionCalendar';
 
 interface SessionHistoryProps {
   history: readonly SessionRecord[];
@@ -47,18 +48,61 @@ function getStreakCount(records: readonly SessionRecord[]): number {
   return streak;
 }
 
+function toDateStr(iso: string): string {
+  const d = new Date(iso);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function SessionHistory({ history, onClear }: SessionHistoryProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const sessionListRef = useRef<HTMLUListElement>(null);
   const streak = useMemo(() => getStreakCount(history), [history]);
 
-  if (history.length === 0) return null;
+  const handleDayClick = useCallback((dateStr: string) => {
+    setSelectedDay(dateStr);
+    // Expand if not already
+    if (!isExpanded) {
+      setIsExpanded(true);
+      // Use setTimeout to let the DOM render before scrolling
+      setTimeout(() => {
+        const el = sessionListRef.current?.querySelector(`[data-date="${dateStr}"]`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 50);
+      return;
+    }
+    // Already expanded — scroll directly
+    const el = sessionListRef.current?.querySelector(`[data-date="${dateStr}"]`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [isExpanded]);
 
-  const recentHistory = history.slice(-10).reverse();
+  // Filter sessions when a day is selected
+  const recentHistory = useMemo(() => {
+    if (selectedDay) {
+      return history
+        .filter((r) => toDateStr(r.date) === selectedDay)
+        .slice(-10)
+        .reverse();
+    }
+    return history.slice(-10).reverse();
+  }, [history, selectedDay]);
+
+  if (history.length === 0) return null;
 
   return (
     <div className="w-full max-w-md mx-auto">
       <button
-        onClick={() => setIsExpanded((prev) => !prev)}
+        onClick={() => {
+          setIsExpanded((prev) => !prev);
+          if (selectedDay) setSelectedDay(null);
+        }}
         className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-900/60 rounded-xl text-sm transition-all duration-200 hover:bg-gray-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
         aria-expanded={isExpanded}
         aria-controls="session-history-content"
@@ -93,15 +137,29 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
         </span>
       </button>
 
+      {/* 28-day calendar heatmap — always visible when there's history */}
+      <SessionCalendar history={history} onDayClick={handleDayClick} />
+
       {isExpanded && (
         <div
           id="session-history-content"
           className="mt-2 bg-gray-900/40 rounded-xl overflow-hidden animate-fade-in"
         >
-          <ul className="divide-y divide-gray-800/50" role="list" aria-label="Recent sessions">
+          {selectedDay && (
+            <div className="px-4 py-2 border-b border-gray-800/50">
+              <button
+                onClick={() => setSelectedDay(null)}
+                className="text-xs text-primary-400 hover:text-primary-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded"
+              >
+                ← Show all recent sessions
+              </button>
+            </div>
+          )}
+          <ul ref={sessionListRef} className="divide-y divide-gray-800/50" role="list" aria-label="Recent sessions">
             {recentHistory.map((record, idx) => (
               <li
                 key={`${record.date}-${idx}`}
+                data-date={toDateStr(record.date)}
                 className="px-4 py-2.5 flex items-center justify-between text-xs"
               >
                 <div className="flex items-center gap-2">
@@ -123,6 +181,7 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
                   e.stopPropagation();
                   onClear();
                   setIsExpanded(false);
+                  setSelectedDay(null);
                 }}
                 className="text-xs text-gray-600 hover:text-gray-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded"
                 aria-label="Clear session history"
