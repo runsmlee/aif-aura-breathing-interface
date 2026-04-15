@@ -1,9 +1,11 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { Header, BreathingCircle, Controls } from './components';
+import { Header } from './components';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFeedback } from './hooks';
 import { useStreakTracker } from './hooks/useStreakTracker';
 import { useWeeklyGoal } from './hooks/useWeeklyGoal';
 
+const BreathingCircle = lazy(() => import('./components/BreathingCircle').then((m) => ({ default: m.BreathingCircle })));
+const Controls = lazy(() => import('./components/Controls').then((m) => ({ default: m.Controls })));
 const SessionStats = lazy(() => import('./components/SessionStats').then((m) => ({ default: m.SessionStats })));
 const PatternSelector = lazy(() => import('./components/PatternSelector').then((m) => ({ default: m.PatternSelector })));
 const DurationSelector = lazy(() => import('./components/DurationSelector').then((m) => ({ default: m.DurationSelector })));
@@ -92,11 +94,17 @@ export function App() {
 
       <main className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto">
         {/* Breathing visualization */}
-        <BreathingCircle
+        <Suspense fallback={
+          <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center bg-gray-900/40 animate-pulse" aria-hidden="true">
+            <div className="w-16 h-16 rounded-full border-2 border-gray-700/50 border-t-primary-500/50 animate-spin" />
+          </div>
+        }>
+          <BreathingCircle
           phase={engine.phase}
           progress={engine.progress}
           secondsRemaining={engine.secondsRemaining}
         />
+        </Suspense>
 
         {/* Session stats */}
         <Suspense fallback={null}>
@@ -104,13 +112,15 @@ export function App() {
         </Suspense>
 
         {/* Controls */}
-        <Controls
-          isActive={engine.isActive}
-          onStart={engine.start}
-          onPause={engine.pause}
-          onReset={handleReset}
-          totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
-        />
+        <Suspense fallback={null}>
+          <Controls
+            isActive={engine.isActive}
+            onStart={engine.start}
+            onPause={engine.pause}
+            onReset={handleReset}
+            totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
+          />
+        </Suspense>
 
         {/* Duration selector */}
         <Suspense fallback={null}>
@@ -122,33 +132,38 @@ export function App() {
           />
         </Suspense>
 
-        {/* Pattern selector */}
-        <Suspense fallback={null}>
-          <PatternSelector
-            currentPattern={engine.currentPattern}
-            onSelectPattern={engine.setPattern}
-            disabled={engine.isActive}
-          />
-        </Suspense>
+        {/* Secondary controls — hidden during active session for focus */}
+        {!engine.isActive && (
+          <>
+            {/* Pattern selector */}
+            <Suspense fallback={null}>
+              <PatternSelector
+                currentPattern={engine.currentPattern}
+                onSelectPattern={engine.setPattern}
+                disabled={engine.isActive}
+              />
+            </Suspense>
 
-        {/* Weekly goal nudge */}
-        <Suspense fallback={null}>
-          <WeeklyGoal
-            weeklyGoal={weeklyGoal}
-            sessionsThisWeek={sessionsThisWeek}
-            goalReached={goalReached}
-            justReachedGoal={justReachedGoal}
-            onSetGoal={setWeeklyGoal}
-          />
-        </Suspense>
+            {/* Weekly goal nudge */}
+            <Suspense fallback={null}>
+              <WeeklyGoal
+                weeklyGoal={weeklyGoal}
+                sessionsThisWeek={sessionsThisWeek}
+                goalReached={goalReached}
+                justReachedGoal={justReachedGoal}
+                onSetGoal={setWeeklyGoal}
+              />
+            </Suspense>
 
-        {/* Session history with 28-day calendar */}
-        <Suspense fallback={null}>
-          <SessionHistory
-            history={engine.sessionHistory}
-            onClear={engine.clearHistory}
-          />
-        </Suspense>
+            {/* Session history with 28-day calendar */}
+            <Suspense fallback={null}>
+              <SessionHistory
+                history={engine.sessionHistory}
+                onClear={engine.clearHistory}
+              />
+            </Suspense>
+          </>
+        )}
       </main>
 
       <footer className="py-4 text-center">

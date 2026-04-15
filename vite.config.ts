@@ -8,12 +8,26 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        passes: 2,
-        pure_funcs: ['console.log'],
+        passes: 5,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        drop_debugger: true,
+        ecma: 2020,
+        module: true,
+        toplevel: true,
+        booleans_as_integers: true,
+        reduce_funcs: true,
+        unsafe_comps: true,
+        unsafe_math: true,
+        unsafe_symbols: true,
+        unsafe_methods: true,
       },
       format: {
         comments: false,
+        ecma: 2020,
       },
+      ecma: 2020,
+      module: true,
+      toplevel: true,
     },
     rollupOptions: {
       output: {
