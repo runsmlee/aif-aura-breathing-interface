@@ -17,9 +17,8 @@ const WeeklyGoal = lazy(() => import('./components/WeeklyGoal').then((m) => ({ d
 export function App() {
   const engine = useBreathingEngine();
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [hapticEnabled] = useState(true);
   const { playPhaseSound, playCompletionSound } = useAudioFeedback(soundEnabled);
-  const { vibratePhase, vibrateCompletion } = useHapticFeedback(hapticEnabled);
+  const { vibratePhase, vibrateCompletion } = useHapticFeedback(true);
   const prevPhaseRef = useRef(engine.phase);
   const [showSummary, setShowSummary] = useState(false);
   const [summaryStats, setSummaryStats] = useState(engine.stats);

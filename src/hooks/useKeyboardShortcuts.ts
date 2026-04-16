@@ -23,6 +23,11 @@ export function useKeyboardShortcuts({
         return;
       }
 
+      // Don't capture shortcuts when a modal dialog is open
+      if (document.querySelector('[aria-modal="true"]')) {
+        return;
+      }
+
       switch (e.code) {
         case 'Space':
           e.preventDefault();
@@ -32,7 +37,19 @@ export function useKeyboardShortcuts({
             onStart();
           }
           break;
+        case 'Enter':
+          e.preventDefault();
+          if (!isActive) {
+            onStart();
+          }
+          break;
         case 'Escape':
+          e.preventDefault();
+          if (isActive) {
+            onPause();
+          }
+          break;
+        case 'KeyR':
           e.preventDefault();
           onReset();
           break;

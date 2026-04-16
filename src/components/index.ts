@@ -9,3 +9,4 @@ export { DurationSelector } from './DurationSelector';
 export { SessionHistory } from './SessionHistory';
 export { SessionCalendar } from './SessionCalendar';
 export { WeeklyGoal } from './WeeklyGoal';
+export { ErrorBoundary } from './ErrorBoundary';

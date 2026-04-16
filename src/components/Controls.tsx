@@ -57,6 +57,12 @@ export function Controls({
           <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">
             Esc
           </kbd>
+          <span>Pause</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">
+            R
+          </kbd>
           <span>Reset</span>
         </span>
       </div>
