@@ -68,6 +68,21 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
     }
   }, [currentTip, handleDismiss]);
 
+  // Allow Escape key dismissal for accessibility
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        handleDismiss();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isVisible, handleDismiss]);
+
   const handlePrev = useCallback(() => {
     if (currentTip > 0) {
       setCurrentTip((prev) => prev - 1);

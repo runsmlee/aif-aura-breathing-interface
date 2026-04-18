@@ -88,4 +88,18 @@ describe('OnboardingTip', () => {
 
     expect(screen.getByRole('button', { name: /back/i })).toBeInTheDocument();
   });
+
+  it('dismisses on Escape key press', () => {
+    render(<OnboardingTip hasCompletedASession={false} />);
+    act(() => {
+      vi.advanceTimersByTime(1300);
+    });
+
+    expect(screen.getByText('Breathe with the circle')).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+
+    expect(screen.queryByText('Breathe with the circle')).not.toBeInTheDocument();
+    expect(localStorage.getItem('aura-onboarding-dismissed')).toBe('true');
+  });
 });

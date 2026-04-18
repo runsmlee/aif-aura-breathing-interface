@@ -13,6 +13,7 @@ interface DayData {
   dayOfWeek: number;
   sessions: number;
   isToday: boolean;
+  isFuture: boolean;
   label: string;
 }
 
@@ -41,8 +42,9 @@ function getIntensityClass(sessions: number): string {
 function buildCalendarDays(history: readonly SessionRecord[]): DayData[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const todayStr = toLocalDateStr(today);
 
-  // Count sessions per day
+  // Count sessions per day (using local date strings)
   const sessionCounts = new Map<string, number>();
   for (const record of history) {
     const d = new Date(record.date);
@@ -50,21 +52,30 @@ function buildCalendarDays(history: readonly SessionRecord[]): DayData[] {
     sessionCounts.set(key, (sessionCounts.get(key) ?? 0) + 1);
   }
 
+  // Start from the Sunday that gives us a 4-week grid (4×7 = 28 cells)
+  // where today falls in the correct day-of-week column.
+  // Today's position in the grid = 21 + today.getDay()
+  const todayDayOfWeek = today.getDay();
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - todayDayOfWeek - 21);
+
   const days: DayData[] = [];
 
-  // 27 days ago to today = 28 days
-  for (let i = 27; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(startDate);
+    d.setDate(startDate.getDate() + i);
     const dateStr = toLocalDateStr(d);
-    const sessions = sessionCounts.get(dateStr) ?? 0;
+    const isToday = dateStr === todayStr;
+    const isFuture = d.getTime() > today.getTime();
+    const sessions = isFuture ? 0 : (sessionCounts.get(dateStr) ?? 0);
 
     days.push({
       dateStr,
       dayOfWeek: d.getDay(),
       sessions,
-      isToday: i === 0,
-      label: formatTooltip(d, sessions),
+      isToday,
+      isFuture,
+      label: isFuture ? '' : formatTooltip(d, sessions),
     });
   }
 
@@ -116,7 +127,7 @@ export function SessionCalendar({ history, onDayClick }: SessionCalendarProps) {
               aria-label={day.label}
               title={day.label}
               onClick={() => handleClick(day.dateStr)}
-              className={`aspect-square rounded-sm transition-colors duration-150 hover:ring-1 hover:ring-primary-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-950 cursor-pointer ${getIntensityClass(day.sessions)}${day.isToday ? ' ring-1 ring-primary-400/30' : ''}`}
+              className={`aspect-square rounded-sm transition-colors duration-150 hover:ring-1 hover:ring-primary-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-950 cursor-pointer ${getIntensityClass(day.sessions)}${day.isToday ? ' ring-1 ring-primary-400/30' : ''}${day.isFuture ? ' opacity-20' : ''}`}
             />
           ))}
         </div>

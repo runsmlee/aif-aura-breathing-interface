@@ -60,9 +60,8 @@ describe('SessionCalendar', () => {
   it('applies color intensity classes based on session count', () => {
     const records = [...makeRecord(0, 3), ...makeRecord(1, 1)];
     render(<SessionCalendar history={records} onDayClick={vi.fn()} />);
-    const cells = screen.getAllByRole('gridcell');
-    // Today has 3 sessions — should have higher intensity class
-    const todayCell = cells[27];
+    // Find today's cell by its tooltip content (3 sessions) — position varies by day of week
+    const todayCell = screen.getByTitle(/3 sessions on/i);
     expect(todayCell.className).toContain('bg-primary');
   });
 });

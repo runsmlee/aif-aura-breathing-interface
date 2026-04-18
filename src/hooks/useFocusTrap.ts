@@ -12,12 +12,17 @@ const FOCUSABLE_SELECTORS = [
 /**
  * Traps keyboard focus within a container element.
  * Used for modal dialogs to maintain accessibility.
+ * Restores focus to the previously active element when deactivated.
  */
 export function useFocusTrap(isActive: boolean): React.RefObject<HTMLDivElement | null> {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!isActive || !containerRef.current) return;
+
+    // Save the previously focused element for restoration
+    previousFocusRef.current = document.activeElement as HTMLElement;
 
     const container = containerRef.current;
     const focusableElements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS);
@@ -46,7 +51,13 @@ export function useFocusTrap(isActive: boolean): React.RefObject<HTMLDivElement 
     }
 
     container.addEventListener('keydown', handleKeyDown);
-    return () => container.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      container.removeEventListener('keydown', handleKeyDown);
+      // Restore focus to the element that was active before the trap
+      if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
+        previousFocusRef.current.focus();
+      }
+    };
   }, [isActive]);
 
   return containerRef;

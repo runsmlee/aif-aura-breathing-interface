@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-const PHASE_VIBRATION_MS: Record<string, number> = {
+const PHASE_VIBRATION_MS: Record<'inhale' | 'hold' | 'exhale', number> = {
   inhale: 50,
   hold: 30,
   exhale: 80,
@@ -25,7 +25,7 @@ export function useHapticFeedback(enabled: boolean) {
 
   const vibratePhase = useCallback(
     (phase: 'inhale' | 'hold' | 'exhale') => {
-      vibrate(PHASE_VIBRATION_MS[phase] ?? 50);
+      vibrate(PHASE_VIBRATION_MS[phase]);
     },
     [vibrate]
   );

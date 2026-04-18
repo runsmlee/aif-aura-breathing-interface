@@ -26,6 +26,10 @@ function formatDate(iso: string): string {
   return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
 }
 
+function fmtLocalDate(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 function getStreakCount(records: readonly SessionRecord[]): number {
   if (records.length === 0) return 0;
   let streak = 0;
@@ -34,13 +38,11 @@ function getStreakCount(records: readonly SessionRecord[]): number {
 
   const daySet = new Set<string>();
   for (const r of records) {
-    const d = new Date(r.date);
-    d.setHours(0, 0, 0, 0);
-    daySet.add(d.toISOString().slice(0, 10));
+    daySet.add(toDateStr(r.date));
   }
 
   const checkDate = new Date(today);
-  while (daySet.has(checkDate.toISOString().slice(0, 10))) {
+  while (daySet.has(fmtLocalDate(checkDate))) {
     streak++;
     checkDate.setDate(checkDate.getDate() - 1);
   }
@@ -49,11 +51,7 @@ function getStreakCount(records: readonly SessionRecord[]): number {
 }
 
 function toDateStr(iso: string): string {
-  const d = new Date(iso);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return fmtLocalDate(new Date(iso));
 }
 
 export function SessionHistory({ history, onClear }: SessionHistoryProps) {

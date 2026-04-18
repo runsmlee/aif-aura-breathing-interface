@@ -6,7 +6,7 @@ interface UseAudioFeedbackReturn {
 }
 
 // Frequencies for each phase — lower for exhale (calming), higher for inhale (energizing)
-const PHASE_FREQUENCIES: Record<string, number> = {
+const PHASE_FREQUENCIES: Record<'inhale' | 'hold' | 'exhale', number> = {
   inhale: 440,    // A4 — gentle, uplifting
   hold: 392,      // G4 — steady, grounding
   exhale: 349.23, // F4 — calming, releasing
@@ -14,6 +14,7 @@ const PHASE_FREQUENCIES: Record<string, number> = {
 
 export function useAudioFeedback(enabled: boolean): UseAudioFeedbackReturn {
   const audioContextRef = useRef<AudioContext | null>(null);
+  const completionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const getAudioContext = useCallback(() => {
     if (!audioContextRef.current) {
@@ -57,7 +58,7 @@ export function useAudioFeedback(enabled: boolean): UseAudioFeedbackReturn {
 
   const playPhaseSound = useCallback(
     (phase: 'inhale' | 'hold' | 'exhale') => {
-      const freq = PHASE_FREQUENCIES[phase] ?? 440;
+      const freq = PHASE_FREQUENCIES[phase];
       playTone(freq, 0.2, 0.06);
     },
     [playTone]
@@ -67,12 +68,15 @@ export function useAudioFeedback(enabled: boolean): UseAudioFeedbackReturn {
     if (!enabled) return;
     // Play a gentle two-note chime
     playTone(523.25, 0.3, 0.05); // C5
-    setTimeout(() => playTone(659.25, 0.4, 0.05), 150); // E5
+    completionTimerRef.current = setTimeout(() => playTone(659.25, 0.4, 0.05), 150); // E5
   }, [enabled, playTone]);
 
-  // Cleanup audio context on unmount
+  // Cleanup audio context and pending timers on unmount
   useEffect(() => {
     return () => {
+      if (completionTimerRef.current) {
+        clearTimeout(completionTimerRef.current);
+      }
       if (audioContextRef.current) {
         audioContextRef.current.close();
         audioContextRef.current = null;
