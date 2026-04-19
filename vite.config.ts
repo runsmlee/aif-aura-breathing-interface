@@ -8,18 +8,22 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        passes: 5,
+        passes: 3,
         pure_funcs: ['console.log', 'console.info', 'console.debug'],
         drop_debugger: true,
         ecma: 2020,
         module: true,
         toplevel: true,
-        booleans_as_integers: true,
         reduce_funcs: true,
+        reduce_vars: true,
+        collapse_vars: true,
         unsafe_comps: true,
         unsafe_math: true,
         unsafe_symbols: true,
         unsafe_methods: true,
+        hoist_funs: true,
+        hoist_vars: true,
+        side_effects: true,
       },
       format: {
         comments: false,
@@ -31,8 +35,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
+        manualChunks(id: string) {
+          if (
+            id.includes('/node_modules/react/') ||
+            id.includes('/node_modules/react-dom/') ||
+            id.includes('/node_modules/scheduler/')
+          ) {
+            return 'react';
+          }
         },
       },
     },
