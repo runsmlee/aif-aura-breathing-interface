@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { Header } from './components';
+import { Header, ErrorBoundary } from './components';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFeedback } from './hooks';
 import { useStreakTracker } from './hooks/useStreakTracker';
 import { useWeeklyGoal } from './hooks/useWeeklyGoal';
@@ -89,9 +89,16 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col relative">
+      {/* Skip-to-content link for keyboard/screen reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary-500 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium focus:outline-none"
+      >
+        Skip to content
+      </a>
       <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} streakData={streakData} />
 
-      <main className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto">
+      <main id="main-content" className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto">
         {/* Breathing visualization */}
         <Suspense fallback={
           <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center bg-gray-900/40 animate-pulse" aria-hidden="true">
@@ -135,32 +142,38 @@ export function App() {
         {!engine.isActive && (
           <>
             {/* Pattern selector */}
-            <Suspense fallback={null}>
-              <PatternSelector
-                currentPattern={engine.currentPattern}
-                onSelectPattern={engine.setPattern}
-                disabled={engine.isActive}
-              />
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <PatternSelector
+                  currentPattern={engine.currentPattern}
+                  onSelectPattern={engine.setPattern}
+                  disabled={engine.isActive}
+                />
+              </Suspense>
+            </ErrorBoundary>
 
             {/* Weekly goal nudge */}
-            <Suspense fallback={null}>
-              <WeeklyGoal
-                weeklyGoal={weeklyGoal}
-                sessionsThisWeek={sessionsThisWeek}
-                goalReached={goalReached}
-                justReachedGoal={justReachedGoal}
-                onSetGoal={setWeeklyGoal}
-              />
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <WeeklyGoal
+                  weeklyGoal={weeklyGoal}
+                  sessionsThisWeek={sessionsThisWeek}
+                  goalReached={goalReached}
+                  justReachedGoal={justReachedGoal}
+                  onSetGoal={setWeeklyGoal}
+                />
+              </Suspense>
+            </ErrorBoundary>
 
             {/* Session history with 28-day calendar */}
-            <Suspense fallback={null}>
-              <SessionHistory
-                history={engine.sessionHistory}
-                onClear={engine.clearHistory}
-              />
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <SessionHistory
+                  history={engine.sessionHistory}
+                  onClear={engine.clearHistory}
+                />
+              </Suspense>
+            </ErrorBoundary>
           </>
         )}
       </main>

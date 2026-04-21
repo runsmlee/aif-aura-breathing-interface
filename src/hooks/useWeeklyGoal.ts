@@ -101,7 +101,7 @@ export function useWeeklyGoal(): UseWeeklyGoalReturn {
     setJustReachedGoal(false);
   }, [goalReached, sessionsThisWeek, weeklyGoal]);
 
-  // Reset weekly check
+  // Reset weekly check — uses visibilitychange instead of polling for efficiency
   useEffect(() => {
     function checkWeekReset() {
       const monday = getMonday(new Date());
@@ -120,8 +120,14 @@ export function useWeeklyGoal(): UseWeeklyGoalReturn {
       }
     }
     checkWeekReset();
-    const interval = setInterval(checkWeekReset, 60000);
-    return () => clearInterval(interval);
+    // Check when tab becomes visible again (e.g., user returns after midnight)
+    function handleVisibility() {
+      if (document.visibilityState === 'visible') {
+        checkWeekReset();
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
 
   return {

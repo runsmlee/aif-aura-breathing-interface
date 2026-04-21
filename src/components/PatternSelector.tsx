@@ -100,7 +100,7 @@ function CustomPatternEditor({
   const handleSave = useCallback(() => {
     const patternName = name.trim() || `Custom ${customPatterns.length + 1}`;
     const newPattern: CustomPattern = {
-      id: `custom-${Date.now()}`,
+      id: `custom-${typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Date.now()}`,
       name: patternName,
       inhale,
       holdIn,

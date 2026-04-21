@@ -3,6 +3,13 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { useStreakTracker } from '../hooks/useStreakTracker';
 import { STREAK_KEY } from '../types';
 
+function toLocalDateStr(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 beforeEach(() => {
   localStorage.clear();
 });
@@ -23,7 +30,7 @@ describe('useStreakTracker', () => {
     expect(result.current.streakData.currentStreak).toBe(1);
     expect(result.current.streakData.longestStreak).toBe(1);
     expect(result.current.streakData.totalDays).toBe(1);
-    expect(result.current.streakData.lastSessionDate).toBe(new Date().toISOString().slice(0, 10));
+    expect(result.current.streakData.lastSessionDate).toBe(toLocalDateStr(new Date()));
   });
 
   it('does not increment streak on same day', () => {
@@ -43,7 +50,7 @@ describe('useStreakTracker', () => {
     const streakData = {
       currentStreak: 3,
       longestStreak: 5,
-      lastSessionDate: yesterday.toISOString().slice(0, 10),
+      lastSessionDate: toLocalDateStr(yesterday),
       totalDays: 3,
     };
     localStorage.setItem(STREAK_KEY, JSON.stringify(streakData));
@@ -64,7 +71,7 @@ describe('useStreakTracker', () => {
     const streakData = {
       currentStreak: 5,
       longestStreak: 5,
-      lastSessionDate: threeDaysAgo.toISOString().slice(0, 10),
+      lastSessionDate: toLocalDateStr(threeDaysAgo),
       totalDays: 5,
     };
     localStorage.setItem(STREAK_KEY, JSON.stringify(streakData));
@@ -85,7 +92,7 @@ describe('useStreakTracker', () => {
     const streakData = {
       currentStreak: 4,
       longestStreak: 4,
-      lastSessionDate: yesterday.toISOString().slice(0, 10),
+      lastSessionDate: toLocalDateStr(yesterday),
       totalDays: 4,
     };
     localStorage.setItem(STREAK_KEY, JSON.stringify(streakData));
@@ -122,7 +129,7 @@ describe('useStreakTracker', () => {
     // Load fresh
     const { result: result2 } = renderHook(() => useStreakTracker());
     expect(result2.current.streakData.currentStreak).toBe(1);
-    expect(result2.current.streakData.lastSessionDate).toBe(new Date().toISOString().slice(0, 10));
+    expect(result2.current.streakData.lastSessionDate).toBe(toLocalDateStr(new Date()));
   });
 
   it('sets isNewDayStreak when streak was broken and restarted', () => {
@@ -132,7 +139,7 @@ describe('useStreakTracker', () => {
     const streakData = {
       currentStreak: 5,
       longestStreak: 5,
-      lastSessionDate: threeDaysAgo.toISOString().slice(0, 10),
+      lastSessionDate: toLocalDateStr(threeDaysAgo),
       totalDays: 5,
     };
     localStorage.setItem(STREAK_KEY, JSON.stringify(streakData));
