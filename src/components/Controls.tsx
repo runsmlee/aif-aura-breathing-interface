@@ -46,23 +46,17 @@ export function Controls({
       </div>
 
       {/* Keyboard shortcut hints */}
-      <div className="flex items-center gap-4 text-[10px] text-gray-600" aria-hidden="true">
+      <div className="flex items-center gap-4 text-[10px] text-gray-600 select-none" aria-hidden="true">
         <span className="flex items-center gap-1">
-          <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">
-            Space
-          </kbd>
+          <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">Space</kbd>
           <span>{isActive ? 'Pause' : 'Start'}</span>
         </span>
         <span className="flex items-center gap-1">
-          <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">
-            Esc
-          </kbd>
+          <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">Esc</kbd>
           <span>Pause</span>
         </span>
         <span className="flex items-center gap-1">
-          <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">
-            R
-          </kbd>
+          <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px]">R</kbd>
           <span>Reset</span>
         </span>
       </div>

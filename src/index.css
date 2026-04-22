@@ -3,6 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-primary: #EF4444;
+    --color-inhale: #14B8A6;
+    --color-hold: #F59E0B;
+    --color-exhale: #EF4444;
+    --color-idle: #6B7280;
+    --color-bg: #030712;
+    --color-surface: #111827;
+    --color-border: #1F2937;
+    --color-text: #FFFFFF;
+    --color-text-secondary: #9CA3AF;
+    --color-text-muted: #6B7280;
+    --transition-fast: 100ms;
+    --transition-normal: 200ms;
+    --transition-slow: 300ms;
+    --transition-ambient: 1000ms;
+  }
+
   * {
     -webkit-tap-highlight-color: transparent;
   }
@@ -16,6 +34,15 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Remove preloader after React mounts */
+  #preloader {
+    transition: opacity var(--transition-slow) ease-out;
+  }
+  #preloader.fade-out {
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* Custom scrollbar */
@@ -84,6 +111,16 @@
   }
   50% {
     box-shadow: 0 0 40px rgba(75,85,99,0.25), 0 0 60px rgba(75,85,99,0.1), inset 0 0 20px rgba(0,0,0,0.15);
+  }
+}
+
+/* Subtle scale hint on hover for the idle circle — invites interaction */
+@keyframes idleHoverHint {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
   }
 }
 

@@ -5,10 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Aura — A calming breathing interface for mindful breathing exercises" />
     <meta name="theme-color" content="#EF4444" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>" />
     <title>Aura — Breathing Interface</title>
+    <style>
+      /* Critical CSS — renders instantly before JS hydrates */
+      body{margin:0;background:#030712;color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+      #preloader{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh;gap:16px;transition:opacity .4s ease-out}
+      #preloader.fade-out{opacity:0;pointer-events:none}
+      .preloader-circle{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4B5563,#1F2937);animation:preloaderBreath 4s ease-in-out infinite}
+      .preloader-text{color:#4B5563;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+      @keyframes preloaderBreath{0%,100%{transform:scale(.45);opacity:.6}50%{transform:scale(.65);opacity:1}}
+    </style>
   </head>
   <body class="bg-gray-950 text-white antialiased">
-    <div id="root"></div>
+    <div id="root">
+      <div id="preloader">
+        <div class="preloader-circle"></div>
+        <div class="preloader-text">Loading</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
