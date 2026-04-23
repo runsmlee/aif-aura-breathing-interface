@@ -1,12 +1,18 @@
 import type { StreakData } from '../types';
 
+interface WeeklyGoalData {
+  sessionsThisWeek: number;
+  weeklyGoal: number;
+}
+
 interface HeaderProps {
   soundEnabled: boolean;
   onToggleSound: () => void;
   streakData?: StreakData;
+  weeklyGoalData?: WeeklyGoalData;
 }
 
-export function Header({ soundEnabled, onToggleSound, streakData }: HeaderProps) {
+export function Header({ soundEnabled, onToggleSound, streakData, weeklyGoalData }: HeaderProps) {
   return (
     <header className="flex items-center justify-between px-4 py-4 sm:py-6" role="banner">
       <div className="flex items-center gap-2.5">
@@ -42,6 +48,24 @@ export function Header({ soundEnabled, onToggleSound, streakData }: HeaderProps)
             ) : (
               <span>Start your streak</span>
             )}
+          </div>
+        )}
+
+        {weeklyGoalData && (
+          <div
+            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 ${
+              weeklyGoalData.sessionsThisWeek >= weeklyGoalData.weeklyGoal
+                ? 'bg-primary-500/20 text-primary-300'
+                : 'text-gray-500'
+            }`}
+            role="status"
+            aria-live="polite"
+            aria-label={`Weekly goal: ${weeklyGoalData.sessionsThisWeek} of ${weeklyGoalData.weeklyGoal} sessions`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3" aria-hidden="true">
+              <path fillRule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1ZM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0Z" clipRule="evenodd" />
+            </svg>
+            <span className="tabular-nums">{weeklyGoalData.sessionsThisWeek}/{weeklyGoalData.weeklyGoal}</span>
           </div>
         )}
 

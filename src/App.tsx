@@ -96,7 +96,7 @@ export function App() {
       >
         Skip to content
       </a>
-      <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} streakData={streakData} />
+      <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} streakData={streakData} weeklyGoalData={{ sessionsThisWeek, weeklyGoal }} />
 
       <main id="main-content" className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto">
         {/* Breathing visualization */}

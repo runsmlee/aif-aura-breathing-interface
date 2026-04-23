@@ -39,6 +39,10 @@ function saveCustomPatterns(patterns: CustomPattern[]): void {
   }
 }
 
+function deleteCustomPattern(patterns: CustomPattern[], id: string): CustomPattern[] {
+  return patterns.filter((p) => p.id !== id);
+}
+
 function customToBreathingPattern(custom: CustomPattern): BreathingPattern {
   return {
     name: custom.name,
@@ -248,6 +252,19 @@ export function PatternSelector({
     return [...builtIn, ...custom];
   }, [customPatterns]);
 
+  const handleDeleteCustom = useCallback(
+    (id: string, patternName: string) => {
+      const updated = deleteCustomPattern(customPatterns, id);
+      setCustomPatterns(updated);
+      saveCustomPatterns(updated);
+      // If the deleted pattern was selected, fallback to first built-in
+      if (currentPattern.name === patternName) {
+        onSelectPattern(BREATHING_PATTERNS[0]);
+      }
+    },
+    [customPatterns, currentPattern.name, onSelectPattern]
+  );
+
   const handleSelectCustom = useCallback(() => {
     const defaultCustom: BreathingPattern = {
       name: 'Custom',
@@ -274,32 +291,47 @@ export function PatternSelector({
         {allPatterns.map((pattern) => {
           const isSelected = pattern.name === currentPattern.name;
           return (
-            <button
-              key={pattern.isCustom ? `custom-${pattern.customId}` : pattern.name}
-              onClick={() => {
-                onSelectPattern(pattern);
-                setShowCustomEditor(false);
-              }}
-              disabled={disabled}
-              role="radio"
-              aria-checked={isSelected}
-              className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap
-                ${
-                  isSelected
-                    ? 'bg-primary-500/20 text-primary-400 ring-1 ring-primary-500/50'
-                    : 'bg-gray-800/60 text-gray-400 hover:bg-gray-700/60 hover:text-gray-300'
-                }
-                ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950
-              `}
-            >
-              {pattern.name}
-              {pattern.isCustom && (
-                <span className="ml-1.5 inline-block px-1.5 py-0.5 rounded text-[9px] font-medium bg-primary-500/20 text-primary-300 align-middle leading-none">
-                  custom
-                </span>
+            <div key={pattern.isCustom ? `custom-${pattern.customId}` : pattern.name} className="relative flex-shrink-0">
+              <button
+                onClick={() => {
+                  onSelectPattern(pattern);
+                  setShowCustomEditor(false);
+                }}
+                disabled={disabled}
+                role="radio"
+                aria-checked={isSelected}
+                className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap
+                  ${
+                    isSelected
+                      ? 'bg-primary-500/20 text-primary-400 ring-1 ring-primary-500/50'
+                      : 'bg-gray-800/60 text-gray-400 hover:bg-gray-700/60 hover:text-gray-300'
+                  }
+                  ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                  ${pattern.isCustom ? 'pr-8' : ''}
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950
+                `}
+              >
+                {pattern.name}
+                {pattern.isCustom && (
+                  <span className="ml-1.5 inline-block px-1.5 py-0.5 rounded text-[9px] font-medium bg-primary-500/20 text-primary-300 align-middle leading-none">
+                    custom
+                  </span>
+                )}
+              </button>
+              {pattern.isCustom && pattern.customId && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteCustom(pattern.customId!, pattern.name);
+                  }}
+                  disabled={disabled}
+                  aria-label={`Delete ${pattern.name}`}
+                  className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center rounded-full bg-gray-700 text-gray-400 hover:bg-red-500/80 hover:text-white text-[10px] leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
+                >
+                  ×
+                </button>
               )}
-            </button>
+            </div>
           );
         })}
 

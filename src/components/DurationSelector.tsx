@@ -16,6 +16,14 @@ export function DurationSelector({
   timeRemaining,
 }: DurationSelectorProps) {
   const showCountdown = timeRemaining > 0;
+  const totalSessionSeconds = targetDuration * 60;
+  const elapsedSeconds = totalSessionSeconds > 0 && timeRemaining > 0
+    ? totalSessionSeconds - timeRemaining
+    : 0;
+  const sessionProgressPercent = totalSessionSeconds > 0 && timeRemaining > 0
+    ? Math.round((elapsedSeconds / totalSessionSeconds) * 100)
+    : 0;
+  const showSessionProgress = targetDuration > 0 && timeRemaining > 0;
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -59,6 +67,25 @@ export function DurationSelector({
               {formatCountdown(timeRemaining)}
             </span>
           </p>
+        </div>
+      )}
+
+      {/* Session progress bar — shows elapsed time relative to target */}
+      {showSessionProgress && (
+        <div className="mt-2 animate-fade-in">
+          <div
+            className="w-full h-1 bg-gray-800/80 rounded-full overflow-hidden"
+            role="progressbar"
+            aria-valuenow={sessionProgressPercent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Session progress"
+          >
+            <div
+              className="h-full rounded-full transition-all duration-200 ease-linear bg-primary-500/70"
+              style={{ width: `${sessionProgressPercent}%` }}
+            />
+          </div>
         </div>
       )}
     </div>
