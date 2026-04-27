@@ -6,7 +6,13 @@
     <meta name="description" content="Aura — A calming breathing interface for mindful breathing exercises" />
     <meta name="theme-color" content="#EF4444" />
     <meta name="color-scheme" content="dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Aura" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>" />
     <title>Aura — Breathing Interface</title>
     <style>
       /* Critical CSS — renders instantly before JS hydrates */
@@ -16,6 +22,7 @@
       .preloader-circle{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4B5563,#1F2937);animation:preloaderBreath 4s ease-in-out infinite}
       .preloader-text{color:#4B5563;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
       @keyframes preloaderBreath{0%,100%{transform:scale(.45);opacity:.6}50%{transform:scale(.65);opacity:1}}
+      @media(prefers-reduced-motion:reduce){.preloader-circle{animation:none;opacity:.8}}
     </style>
   </head>
   <body class="bg-gray-950 text-white antialiased">

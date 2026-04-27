@@ -54,6 +54,11 @@ function customToBreathingPattern(custom: CustomPattern): BreathingPattern {
   };
 }
 
+interface PatternDisplay extends BreathingPattern {
+  isCustom: boolean;
+  customId?: string;
+}
+
 function PatternTimeline({ inhale, holdIn, exhale, holdOut }: { inhale: number; holdIn: number; exhale: number; holdOut: number }) {
   const total = inhale + holdIn + exhale + holdOut;
   if (total === 0) return null;
@@ -236,11 +241,6 @@ export function PatternSelector({
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
-
-  interface PatternDisplay extends BreathingPattern {
-    isCustom: boolean;
-    customId?: string;
-  }
 
   const allPatterns = useMemo((): PatternDisplay[] => {
     const builtIn: PatternDisplay[] = BREATHING_PATTERNS.map((p) => ({ ...p, isCustom: false }));

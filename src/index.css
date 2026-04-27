@@ -25,6 +25,14 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  button,
+  [role="button"],
+  [role="radio"],
+  [role="gridcell"],
+  a {
+    touch-action: manipulation;
+  }
+
   html {
     scroll-behavior: smooth;
   }
