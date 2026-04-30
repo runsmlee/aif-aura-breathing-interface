@@ -359,7 +359,7 @@ export function PatternSelector({
         <p className="text-xs text-gray-500 leading-relaxed">
           {currentPattern.description}
         </p>
-        <p className="text-[10px] text-gray-600 mt-1 tracking-wide">
+        <p className="text-[10px] text-gray-600 mt-1 tracking-wide tabular-nums">
           {formatPatternTiming(currentPattern)}
         </p>
       </div>

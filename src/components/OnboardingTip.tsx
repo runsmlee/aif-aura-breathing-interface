@@ -101,7 +101,7 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
       aria-modal="true"
       aria-label="Quick tips"
     >
-      <div ref={focusTrapRef} className={`w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 ${enterAnimation}`}>
+      <div ref={focusTrapRef} className={`w-full max-w-sm bg-gray-900 border border-gray-800/80 rounded-3xl p-6 shadow-2xl shadow-black/50 ${enterAnimation}`}>
         {/* Tip content */}
         <div className="text-center mb-5">
           <span className="text-3xl" role="img" aria-hidden="true">{tip.icon}</span>

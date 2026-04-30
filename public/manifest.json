@@ -1,0 +1,19 @@
+{
+  "name": "Aura — Breathing Interface",
+  "short_name": "Aura",
+  "description": "A calming breathing interface for mindful breathing exercises",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#EF4444",
+  "orientation": "portrait",
+  "categories": ["health", "fitness", "lifestyle"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%23030712'/><circle cx='256' cy='256' r='140' fill='none' stroke='%23EF4444' stroke-width='24' opacity='0.8'/><circle cx='256' cy='256' r='80' fill='%23EF4444' opacity='0.15'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

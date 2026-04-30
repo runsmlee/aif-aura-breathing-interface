@@ -101,7 +101,7 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
           setIsExpanded((prev) => !prev);
           if (selectedDay) setSelectedDay(null);
         }}
-        className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-900/60 rounded-xl text-sm transition-all duration-200 hover:bg-gray-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
+        className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-900/60 rounded-xl text-sm transition-all duration-200 hover:bg-gray-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 ring-1 ring-gray-800/40"
         aria-expanded={isExpanded}
         aria-controls="session-history-content"
       >

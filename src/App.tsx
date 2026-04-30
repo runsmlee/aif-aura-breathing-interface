@@ -178,7 +178,7 @@ export function App() {
         )}
       </main>
 
-      <footer className="py-4 text-center">
+      <footer className="py-4 text-center" role="contentinfo">
         <p className="text-xs text-gray-600">
           Focus on your breath. Find your calm.
         </p>

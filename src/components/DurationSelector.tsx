@@ -82,7 +82,7 @@ export function DurationSelector({
             aria-label="Session progress"
           >
             <div
-              className="h-full rounded-full transition-all duration-200 ease-linear bg-primary-500/70"
+              className="h-full rounded-full transition-all duration-200 ease-linear bg-gradient-to-r from-primary-500/70 to-primary-400/80"
               style={{ width: `${sessionProgressPercent}%` }}
             />
           </div>

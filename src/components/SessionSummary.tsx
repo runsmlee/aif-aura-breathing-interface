@@ -79,7 +79,7 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary-500/20 flex items-center justify-center" aria-hidden="true">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary-500/20 flex items-center justify-center ring-1 ring-primary-500/10" aria-hidden="true">
             <span className="text-xl">{getCompletionEmoji(stats.cyclesCompleted)}</span>
           </div>
           <h2 className="text-xl font-medium text-white">Session Complete</h2>
@@ -93,15 +93,15 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
 
         {/* Stats grid */}
         <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="text-center p-3 bg-gray-800/50 rounded-2xl">
+          <div className="text-center p-3 bg-gray-800/50 rounded-2xl ring-1 ring-gray-700/30">
             <p className="text-2xl font-light text-white tabular-nums">{stats.cyclesCompleted}</p>
             <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Cycles</p>
           </div>
-          <div className="text-center p-3 bg-gray-800/50 rounded-2xl">
+          <div className="text-center p-3 bg-gray-800/50 rounded-2xl ring-1 ring-gray-700/30">
             <p className="text-2xl font-light text-white tabular-nums">{formatDuration(stats.totalDuration)}</p>
             <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Duration</p>
           </div>
-          <div className="text-center p-3 bg-gray-800/50 rounded-2xl">
+          <div className="text-center p-3 bg-gray-800/50 rounded-2xl ring-1 ring-gray-700/30">
             <p className="text-2xl font-light text-white tabular-nums">{stats.breathsPerMinute}</p>
             <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">BPM</p>
           </div>
@@ -116,14 +116,14 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
         <div className="flex flex-col gap-2">
           <button
             onClick={onStartAgain}
-            className="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
+            className="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 shadow-lg shadow-primary-500/20"
             aria-label="Start another breathing session"
           >
             Breathe Again
           </button>
           <button
             onClick={onDismiss}
-            className="w-full px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-2xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
+            className="w-full px-6 py-2.5 bg-gray-800/80 hover:bg-gray-700 text-gray-300 font-medium rounded-2xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
             aria-label="Close session summary"
           >
             I&apos;m Done

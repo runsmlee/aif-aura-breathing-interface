@@ -42,6 +42,7 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
   }
 
   /* Remove preloader after React mounts */
@@ -129,6 +130,30 @@
   }
   50% {
     transform: scale(1.02);
+  }
+}
+
+/* Phase transition ripple effect */
+@keyframes phaseRipple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Subtle ambient wave for background atmosphere */
+@keyframes ambientWave {
+  0%, 100% {
+    opacity: 0.03;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.06;
+    transform: scale(1.05);
   }
 }
 

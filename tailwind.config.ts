@@ -43,6 +43,10 @@ const config: Config = {
         'pulse-ring': 'pulseRing 3s ease-in-out infinite',
         'fade-in': 'fadeIn 300ms ease-out',
         'fade-in-up': 'fadeInUp 500ms ease-out',
+        'breathe-in': 'breatheIn 4s ease-in-out forwards',
+        'breathe-out': 'breatheOut 4s ease-in-out forwards',
+        'shimmer': 'shimmer 2s ease-in-out infinite',
+        'scale-in': 'scaleIn 200ms ease-out',
       },
       keyframes: {
         pulseRing: {
@@ -57,6 +61,27 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'translateY(12px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        breatheIn: {
+          '0%': { transform: 'scale(0.4)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        breatheOut: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(0.4)' },
+        },
+        shimmer: {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.8' },
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.9)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+      },
+      boxShadow: {
+        'glow-sm': '0 0 15px rgba(239, 68, 68, 0.15)',
+        'glow-md': '0 0 30px rgba(239, 68, 68, 0.2)',
+        'glow-lg': '0 0 60px rgba(239, 68, 68, 0.15)',
       },
     },
   },

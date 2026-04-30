@@ -16,7 +16,7 @@ export function Header({ soundEnabled, onToggleSound, streakData, weeklyGoalData
   return (
     <header className="flex items-center justify-between px-4 py-4 sm:py-6" role="banner">
       <div className="flex items-center gap-2.5">
-        <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" aria-hidden="true" />
+        <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse shadow-sm shadow-primary-500/50" aria-hidden="true" />
         <div>
           <h1 className="text-lg sm:text-xl font-medium tracking-wide text-white leading-tight">
             Aura
@@ -71,7 +71,7 @@ export function Header({ soundEnabled, onToggleSound, streakData, weeklyGoalData
 
         <button
           onClick={onToggleSound}
-          className="p-2.5 rounded-xl text-gray-500 hover:text-gray-300 hover:bg-gray-800/60 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
+          className="p-2.5 rounded-xl text-gray-500 hover:text-gray-300 hover:bg-gray-800/60 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 active:scale-95"
           aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}
           title={soundEnabled ? 'Mute sound' : 'Enable sound'}
         >

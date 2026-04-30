@@ -56,9 +56,16 @@ function AmbientBackground({ phase }: { phase: BreathingPhase }) {
   return (
     <div className="fixed inset-0 pointer-events-none transition-opacity duration-1000 ease-out" aria-hidden="true">
       <div
-        className="absolute inset-0 opacity-[0.03] transition-all duration-1000 ease-out"
+        className="absolute inset-0 transition-all duration-1000 ease-out"
         style={{
-          background: `radial-gradient(ellipse at 50% 50%, ${color}, transparent 70%)`,
+          background: `radial-gradient(ellipse at 50% 45%, ${color}08, transparent 60%)`,
+          animation: 'ambientWave 8s ease-in-out infinite',
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.02] transition-all duration-1000 ease-out"
+        style={{
+          background: `radial-gradient(ellipse at 50% 55%, ${color}, transparent 50%)`,
         }}
       />
     </div>
@@ -154,6 +161,11 @@ export function BreathingCircle({
                 className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full opacity-[0.04] blur-3xl transition-colors duration-700"
                 style={{ backgroundColor: color }}
               />
+              {/* Tertiary atmospheric glow */}
+              <div
+                className="absolute w-96 h-96 sm:w-[28rem] sm:h-[28rem] rounded-full opacity-[0.015] blur-3xl transition-colors duration-1000"
+                style={{ backgroundColor: color }}
+              />
               <ParticleRing color={color} />
             </>
           )}
@@ -230,7 +242,7 @@ export function BreathingCircle({
               </p>
               {isActive && secondsRemaining > 0 && (
                 <p
-                  className="text-4xl sm:text-5xl font-extralight text-white mt-1 tabular-nums"
+                  className="text-4xl sm:text-5xl font-extralight text-white mt-1 tabular-nums tracking-wide"
                   style={{ textShadow: `0 0 30px ${color}66` }}
                 >
                   {secondsRemaining}
@@ -270,6 +282,7 @@ export function BreathingCircle({
             isActive ? 'text-gray-400' : 'text-gray-500'
           }`}
           aria-live="polite"
+          style={isActive ? { textShadow: `0 0 12px ${color}33` } : undefined}
         >
           {guidance}
         </p>

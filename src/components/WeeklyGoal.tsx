@@ -17,7 +17,7 @@ export function WeeklyGoal({
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="px-4 py-3 bg-gray-900/40 rounded-xl">
+      <div className="px-4 py-3 bg-gray-900/40 rounded-xl ring-1 ring-gray-800/40">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs text-gray-400 font-medium">
             {sessionsThisWeek} of {weeklyGoal} this week
@@ -51,7 +51,7 @@ export function WeeklyGoal({
           <div
             className={`h-full rounded-full transition-all duration-500 ease-out ${
               goalReached
-                ? 'bg-primary-400'
+                ? 'bg-gradient-to-r from-primary-500 to-primary-400'
                 : 'bg-primary-500/70'
             }`}
             style={{ width: `${progress}%` }}
