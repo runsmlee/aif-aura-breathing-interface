@@ -3,6 +3,7 @@ export type {
   BreathingPattern,
   SessionStats,
   SessionDuration,
+  SessionDurationOption,
   SessionRecord,
   CustomPattern,
   StreakData,

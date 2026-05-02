@@ -80,12 +80,12 @@ export function App() {
   const handleStartAgain = useCallback(() => {
     setShowSummary(false);
     engine.start();
-  }, [engine]);
+  }, [engine.start]);
 
   const handleReset = useCallback(() => {
     engine.reset();
     setShowSummary(false);
-  }, [engine]);
+  }, [engine.reset]);
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col relative">
@@ -185,16 +185,18 @@ export function App() {
       </footer>
 
       {/* Session summary overlay */}
-      <Suspense fallback={null}>
-        <SessionSummary
-          stats={summaryStats}
-          pattern={engine.currentPattern}
-          isVisible={showSummary}
-          onDismiss={handleDismissSummary}
-          onStartAgain={handleStartAgain}
-          targetDuration={engine.targetDuration}
-        />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <SessionSummary
+            stats={summaryStats}
+            pattern={engine.currentPattern}
+            isVisible={showSummary}
+            onDismiss={handleDismissSummary}
+            onStartAgain={handleStartAgain}
+            targetDuration={engine.targetDuration}
+          />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* Onboarding tips for new users */}
       <Suspense fallback={null}>

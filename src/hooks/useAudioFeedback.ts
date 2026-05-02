@@ -66,6 +66,10 @@ export function useAudioFeedback(enabled: boolean): UseAudioFeedbackReturn {
 
   const playCompletionSound = useCallback(() => {
     if (!enabled) return;
+    // Clear any pending completion timer to prevent stale tones
+    if (completionTimerRef.current) {
+      clearTimeout(completionTimerRef.current);
+    }
     // Play a gentle two-note chime
     playTone(523.25, 0.3, 0.05); // C5
     completionTimerRef.current = setTimeout(() => playTone(659.25, 0.4, 0.05), 150); // E5

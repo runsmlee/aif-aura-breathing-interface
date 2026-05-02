@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { BREATHING_PATTERNS, CUSTOM_PATTERNS_KEY, MAX_CUSTOM_PATTERNS } from '../types';
+import { BREATHING_PATTERNS, CUSTOM_PATTERNS_KEY, MAX_CUSTOM_PATTERNS, PHASE_COLORS } from '../types';
 import type { BreathingPattern, CustomPattern } from '../types';
 
 interface PatternSelectorProps {
@@ -64,10 +64,10 @@ function PatternTimeline({ inhale, holdIn, exhale, holdOut }: { inhale: number; 
   if (total === 0) return null;
 
   const segments = [
-    { width: (inhale / total) * 100, color: '#14B8A6', label: 'Inhale' },
-    { width: (holdIn / total) * 100, color: '#F59E0B', label: 'Hold' },
-    { width: (exhale / total) * 100, color: '#EF4444', label: 'Exhale' },
-    { width: (holdOut / total) * 100, color: '#F59E0B', label: 'Hold' },
+    { width: (inhale / total) * 100, color: PHASE_COLORS.inhale, label: 'Inhale' },
+    { width: (holdIn / total) * 100, color: PHASE_COLORS.hold, label: 'Hold' },
+    { width: (exhale / total) * 100, color: PHASE_COLORS.exhale, label: 'Exhale' },
+    { width: (holdOut / total) * 100, color: PHASE_COLORS.hold, label: 'Hold' },
   ].filter((s) => s.width > 0);
 
   return (

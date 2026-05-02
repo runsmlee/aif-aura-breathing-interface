@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1777687411410" clover="3.2.0">
-  <project timestamp="1777687411410" name="All files">
+<coverage generated="1777748680439" clover="3.2.0">
+  <project timestamp="1777748680439" name="All files">
     <metrics statements="2395" coveredstatements="1979" conditionals="427" coveredconditionals="364" methods="91" coveredmethods="70" elements="2913" coveredelements="2413" complexity="0" loc="2395" ncloc="2395" packages="6" files="29" classes="29"/>
-    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM">
+    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup">
       <metrics statements="94" coveredstatements="0" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="1"/>
-      <file name="postcss.config.js" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/postcss.config.js">
+      <file name="postcss.config.js" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/postcss.config.js">
         <metrics statements="6" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="2" count="0" type="stmt"/>
@@ -13,7 +13,7 @@
         <line num="5" count="0" type="stmt"/>
         <line num="6" count="0" type="stmt"/>
       </file>
-      <file name="tailwind.config.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/tailwind.config.ts">
+      <file name="tailwind.config.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/tailwind.config.ts">
         <metrics statements="88" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="3" count="0" type="stmt"/>
         <line num="4" count="0" type="stmt"/>
@@ -105,9 +105,9 @@
         <line num="91" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM.src">
+    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup.src">
       <metrics statements="180" coveredstatements="141" conditionals="25" coveredconditionals="21" methods="2" coveredmethods="1"/>
-      <file name="App.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/App.tsx">
+      <file name="App.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/App.tsx">
         <metrics statements="158" coveredstatements="141" conditionals="24" coveredconditionals="21" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="7" count="1" type="cond" truecount="2" falsecount="0"/>
@@ -268,7 +268,7 @@
         <line num="203" count="6" type="stmt"/>
         <line num="205" count="6" type="stmt"/>
       </file>
-      <file name="main.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/main.tsx">
+      <file name="main.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/main.tsx">
         <metrics statements="22" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="2" count="0" type="stmt"/>
@@ -294,9 +294,9 @@
         <line num="27" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM.src.components">
+    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup.src.components">
       <metrics statements="1346" coveredstatements="1247" conditionals="277" coveredconditionals="247" methods="56" coveredmethods="44"/>
-      <file name="BreathingCircle.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/BreathingCircle.tsx">
+      <file name="BreathingCircle.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/BreathingCircle.tsx">
         <metrics statements="251" coveredstatements="243" conditionals="47" coveredconditionals="44" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
@@ -550,7 +550,7 @@
         <line num="311" count="15" type="stmt"/>
         <line num="313" count="15" type="stmt"/>
       </file>
-      <file name="Controls.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/Controls.tsx">
+      <file name="Controls.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/Controls.tsx">
         <metrics statements="54" coveredstatements="54" conditionals="9" coveredconditionals="9" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="9" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -607,7 +607,7 @@
         <line num="70" count="14" type="stmt"/>
         <line num="72" count="14" type="stmt"/>
       </file>
-      <file name="DurationSelector.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/DurationSelector.tsx">
+      <file name="DurationSelector.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/DurationSelector.tsx">
         <metrics statements="69" coveredstatements="69" conditionals="16" coveredconditionals="16" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="12" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -679,7 +679,7 @@
         <line num="91" count="17" type="stmt"/>
         <line num="93" count="17" type="stmt"/>
       </file>
-      <file name="ErrorBoundary.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/ErrorBoundary.tsx">
+      <file name="ErrorBoundary.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/ErrorBoundary.tsx">
         <metrics statements="24" coveredstatements="10" conditionals="3" coveredconditionals="2" methods="5" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="13" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -706,7 +706,7 @@
         <line num="39" count="18" type="stmt"/>
         <line num="40" count="18" type="stmt"/>
       </file>
-      <file name="Header.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/Header.tsx">
+      <file name="Header.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/Header.tsx">
         <metrics statements="85" coveredstatements="85" conditionals="16" coveredconditionals="15" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="15" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -794,7 +794,7 @@
         <line num="113" count="18" type="stmt"/>
         <line num="115" count="18" type="stmt"/>
       </file>
-      <file name="OnboardingTip.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/OnboardingTip.tsx">
+      <file name="OnboardingTip.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/OnboardingTip.tsx">
         <metrics statements="117" coveredstatements="109" conditionals="32" coveredconditionals="26" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
@@ -914,7 +914,7 @@
         <line num="149" count="27" type="stmt"/>
         <line num="151" count="27" type="stmt"/>
       </file>
-      <file name="PatternSelector.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/PatternSelector.tsx">
+      <file name="PatternSelector.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/PatternSelector.tsx">
         <metrics statements="306" coveredstatements="279" conditionals="49" coveredconditionals="45" methods="16" coveredmethods="10"/>
         <line num="1" count="1" type="stmt"/>
         <line num="11" count="28" type="cond" truecount="1" falsecount="0"/>
@@ -1223,7 +1223,7 @@
         <line num="376" count="28" type="stmt"/>
         <line num="378" count="28" type="stmt"/>
       </file>
-      <file name="SessionCalendar.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/SessionCalendar.tsx">
+      <file name="SessionCalendar.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/SessionCalendar.tsx">
         <metrics statements="96" coveredstatements="96" conditionals="30" coveredconditionals="27" methods="6" coveredmethods="6"/>
         <line num="1" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
@@ -1322,7 +1322,7 @@
         <line num="135" count="16" type="stmt"/>
         <line num="137" count="16" type="stmt"/>
       </file>
-      <file name="SessionHistory.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/SessionHistory.tsx">
+      <file name="SessionHistory.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/SessionHistory.tsx">
         <metrics statements="156" coveredstatements="124" conditionals="31" coveredconditionals="26" methods="8" coveredmethods="7"/>
         <line num="1" count="1" type="stmt"/>
         <line num="11" count="6" type="cond" truecount="1" falsecount="0"/>
@@ -1481,7 +1481,7 @@
         <line num="193" count="18" type="stmt"/>
         <line num="195" count="18" type="stmt"/>
       </file>
-      <file name="SessionStats.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/SessionStats.tsx">
+      <file name="SessionStats.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/SessionStats.tsx">
         <metrics statements="29" coveredstatements="29" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="9" count="15" type="cond" truecount="1" falsecount="0"/>
@@ -1513,7 +1513,7 @@
         <line num="39" count="5" type="stmt"/>
         <line num="41" count="5" type="stmt"/>
       </file>
-      <file name="SessionSummary.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/SessionSummary.tsx">
+      <file name="SessionSummary.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/SessionSummary.tsx">
         <metrics statements="101" coveredstatements="91" conditionals="35" coveredconditionals="28" methods="4" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="15" count="13" type="cond" truecount="1" falsecount="0"/>
@@ -1617,7 +1617,7 @@
         <line num="133" count="21" type="stmt"/>
         <line num="135" count="21" type="stmt"/>
       </file>
-      <file name="WeeklyGoal.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/WeeklyGoal.tsx">
+      <file name="WeeklyGoal.tsx" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/WeeklyGoal.tsx">
         <metrics statements="57" coveredstatements="57" conditionals="5" coveredconditionals="5" methods="3" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="9" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -1677,18 +1677,18 @@
         <line num="71" count="11" type="stmt"/>
         <line num="73" count="11" type="stmt"/>
       </file>
-      <file name="index.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/components/index.ts">
+      <file name="index.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/components/index.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM.src.hooks">
+    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup.src.hooks">
       <metrics statements="698" coveredstatements="514" conditionals="120" coveredconditionals="93" methods="29" coveredmethods="22"/>
-      <file name="index.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/index.ts">
+      <file name="index.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/index.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
       </file>
-      <file name="useAudioFeedback.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/useAudioFeedback.ts">
+      <file name="useAudioFeedback.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/useAudioFeedback.ts">
         <metrics statements="64" coveredstatements="29" conditionals="5" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
@@ -1755,7 +1755,7 @@
         <line num="87" count="6" type="stmt"/>
         <line num="88" count="6" type="stmt"/>
       </file>
-      <file name="useBreathingEngine.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/useBreathingEngine.ts">
+      <file name="useBreathingEngine.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/useBreathingEngine.ts">
         <metrics statements="286" coveredstatements="234" conditionals="52" coveredconditionals="38" methods="7" coveredmethods="5"/>
         <line num="1" count="1" type="stmt"/>
         <line num="31" count="1" type="stmt"/>
@@ -2044,7 +2044,7 @@
         <line num="365" count="44" type="stmt"/>
         <line num="366" count="44" type="stmt"/>
       </file>
-      <file name="useFocusTrap.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/useFocusTrap.ts">
+      <file name="useFocusTrap.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/useFocusTrap.ts">
         <metrics statements="44" coveredstatements="31" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -2091,7 +2091,7 @@
         <line num="63" count="48" type="stmt"/>
         <line num="64" count="48" type="stmt"/>
       </file>
-      <file name="useHapticFeedback.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/useHapticFeedback.ts">
+      <file name="useHapticFeedback.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/useHapticFeedback.ts">
         <metrics statements="31" coveredstatements="20" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -2125,7 +2125,7 @@
         <line num="37" count="6" type="stmt"/>
         <line num="38" count="6" type="stmt"/>
       </file>
-      <file name="useKeyboardShortcuts.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/useKeyboardShortcuts.ts">
+      <file name="useKeyboardShortcuts.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/useKeyboardShortcuts.ts">
         <metrics statements="49" coveredstatements="13" conditionals="3" coveredconditionals="3" methods="2" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="10" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -2177,7 +2177,7 @@
         <line num="61" count="6" type="stmt"/>
         <line num="62" count="6" type="stmt"/>
       </file>
-      <file name="usePrefersReducedMotion.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/usePrefersReducedMotion.ts">
+      <file name="usePrefersReducedMotion.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/usePrefersReducedMotion.ts">
         <metrics statements="16" coveredstatements="14" conditionals="5" coveredconditionals="4" methods="2" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="7" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -2196,7 +2196,7 @@
         <line num="24" count="63" type="stmt"/>
         <line num="25" count="63" type="stmt"/>
       </file>
-      <file name="useStreakTracker.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/useStreakTracker.ts">
+      <file name="useStreakTracker.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/useStreakTracker.ts">
         <metrics statements="96" coveredstatements="86" conditionals="20" coveredconditionals="18" methods="7" coveredmethods="6"/>
         <line num="1" count="1" type="stmt"/>
         <line num="12" count="22" type="cond" truecount="1" falsecount="0"/>
@@ -2295,7 +2295,7 @@
         <line num="126" count="29" type="stmt"/>
         <line num="127" count="29" type="stmt"/>
       </file>
-      <file name="useWeeklyGoal.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/hooks/useWeeklyGoal.ts">
+      <file name="useWeeklyGoal.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/hooks/useWeeklyGoal.ts">
         <metrics statements="111" coveredstatements="86" conditionals="28" coveredconditionals="20" methods="7" coveredmethods="6"/>
         <line num="1" count="1" type="stmt"/>
         <line num="14" count="28" type="cond" truecount="1" falsecount="0"/>
@@ -2410,9 +2410,9 @@
         <line num="142" count="28" type="stmt"/>
       </file>
     </package>
-    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM.src.types">
+    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup.src.types">
       <metrics statements="66" coveredstatements="66" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="breathing.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/types/breathing.ts">
+      <file name="breathing.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/types/breathing.ts">
         <metrics statements="65" coveredstatements="65" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="25" count="1" type="stmt"/>
         <line num="26" count="1" type="stmt"/>
@@ -2480,14 +2480,14 @@
         <line num="118" count="1" type="stmt"/>
         <line num="119" count="1" type="stmt"/>
       </file>
-      <file name="index.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/types/index.ts">
+      <file name="index.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/types/index.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM.src.utils">
+    <package name="mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup.src.utils">
       <metrics statements="11" coveredstatements="11" conditionals="3" coveredconditionals="2" methods="2" coveredmethods="2"/>
-      <file name="format.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-zCY9FM/src/utils/format.ts">
+      <file name="format.ts" path="/tmp/mvp-v3-7fb2fe4b-66ff-4ca2-8096-22700cade1c4-1w1Sup/src/utils/format.ts">
         <metrics statements="11" coveredstatements="11" conditionals="3" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="2" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="3" count="8" type="stmt"/>
