@@ -10,13 +10,21 @@ interface HeaderProps {
   onToggleSound: () => void;
   streakData?: StreakData;
   weeklyGoalData?: WeeklyGoalData;
+  isSessionActive?: boolean;
 }
 
-export function Header({ soundEnabled, onToggleSound, streakData, weeklyGoalData }: HeaderProps) {
+export function Header({ soundEnabled, onToggleSound, streakData, weeklyGoalData, isSessionActive }: HeaderProps) {
   return (
     <header className="flex items-center justify-between px-4 py-4 sm:py-6" role="banner">
       <div className="flex items-center gap-2.5">
-        <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse shadow-sm shadow-primary-500/50" aria-hidden="true" />
+        <div
+          className={`w-2 h-2 rounded-full shadow-sm transition-all duration-300 ${
+            isSessionActive
+              ? 'bg-calm-500 animate-session-pulse shadow-calm-500/50'
+              : 'bg-primary-500 animate-pulse shadow-primary-500/50'
+          }`}
+          aria-hidden="true"
+        />
         <div>
           <h1 className="text-lg sm:text-xl font-medium tracking-wide text-white leading-tight">
             Aura

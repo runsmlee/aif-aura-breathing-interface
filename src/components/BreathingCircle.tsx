@@ -194,6 +194,15 @@ export function BreathingCircle({
             />
           )}
 
+          {/* Idle invite ring — subtle outer ring that invites interaction */}
+          {!isActive && !prefersReducedMotion && (
+            <div
+              className="absolute w-64 h-64 sm:w-72 sm:h-72 rounded-full border border-gray-700/20"
+              style={{ animation: 'idleBreath 6s ease-in-out infinite' }}
+              aria-hidden="true"
+            />
+          )}
+
           {/* Main circle */}
           <div
             className={`relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center ${

@@ -49,7 +49,7 @@ export function WeeklyGoal({
           aria-label={`Weekly progress: ${sessionsThisWeek} of ${weeklyGoal}`}
         >
           <div
-            className={`h-full rounded-full transition-all duration-500 ease-out ${
+            className={`h-full rounded-full transition-all duration-700 ease-out ${
               goalReached
                 ? 'bg-gradient-to-r from-primary-500 to-primary-400'
                 : 'bg-primary-500/70'

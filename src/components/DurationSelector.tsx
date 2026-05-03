@@ -31,7 +31,7 @@ export function DurationSelector({
         Session Length
       </h2>
       <div
-        className="flex gap-2 justify-center flex-wrap"
+        className="flex gap-2 justify-center flex-wrap transition-all duration-200"
         role="radiogroup"
         aria-label="Select session duration"
       >

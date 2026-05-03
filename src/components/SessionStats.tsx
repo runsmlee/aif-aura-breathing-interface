@@ -26,7 +26,7 @@ export function SessionStats({ stats, isVisible }: SessionStatsProps) {
 
   return (
     <div
-      className="flex items-center justify-center gap-6 sm:gap-8 animate-fade-in"
+      className="flex items-center justify-center gap-6 sm:gap-8 animate-fade-in-down"
       role="status"
       aria-live="polite"
       aria-label="Session statistics"

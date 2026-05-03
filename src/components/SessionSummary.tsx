@@ -20,6 +20,13 @@ function getMotivationalMessage(cycles: number): string {
   return 'Incredible commitment. You are a breathing master.';
 }
 
+function getDurationMessage(duration: number): string | null {
+  if (duration >= 600) return '10+ minutes of mindfulness';
+  if (duration >= 300) return '5+ minutes of calm';
+  if (duration >= 120) return 'A focused breathing break';
+  return null;
+}
+
 function getCompletionEmoji(cycles: number): string {
   if (cycles <= 2) return '🌱';
   if (cycles <= 5) return '🌿';
@@ -84,6 +91,9 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
           </div>
           <h2 className="text-xl font-medium text-white">Session Complete</h2>
           <p className="text-sm text-gray-400 mt-1">{getMotivationalMessage(stats.cyclesCompleted)}</p>
+          {getDurationMessage(stats.totalDuration) && (
+            <p className="text-xs text-gray-500 mt-0.5">{getDurationMessage(stats.totalDuration)}</p>
+          )}
           {hitTarget && (
             <p className="text-xs text-primary-400 mt-1 font-medium">
               Target reached — {targetDuration} min

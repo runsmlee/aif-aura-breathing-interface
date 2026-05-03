@@ -43,10 +43,13 @@ const config: Config = {
         'pulse-ring': 'pulseRing 3s ease-in-out infinite',
         'fade-in': 'fadeIn 300ms ease-out',
         'fade-in-up': 'fadeInUp 500ms ease-out',
+        'fade-in-down': 'fadeInDown 400ms ease-out',
         'breathe-in': 'breatheIn 4s ease-in-out forwards',
         'breathe-out': 'breatheOut 4s ease-in-out forwards',
         'shimmer': 'shimmer 2s ease-in-out infinite',
         'scale-in': 'scaleIn 200ms ease-out',
+        'gentle-bounce': 'gentleBounce 2s ease-in-out infinite',
+        'session-pulse': 'sessionPulse 2s ease-in-out infinite',
       },
       keyframes: {
         pulseRing: {
@@ -76,6 +79,18 @@ const config: Config = {
         scaleIn: {
           '0%': { transform: 'scale(0.9)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        fadeInDown: {
+          '0%': { opacity: '0', transform: 'translateY(-8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        gentleBounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-2px)' },
+        },
+        sessionPulse: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.6', transform: 'scale(0.85)' },
         },
       },
       boxShadow: {

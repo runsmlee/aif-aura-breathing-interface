@@ -96,9 +96,9 @@ export function App() {
       >
         Skip to content
       </a>
-      <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} streakData={streakData} weeklyGoalData={{ sessionsThisWeek, weeklyGoal }} />
+      <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} streakData={streakData} weeklyGoalData={{ sessionsThisWeek, weeklyGoal }} isSessionActive={engine.isActive} />
 
-      <main id="main-content" className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto">
+      <main id="main-content" className={`flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto transition-all duration-500 ${engine.isActive ? 'session-active' : ''}`}>
         {/* Breathing visualization */}
         <Suspense fallback={
           <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center bg-gray-900/40 animate-pulse" aria-hidden="true">
@@ -178,8 +178,8 @@ export function App() {
         )}
       </main>
 
-      <footer className="py-4 text-center" role="contentinfo">
-        <p className="text-xs text-gray-600">
+      <footer className="py-3 sm:py-4 text-center" role="contentinfo">
+        <p className="text-xs text-gray-600 transition-opacity duration-300">
           Focus on your breath. Find your calm.
         </p>
       </footer>
