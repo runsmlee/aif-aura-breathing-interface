@@ -21,6 +21,8 @@ interface UseBreathingEngineReturn {
   sessionHistory: readonly SessionRecord[];
   clearHistory: () => void;
   lastSessionSummary: { stats: SessionStats; completedAt: number } | null;
+  phaseSequence: readonly { phase: BreathingPhase; seconds: number }[];
+  currentPhaseIndex: number;
 }
 
 interface PhaseConfig {
@@ -135,6 +137,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [sessionHistory, setSessionHistory] = useState<SessionRecord[]>(() => loadHistory());
   const [lastSessionSummary, setLastSessionSummary] = useState<{ stats: SessionStats; completedAt: number } | null>(null);
+  const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
   const cyclesCompletedRef = useRef(0);
   const totalElapsedRef = useRef(0);
   const timeRemainingRef = useRef(0);
@@ -201,6 +204,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     setPhase(nextPhaseConfig.phase);
     setSecondsRemaining(nextPhaseConfig.duration);
     setProgress(0);
+    setCurrentPhaseIndex(phaseIndexRef.current);
     phaseElapsedRef.current = 0;
   }, []);
 
@@ -218,6 +222,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     setCyclesCompleted(0);
     setTotalElapsedSeconds(0);
     setLastSessionSummary(null);
+    setCurrentPhaseIndex(0);
 
     const now = Date.now();
     setSessionStartTime(now);
@@ -362,5 +367,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     sessionHistory,
     clearHistory,
     lastSessionSummary,
+    phaseSequence: phaseSequenceRef.current.map((p) => ({ phase: p.phase, seconds: p.duration })),
+    currentPhaseIndex,
   };
 }

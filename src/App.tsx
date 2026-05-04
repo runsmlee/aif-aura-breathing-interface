@@ -109,6 +109,8 @@ export function App() {
           phase={engine.phase}
           progress={engine.progress}
           secondsRemaining={engine.secondsRemaining}
+          phaseSequence={engine.phaseSequence}
+          currentPhaseIndex={engine.currentPhaseIndex}
         />
         </Suspense>
 

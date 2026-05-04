@@ -168,9 +168,9 @@
   animation: idleGlow 6s ease-in-out infinite;
 }
 
-/* Session-active state — subtle background shift */
+/* Session-active state — subtle background shift with depth */
 .session-active {
-  background: radial-gradient(ellipse at 50% 40%, rgba(20, 184, 166, 0.02), transparent 60%);
+  background: radial-gradient(ellipse at 50% 35%, rgba(20, 184, 166, 0.03), transparent 55%);
 }
 
 /* Smooth content fade transitions */

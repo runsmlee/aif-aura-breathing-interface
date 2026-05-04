@@ -7,6 +7,8 @@ interface BreathingCircleProps {
   phase: BreathingPhase;
   progress: number;
   secondsRemaining: number;
+  phaseSequence?: readonly { phase: BreathingPhase; seconds: number }[];
+  currentPhaseIndex?: number;
 }
 
 const CIRCLE_SIZE = 224; // 56 * 4 for crisp SVG
@@ -45,6 +47,74 @@ function ParticleRing({ color }: { color: string }) {
           }}
         />
       ))}
+    </div>
+  );
+}
+
+/**
+ * Phase ring indicator — shows tiny colored dots around the circle perimeter
+ * to give a spatial sense of the full breathing cycle timing.
+ * Each dot represents 1 second of the cycle, colored by its phase.
+ */
+function PhaseIndicatorRing({
+  phaseSequence,
+  currentPhaseIndex,
+  phaseProgress,
+}: {
+  phaseSequence: readonly { phase: BreathingPhase; seconds: number }[];
+  currentPhaseIndex: number;
+  phaseProgress: number;
+}) {
+  const totalSeconds = phaseSequence.reduce((sum, p) => sum + p.seconds, 0);
+  const dots = useMemo(() => {
+    const result: { id: number; angleDeg: number; color: string; lit: boolean }[] = [];
+    let idx = 0;
+    for (const seg of phaseSequence) {
+      for (let s = 0; s < seg.seconds; s++) {
+        const angleDeg = (idx / totalSeconds) * 360 - 90;
+        result.push({
+          id: idx,
+          angleDeg,
+          color: PHASE_COLORS[seg.phase],
+          lit: false,
+        });
+        idx++;
+      }
+    }
+    return result;
+  }, [phaseSequence, totalSeconds]);
+
+  // Determine which dot is "current"
+  let elapsedDotCount = 0;
+  for (let i = 0; i < currentPhaseIndex; i++) {
+    elapsedDotCount += phaseSequence[i].seconds;
+  }
+  const currentDot = elapsedDotCount + Math.floor(phaseProgress * phaseSequence[currentPhaseIndex].seconds);
+
+  const radius = 132;
+
+  return (
+    <div className="absolute w-72 h-72 sm:w-80 sm:h-80 pointer-events-none" aria-hidden="true">
+      {dots.map((d) => {
+        const angleRad = (d.angleDeg * Math.PI) / 180;
+        const isCurrent = d.id === currentDot;
+        const isPast = d.id < currentDot;
+        return (
+          <div
+            key={d.id}
+            className="absolute rounded-full transition-opacity duration-200"
+            style={{
+              width: isCurrent ? '4px' : '2px',
+              height: isCurrent ? '4px' : '2px',
+              backgroundColor: d.color,
+              opacity: isPast ? 0.15 : isCurrent ? 0.9 : 0.25,
+              left: '50%',
+              top: '50%',
+              transform: `translate(-50%, -50%) translateX(${Math.cos(angleRad) * radius}px) translateY(${Math.sin(angleRad) * radius}px)`,
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -129,6 +199,8 @@ export function BreathingCircle({
   phase,
   progress,
   secondsRemaining,
+  phaseSequence,
+  currentPhaseIndex,
 }: BreathingCircleProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const scaleValue = useMemo(() => {
@@ -167,6 +239,14 @@ export function BreathingCircle({
                 style={{ backgroundColor: color }}
               />
               <ParticleRing color={color} />
+              {/* Phase timing indicator — shows cycle progress spatially */}
+              {phaseSequence && phaseSequence.length > 0 && currentPhaseIndex !== undefined && currentPhaseIndex >= 0 && (
+                <PhaseIndicatorRing
+                  phaseSequence={phaseSequence}
+                  currentPhaseIndex={currentPhaseIndex}
+                  phaseProgress={progress}
+                />
+              )}
             </>
           )}
           {isActive && prefersReducedMotion && (

@@ -25,14 +25,14 @@ export function WeeklyGoal({
           <div className="flex items-center gap-1">
             <button
               onClick={() => onSetGoal(Math.max(1, weeklyGoal - 1))}
-              className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-800/60 text-gray-400 hover:bg-gray-700/60 hover:text-gray-200 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800/60 text-gray-400 hover:bg-gray-700/60 hover:text-gray-200 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
               aria-label="Decrease weekly goal"
             >
               −
             </button>
             <button
               onClick={() => onSetGoal(Math.min(14, weeklyGoal + 1))}
-              className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-800/60 text-gray-400 hover:bg-gray-700/60 hover:text-gray-200 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800/60 text-gray-400 hover:bg-gray-700/60 hover:text-gray-200 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
               aria-label="Increase weekly goal"
             >
               +

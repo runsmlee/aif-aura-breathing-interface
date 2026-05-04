@@ -45,8 +45,8 @@ export function Controls({
         )}
       </div>
 
-      {/* Keyboard shortcut hints */}
-      <div className="flex items-center gap-4 text-[10px] text-gray-600 select-none" aria-hidden="true">
+      {/* Keyboard shortcut hints — hidden on small screens (touch devices) */}
+      <div className="hidden sm:flex items-center gap-4 text-[10px] text-gray-600 select-none" aria-hidden="true">
         <span className="flex items-center gap-1">
           <kbd className="px-1.5 py-0.5 bg-gray-800/60 rounded text-gray-500 font-mono text-[10px] border border-gray-700/40">Space</kbd>
           <span>{isActive ? 'Pause' : 'Start'}</span>

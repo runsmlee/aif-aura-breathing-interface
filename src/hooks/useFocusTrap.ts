@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import type { RefObject } from 'react';
 
 const FOCUSABLE_SELECTORS = [
   'a[href]',
@@ -14,7 +15,7 @@ const FOCUSABLE_SELECTORS = [
  * Used for modal dialogs to maintain accessibility.
  * Restores focus to the previously active element when deactivated.
  */
-export function useFocusTrap(isActive: boolean): React.RefObject<HTMLDivElement | null> {
+export function useFocusTrap(isActive: boolean): RefObject<HTMLDivElement | null> {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 

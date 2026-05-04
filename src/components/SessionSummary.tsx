@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { RefObject } from 'react';
 import type { SessionStats as SessionStatsType, BreathingPattern } from '../types';
 import { formatDuration } from '../utils/format';
 import { useFocusTrap, usePrefersReducedMotion } from '../hooks';
@@ -81,7 +82,7 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
       aria-label="Session summary"
     >
       <div
-        ref={focusTrapRef as React.RefObject<HTMLDivElement>}
+        ref={focusTrapRef as RefObject<HTMLDivElement>}
         className={`w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 transition-all duration-300 ${animationClass}`}
       >
         {/* Header */}
@@ -118,9 +119,22 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
         </div>
 
         {/* Pattern used */}
-        <p className="text-center text-xs text-gray-500 mb-6">
-          Pattern: {pattern.name}
-        </p>
+        <div className="text-center mb-6">
+          <p className="text-xs text-gray-500">
+            Pattern: {pattern.name}
+          </p>
+          <p className="text-[10px] text-gray-600 mt-0.5 tracking-wide tabular-nums">
+            {[pattern.inhale, pattern.hold, pattern.exhale, pattern.holdAfterExhale].some(v => v > 0)
+              ? [
+                  pattern.inhale > 0 ? `${pattern.inhale}s in` : '',
+                  pattern.hold > 0 ? `${pattern.hold}s hold` : '',
+                  pattern.exhale > 0 ? `${pattern.exhale}s out` : '',
+                  pattern.holdAfterExhale > 0 ? `${pattern.holdAfterExhale}s hold` : '',
+                ].filter(Boolean).join(' · ')
+              : ''
+            }
+          </p>
+        </div>
 
         {/* Action buttons */}
         <div className="flex flex-col gap-2">
