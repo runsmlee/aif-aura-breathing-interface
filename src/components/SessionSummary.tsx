@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { RefObject } from 'react';
-import type { SessionStats as SessionStatsType, BreathingPattern } from '../types';
+import type { SessionStats as SessionStatsType, BreathingPattern, PersonalBestRecord } from '../types';
 import { formatDuration } from '../utils/format';
 import { useFocusTrap, usePrefersReducedMotion } from '../hooks';
 
@@ -11,6 +11,8 @@ interface SessionSummaryProps {
   onDismiss: () => void;
   onStartAgain: () => void;
   targetDuration: number;
+  isNewBest?: boolean;
+  personalBest?: PersonalBestRecord | null;
 }
 
 function getMotivationalMessage(cycles: number): string {
@@ -35,7 +37,7 @@ function getCompletionEmoji(cycles: number): string {
   return '🏔️';
 }
 
-export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAgain, targetDuration }: SessionSummaryProps) {
+export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAgain, targetDuration, isNewBest, personalBest }: SessionSummaryProps) {
   const [animateIn, setAnimateIn] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const focusTrapRef = useFocusTrap(isVisible);
@@ -94,6 +96,19 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
           <p className="text-sm text-gray-400 mt-1">{getMotivationalMessage(stats.cyclesCompleted)}</p>
           {getDurationMessage(stats.totalDuration) && (
             <p className="text-xs text-gray-500 mt-0.5">{getDurationMessage(stats.totalDuration)}</p>
+          )}
+          {/* Personal best badge */}
+          {isNewBest && (
+            <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-500/15 ring-1 ring-primary-500/30 celebration-badge" role="status" aria-live="polite">
+              <span aria-hidden="true">🏆</span>
+              <span className="text-xs text-primary-400 font-medium">New Personal Best!</span>
+            </div>
+          )}
+          {/* Previous best comparison */}
+          {isNewBest && personalBest && personalBest.totalDuration > 0 && (
+            <p className="text-[10px] text-gray-500 mt-1">
+              Previous best: {formatDuration(personalBest.totalDuration)} ({Math.round(((stats.totalDuration - personalBest.totalDuration) / personalBest.totalDuration) * 100)}% longer)
+            </p>
           )}
           {hitTarget && (
             <p className="text-xs text-primary-400 mt-1 font-medium">

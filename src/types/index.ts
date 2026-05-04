@@ -8,6 +8,7 @@ export type {
   CustomPattern,
   StreakData,
 } from './breathing';
+export type { PersonalBestRecord } from '../hooks/usePersonalBest';
 export {
   BREATHING_PATTERNS,
   PHASE_LABELS,

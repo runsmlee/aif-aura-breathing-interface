@@ -6,3 +6,4 @@ export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { useHapticFeedback } from './useHapticFeedback';
 export { useStreakTracker } from './useStreakTracker';
 export { useWeeklyGoal } from './useWeeklyGoal';
+export { usePersonalBest } from './usePersonalBest';

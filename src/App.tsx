@@ -3,6 +3,7 @@ import { Header, ErrorBoundary } from './components';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFeedback } from './hooks';
 import { useStreakTracker } from './hooks/useStreakTracker';
 import { useWeeklyGoal } from './hooks/useWeeklyGoal';
+import { usePersonalBest } from './hooks/usePersonalBest';
 
 const BreathingCircle = lazy(() => import('./components/BreathingCircle').then((m) => ({ default: m.BreathingCircle })));
 const Controls = lazy(() => import('./components/Controls').then((m) => ({ default: m.Controls })));
@@ -35,6 +36,9 @@ export function App() {
     incrementSessions,
   } = useWeeklyGoal();
 
+  // Personal best tracking
+  const { personalBest, isNewBest, recordSession: recordPersonalBest } = usePersonalBest();
+
   useKeyboardShortcuts({
     onStart: engine.start,
     onPause: engine.pause,
@@ -53,8 +57,10 @@ export function App() {
       // Record streak and increment weekly sessions on session completion
       recordStreak();
       incrementSessions();
+      // Record personal best
+      recordPersonalBest(engine.lastSessionSummary.stats, engine.currentPattern.name);
     }
-  }, [engine.lastSessionSummary, playCompletionSound, vibrateCompletion, recordStreak, incrementSessions]);
+  }, [engine.lastSessionSummary, playCompletionSound, vibrateCompletion, recordStreak, incrementSessions, recordPersonalBest, engine.currentPattern.name]);
 
   // Play audio and haptic on phase transitions
   useEffect(() => {
@@ -196,6 +202,8 @@ export function App() {
             onDismiss={handleDismissSummary}
             onStartAgain={handleStartAgain}
             targetDuration={engine.targetDuration}
+            isNewBest={isNewBest}
+            personalBest={personalBest}
           />
         </Suspense>
       </ErrorBoundary>

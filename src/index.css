@@ -145,6 +145,28 @@
   }
 }
 
+/* Celebration pulse for new personal best */
+@keyframes celebrationPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px 4px rgba(239, 68, 68, 0.15);
+  }
+}
+
+/* Gentle orbit animation for particles */
+@keyframes particleOrbit {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(140px) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(140px) rotate(-360deg);
+  }
+}
+
 /* Subtle ambient wave for background atmosphere */
 @keyframes ambientWave {
   0%, 100% {
@@ -168,9 +190,17 @@
   animation: idleGlow 6s ease-in-out infinite;
 }
 
-/* Session-active state — subtle background shift with depth */
+/* Celebration effect for new personal best */
+.celebration-badge {
+  animation: celebrationPulse 1.5s ease-in-out 3;
+}
+
+/* Session-active state — subtle layered background with depth */
 .session-active {
-  background: radial-gradient(ellipse at 50% 35%, rgba(20, 184, 166, 0.03), transparent 55%);
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(20, 184, 166, 0.04), transparent 50%),
+    radial-gradient(ellipse at 30% 70%, rgba(239, 68, 68, 0.02), transparent 40%),
+    radial-gradient(ellipse at 70% 60%, rgba(245, 158, 11, 0.02), transparent 40%);
 }
 
 /* Smooth content fade transitions */
