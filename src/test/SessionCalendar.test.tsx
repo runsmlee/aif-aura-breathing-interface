@@ -32,7 +32,7 @@ describe('SessionCalendar', () => {
     render(<SessionCalendar history={[]} onDayClick={vi.fn()} />);
     const headers = screen.getAllByRole('columnheader');
     expect(headers).toHaveLength(7);
-    expect(headers[0].textContent).toBe('S');
+    expect(headers[0].textContent).toBe('Sun');
   });
 
   it('renders 28 day cells (4×7 grid)', () => {

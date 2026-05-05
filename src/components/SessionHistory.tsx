@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback, useRef } from 'react';
 import type { SessionRecord } from '../types';
-import { formatDuration } from '../utils/format';
+import { formatDuration, toLocalDateStr } from '../utils/format';
 import { SessionCalendar } from './SessionCalendar';
 
 interface SessionHistoryProps {
@@ -26,10 +26,6 @@ function formatDate(iso: string): string {
   return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
 }
 
-function fmtLocalDate(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
 function getStreakCount(records: readonly SessionRecord[]): number {
   if (records.length === 0) return 0;
   let streak = 0;
@@ -38,11 +34,11 @@ function getStreakCount(records: readonly SessionRecord[]): number {
 
   const daySet = new Set<string>();
   for (const r of records) {
-    daySet.add(toDateStr(r.date));
+    daySet.add(toLocalDateStr(new Date(r.date)));
   }
 
   const checkDate = new Date(today);
-  while (daySet.has(fmtLocalDate(checkDate))) {
+  while (daySet.has(toLocalDateStr(checkDate))) {
     streak++;
     checkDate.setDate(checkDate.getDate() - 1);
   }
@@ -51,7 +47,7 @@ function getStreakCount(records: readonly SessionRecord[]): number {
 }
 
 function toDateStr(iso: string): string {
-  return fmtLocalDate(new Date(iso));
+  return toLocalDateStr(new Date(iso));
 }
 
 export function SessionHistory({ history, onClear }: SessionHistoryProps) {

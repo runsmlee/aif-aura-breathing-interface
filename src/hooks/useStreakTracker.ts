@@ -1,19 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { StreakData } from '../types';
 import { STREAK_KEY } from '../types';
+import { toLocalDateStr } from '../utils/format';
 
 interface UseStreakTrackerReturn {
   streakData: StreakData;
   isNewDayStreak: boolean;
   recordSession: () => void;
   resetStreak: () => void;
-}
-
-function toLocalDateStr(d: Date): string {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
 }
 
 function todayString(): string {

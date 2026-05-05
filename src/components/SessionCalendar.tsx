@@ -1,12 +1,13 @@
 import { useMemo, useCallback } from 'react';
 import type { SessionRecord } from '../types';
+import { toLocalDateStr } from '../utils/format';
 
 interface SessionCalendarProps {
   history: readonly SessionRecord[];
   onDayClick: (dateStr: string) => void;
 }
 
-const DAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 interface DayData {
   dateStr: string;
@@ -17,16 +18,8 @@ interface DayData {
   label: string;
 }
 
-function toLocalDateStr(d: Date): string {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
 function formatTooltip(date: Date, sessions: number): string {
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const dayName = dayNames[date.getDay()];
+  const dayName = DAY_LABELS[date.getDay()];
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const monthName = monthNames[date.getMonth()];
   return `${sessions} session${sessions !== 1 ? 's' : ''} on ${dayName} ${monthName} ${date.getDate()}`;
@@ -110,7 +103,7 @@ export function SessionCalendar({ history, onDayClick }: SessionCalendarProps) {
           <div
             key={`${label}-${i}`}
             role="columnheader"
-            className="text-center text-[9px] text-gray-600 font-medium tracking-wider"
+            className="text-center text-[8px] sm:text-[9px] text-gray-600 font-medium tracking-wider"
           >
             {label}
           </div>
