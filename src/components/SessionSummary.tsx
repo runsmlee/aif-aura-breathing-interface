@@ -82,6 +82,7 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
       role="dialog"
       aria-modal="true"
       aria-label="Session summary"
+      aria-describedby="session-summary-description"
     >
       <div
         ref={focusTrapRef as RefObject<HTMLDivElement>}
@@ -93,7 +94,7 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
             <span className="text-xl">{getCompletionEmoji(stats.cyclesCompleted)}</span>
           </div>
           <h2 className="text-xl font-medium text-white">Session Complete</h2>
-          <p className="text-sm text-gray-400 mt-1">{getMotivationalMessage(stats.cyclesCompleted)}</p>
+          <p id="session-summary-description" className="text-sm text-gray-400 mt-1">{getMotivationalMessage(stats.cyclesCompleted)}</p>
           {getDurationMessage(stats.totalDuration) && (
             <p className="text-xs text-gray-500 mt-0.5">{getDurationMessage(stats.totalDuration)}</p>
           )}

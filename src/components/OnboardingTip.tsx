@@ -101,13 +101,15 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
       role="dialog"
       aria-modal="true"
       aria-label="Quick tips"
+      aria-describedby="onboarding-tip-description"
     >
       <div ref={focusTrapRef as RefObject<HTMLDivElement>} className={`w-full max-w-sm bg-gray-900 border border-gray-800/80 rounded-3xl p-6 shadow-2xl shadow-black/50 ${enterAnimation}`}>
         {/* Tip content */}
         <div className="text-center mb-5">
           <span className="text-3xl" role="img" aria-hidden="true">{tip.icon}</span>
           <h3 className="text-lg font-medium text-white mt-3">{tip.title}</h3>
-          <p className="text-sm text-gray-400 mt-2 leading-relaxed">{tip.text}</p>
+          <span className="sr-only">Tip {currentTip + 1} of {TIPS.length}</span>
+          <p id="onboarding-tip-description" className="text-sm text-gray-400 mt-2 leading-relaxed">{tip.text}</p>
         </div>
 
         {/* Dots indicator */}

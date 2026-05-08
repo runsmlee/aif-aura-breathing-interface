@@ -132,7 +132,7 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
       </button>
 
       {/* 28-day calendar heatmap — always visible when there's history */}
-      <SessionCalendar history={history} onDayClick={handleDayClick} />
+      <SessionCalendar history={history} onDayClick={handleDayClick} selectedDay={selectedDay} />
 
       {isExpanded && (
         <div
@@ -144,6 +144,7 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
               <button
                 onClick={() => setSelectedDay(null)}
                 className="text-xs text-primary-400 hover:text-primary-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded"
+                aria-label="Show all recent sessions"
               >
                 ← Show all recent sessions
               </button>

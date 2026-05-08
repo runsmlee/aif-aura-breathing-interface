@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { BREATHING_PATTERNS, CUSTOM_PATTERNS_KEY, MAX_CUSTOM_PATTERNS, PHASE_COLORS } from '../types';
 import type { BreathingPattern, CustomPattern } from '../types';
 
@@ -223,6 +223,7 @@ export function PatternSelector({
 }: PatternSelectorProps) {
   const [customPatterns, setCustomPatterns] = useState<CustomPattern[]>(loadCustomPatterns);
   const [showCustomEditor, setShowCustomEditor] = useState(false);
+  const radiogroupRef = useRef<HTMLDivElement>(null);
 
   const isCustomSelected = currentPattern.name === 'Custom' || customPatterns.some((p) => p.name === currentPattern.name);
 
@@ -261,6 +262,11 @@ export function PatternSelector({
       if (currentPattern.name === patternName) {
         onSelectPattern(BREATHING_PATTERNS[0]);
       }
+      // Move focus to the first remaining pattern button
+      requestAnimationFrame(() => {
+        const firstButton = radiogroupRef.current?.querySelector<HTMLButtonElement>('button[role="radio"]');
+        if (firstButton) firstButton.focus();
+      });
     },
     [customPatterns, currentPattern.name, onSelectPattern]
   );
@@ -284,6 +290,7 @@ export function PatternSelector({
         Breathing Pattern
       </h2>
       <div
+        ref={radiogroupRef}
         className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
         role="radiogroup"
         aria-label="Select breathing pattern"

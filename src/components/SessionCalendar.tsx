@@ -5,6 +5,7 @@ import { toLocalDateStr } from '../utils/format';
 interface SessionCalendarProps {
   history: readonly SessionRecord[];
   onDayClick: (dateStr: string) => void;
+  selectedDay?: string | null;
 }
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -75,7 +76,7 @@ function buildCalendarDays(history: readonly SessionRecord[]): DayData[] {
   return days;
 }
 
-export function SessionCalendar({ history, onDayClick }: SessionCalendarProps) {
+export function SessionCalendar({ history, onDayClick, selectedDay }: SessionCalendarProps) {
   const days = useMemo(() => buildCalendarDays(history), [history]);
 
   const handleClick = useCallback(
@@ -117,6 +118,7 @@ export function SessionCalendar({ history, onDayClick }: SessionCalendarProps) {
             <button
               key={day.dateStr}
               role="gridcell"
+              aria-selected={selectedDay === day.dateStr || undefined}
               aria-label={day.label}
               title={day.label}
               onClick={() => handleClick(day.dateStr)}

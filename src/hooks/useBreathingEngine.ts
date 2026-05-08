@@ -239,27 +239,31 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
 
     clearTimer();
     intervalRef.current = setInterval(() => {
-      phaseElapsedRef.current += 0.1;
-      totalElapsedRef.current += 0.1;
+      try {
+        phaseElapsedRef.current += 0.1;
+        totalElapsedRef.current += 0.1;
 
-      // Track total elapsed time for stats (0.1s per 100ms tick)
-      setTotalElapsedSeconds((prev: number) => prev + 0.1);
+        // Track total elapsed time for stats (0.1s per 100ms tick)
+        setTotalElapsedSeconds((prev: number) => prev + 0.1);
 
-      const currentPhaseConfig = phaseSequenceRef.current[phaseIndexRef.current];
-      const durationSeconds = currentPhaseConfig.duration;
-      const elapsed = phaseElapsedRef.current;
+        const currentPhaseConfig = phaseSequenceRef.current[phaseIndexRef.current];
+        const durationSeconds = currentPhaseConfig.duration;
+        const elapsed = phaseElapsedRef.current;
 
-      if (elapsed >= durationSeconds) {
-        advancePhase();
-      } else {
-        setProgress(Math.min(elapsed / durationSeconds, 1));
-        setSecondsRemaining(Math.ceil(durationSeconds - elapsed));
-      }
+        if (elapsed >= durationSeconds) {
+          advancePhase();
+        } else {
+          setProgress(Math.min(elapsed / durationSeconds, 1));
+          setSecondsRemaining(Math.ceil(durationSeconds - elapsed));
+        }
 
-      // Update time remaining for target duration using ref + state
-      if (timeRemainingRef.current > 0) {
-        timeRemainingRef.current = Math.max(0, Math.round((timeRemainingRef.current - 0.1) * 10) / 10);
-        setTimeRemaining(timeRemainingRef.current);
+        // Update time remaining for target duration using ref + state
+        if (timeRemainingRef.current > 0) {
+          timeRemainingRef.current = Math.max(0, Math.round((timeRemainingRef.current - 0.1) * 10) / 10);
+          setTimeRemaining(timeRemainingRef.current);
+        }
+      } catch {
+        clearTimer();
       }
     }, 100);
   }, [clearTimer, advancePhase, targetDuration]);
