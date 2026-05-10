@@ -101,7 +101,7 @@
   }
 }
 
-/* Idle breathing animation for the resting circle */
+/* Idle breathing animation for the resting circle — gentle 4s breathing rhythm */
 @keyframes idleBreath {
   0%, 100% {
     transform: scale(1);
@@ -109,11 +109,11 @@
   }
   50% {
     transform: scale(1.08);
-    opacity: 0.12;
+    opacity: 0.14;
   }
 }
 
-/* Subtle glow pulse on the idle circle itself */
+/* Subtle glow pulse on the idle circle itself — synced to breathing rhythm */
 @keyframes idleGlow {
   0%, 100% {
     box-shadow: 0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2);
@@ -133,7 +133,7 @@
   }
 }
 
-/* Phase transition ripple effect */
+/* Phase transition ripple effect — expanding ring on phase change */
 @keyframes phaseRipple {
   0% {
     transform: scale(0.85);
@@ -142,6 +142,26 @@
   100% {
     transform: scale(1.5);
     opacity: 0;
+  }
+}
+
+/* Start button gentle pulse — invites interaction */
+@keyframes startPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
+/* Progress bar shimmer — adds a subtle light sweep */
+@keyframes progressShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 
@@ -187,12 +207,23 @@
 }
 
 .idle-glow {
-  animation: idleGlow 6s ease-in-out infinite;
+  animation: idleGlow 4s ease-in-out infinite;
+}
+
+/* Start button pulse — gentle inviting glow */
+.start-pulse {
+  animation: startPulse 2.5s ease-in-out infinite;
 }
 
 /* Celebration effect for new personal best */
 .celebration-badge {
   animation: celebrationPulse 1.5s ease-in-out 3;
+}
+
+/* Progress bar with shimmer effect */
+.progress-shimmer {
+  background-size: 200% 100%;
+  animation: progressShimmer 2s linear infinite;
 }
 
 /* Session-active state — subtle layered background with depth */

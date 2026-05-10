@@ -215,6 +215,7 @@ export function BreathingCircle({
   const guidance = PHASE_GUIDANCE[phase];
   const isActive = phase !== 'idle';
   const transitionDuration = prefersReducedMotion ? '0ms' : '100ms';
+  const glowTransitionDuration = prefersReducedMotion ? '0ms' : '500ms';
 
   return (
     <>
@@ -290,7 +291,7 @@ export function BreathingCircle({
             }`}
             style={{
               transform: `scale(${scaleValue})`,
-              transition: `transform ${transitionDuration} linear`,
+              transition: `transform ${transitionDuration} linear, box-shadow ${glowTransitionDuration} ease-out`,
               background: isActive
                 ? `radial-gradient(circle at 35% 35%, ${color}dd, ${color}88 60%, ${color}44)`
                 : 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
@@ -299,6 +300,18 @@ export function BreathingCircle({
                 : '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
             }}
           >
+            {/* Smooth phase color blend overlay for softer transitions */}
+            {isActive && !prefersReducedMotion && (
+              <div
+                className="absolute inset-0 rounded-full pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle at 50% 50%, ${color}18, transparent 70%)`,
+                  transition: 'background 500ms ease-out',
+                }}
+                aria-hidden="true"
+              />
+            )}
+
             {/* Inner highlight */}
             <div
               className="absolute inset-2 rounded-full opacity-30"
