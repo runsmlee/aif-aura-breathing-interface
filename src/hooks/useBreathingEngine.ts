@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { BreathingPattern, BreathingPhase, SessionStats, SessionDuration, SessionRecord } from '../types';
 import { BREATHING_PATTERNS } from '../types';
 
@@ -346,11 +346,11 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     };
   }, [clearTimer]);
 
-  const stats: SessionStats = {
+  const stats: SessionStats = useMemo(() => ({
     cyclesCompleted,
     totalDuration: Math.floor(totalElapsedSeconds),
     breathsPerMinute: getBPM(phaseSequenceRef.current),
-  };
+  }), [cyclesCompleted, totalElapsedSeconds, getBPM]);
 
   return {
     phase,

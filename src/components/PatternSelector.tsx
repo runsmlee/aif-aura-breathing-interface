@@ -17,6 +17,12 @@ function formatPatternTiming(pattern: BreathingPattern): string {
   return parts.join(' · ');
 }
 
+function computeBPM(pattern: BreathingPattern): string {
+  const totalCycleDuration = pattern.inhale + pattern.hold + pattern.exhale + pattern.holdAfterExhale;
+  const bpm = totalCycleDuration > 0 ? Math.round((60 / totalCycleDuration) * 10) / 10 : 0;
+  return bpm.toFixed(1);
+}
+
 function loadCustomPatterns(): CustomPattern[] {
   try {
     const raw = localStorage.getItem(CUSTOM_PATTERNS_KEY);
@@ -368,6 +374,9 @@ export function PatternSelector({
         </p>
         <p className="text-[10px] text-gray-600 mt-1 tracking-wide tabular-nums">
           {formatPatternTiming(currentPattern)}
+        </p>
+        <p className="text-[10px] text-gray-600 mt-0.5 tabular-nums">
+          {computeBPM(currentPattern)} breaths/min
         </p>
       </div>
 

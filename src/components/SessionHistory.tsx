@@ -139,6 +139,15 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
           id="session-history-content"
           className="mt-2 bg-gray-900/40 rounded-xl overflow-hidden animate-fade-in"
         >
+          {/* Total practice stats summary */}
+          {history.length > 0 && (
+            <div className="px-4 py-2 border-b border-gray-800/50 text-center" data-testid="session-stats-summary">
+              <p className="text-xs text-gray-500">
+                <span className="tabular-nums">{history.length}</span> session{history.length !== 1 ? 's' : ''} ·{' '}
+                <span className="tabular-nums">{formatDuration(history.reduce((sum, r) => sum + r.duration, 0))}</span> total
+              </p>
+            </div>
+          )}
           {selectedDay && (
             <div className="px-4 py-2 border-b border-gray-800/50">
               <button
