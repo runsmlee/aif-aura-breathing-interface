@@ -49,6 +49,12 @@ export function useAudioFeedback(enabled: boolean): UseAudioFeedbackReturn {
 
         oscillator.start(ctx.currentTime);
         oscillator.stop(ctx.currentTime + duration);
+
+        // Clean up nodes after playback to free resources
+        oscillator.onended = () => {
+          oscillator.disconnect();
+          gainNode.disconnect();
+        };
       } catch {
         // Audio not available, silently ignore
       }

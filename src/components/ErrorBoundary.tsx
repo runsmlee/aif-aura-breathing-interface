@@ -8,13 +8,14 @@ interface ErrorBoundaryProps {
 
 interface ErrorBoundaryState {
   hasError: boolean;
+  errorKey: number;
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  state: ErrorBoundaryState = { hasError: false };
+  state: ErrorBoundaryState = { hasError: false, errorKey: 0 };
 
-  static getDerivedStateFromError(): ErrorBoundaryState {
-    return { hasError: true };
+  static getDerivedStateFromError(prev: ErrorBoundaryState): ErrorBoundaryState {
+    return { hasError: true, errorKey: prev.errorKey };
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
@@ -27,7 +28,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="flex flex-col items-center justify-center gap-3 p-6 text-center" role="alert">
           <p className="text-sm text-gray-400">Something went wrong.</p>
           <button
-            onClick={() => this.setState({ hasError: false })}
+            onClick={() => this.setState(({ errorKey }) => ({ hasError: false, errorKey: errorKey + 1 }))}
             className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
           >
             Try Again
@@ -35,6 +36,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         </div>
       );
     }
-    return this.props.children;
+    return <div key={this.state.errorKey}>{this.props.children}</div>;
   }
 }

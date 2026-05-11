@@ -50,6 +50,7 @@ export function useKeyboardShortcuts({
           }
           break;
         case 'KeyR':
+          if (e.ctrlKey || e.metaKey) return; // Don't block browser refresh (Ctrl+R / Cmd+R)
           e.preventDefault();
           onReset();
           break;

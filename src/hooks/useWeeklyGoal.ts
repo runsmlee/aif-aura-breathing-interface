@@ -39,9 +39,9 @@ function loadSessionsThisWeek(): number {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (typeof parsed === 'object' && parsed !== null && 'count' in parsed && 'weekStart' in parsed) {
-        const weekStart = new Date(parsed.weekStart);
         const monday = getMonday(new Date());
-        if (weekStart.getTime() === monday.getTime()) {
+        const mondayStr = toLocalISOString(monday);
+        if (parsed.weekStart === mondayStr) {
           return parsed.count as number;
         }
       }
@@ -52,10 +52,17 @@ function loadSessionsThisWeek(): number {
   return 0;
 }
 
+function toLocalISOString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 function saveSessionsThisWeek(count: number): void {
   try {
     const monday = getMonday(new Date());
-    localStorage.setItem('aura-sessions-this-week', JSON.stringify({ count, weekStart: monday.toISOString() }));
+    localStorage.setItem('aura-sessions-this-week', JSON.stringify({ count, weekStart: toLocalISOString(monday) }));
   } catch {
     // Storage unavailable
   }
@@ -105,12 +112,12 @@ export function useWeeklyGoal(): UseWeeklyGoalReturn {
   useEffect(() => {
     function checkWeekReset() {
       const monday = getMonday(new Date());
+      const mondayStr = toLocalISOString(monday);
       try {
         const raw = localStorage.getItem('aura-sessions-this-week');
         if (raw) {
           const parsed = JSON.parse(raw);
-          const weekStart = new Date(parsed.weekStart);
-          if (weekStart.getTime() !== monday.getTime()) {
+          if (parsed.weekStart !== mondayStr) {
             setSessionsThisWeekState(0);
             saveSessionsThisWeek(0);
           }

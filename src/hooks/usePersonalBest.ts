@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SessionStats } from '../types';
 
 const PERSONAL_BEST_KEY = 'aura-personal-best';
+const NEW_BEST_DISPLAY_MS = 5000;
 
 export interface PersonalBestRecord {
   cyclesCompleted: number;
@@ -49,6 +50,18 @@ function savePersonalBest(record: PersonalBestRecord): void {
 export function usePersonalBest(): UsePersonalBestReturn {
   const [personalBest, setPersonalBest] = useState<PersonalBestRecord | null>(loadPersonalBest);
   const [isNewBest, setIsNewBest] = useState(false);
+  const newBestTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-clear isNewBest after display timeout
+  useEffect(() => {
+    if (isNewBest) {
+      if (newBestTimerRef.current) clearTimeout(newBestTimerRef.current);
+      newBestTimerRef.current = setTimeout(() => setIsNewBest(false), NEW_BEST_DISPLAY_MS);
+    }
+    return () => {
+      if (newBestTimerRef.current) clearTimeout(newBestTimerRef.current);
+    };
+  }, [isNewBest]);
 
   const recordSession = useCallback((stats: SessionStats, patternName: string) => {
     setPersonalBest((prev) => {

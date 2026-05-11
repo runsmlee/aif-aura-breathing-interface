@@ -119,10 +119,12 @@ export function SessionCalendar({ history, onDayClick, selectedDay }: SessionCal
               key={day.dateStr}
               role="gridcell"
               aria-selected={selectedDay === day.dateStr || undefined}
-              aria-label={day.label}
-              title={day.label}
+              aria-label={day.isFuture ? `Future date ${day.dateStr}` : day.label}
+              title={day.isFuture ? undefined : day.label}
               onClick={() => handleClick(day.dateStr)}
-              className={`aspect-square rounded-sm transition-colors duration-150 hover:ring-1 hover:ring-primary-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-950 cursor-pointer ${getIntensityClass(day.sessions)}${day.isToday ? ' ring-1 ring-primary-400/30' : ''}${day.isFuture ? ' opacity-20' : ''}`}
+              disabled={day.isFuture}
+              tabIndex={day.isFuture ? -1 : 0}
+              className={`aspect-square rounded-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-950 ${day.isFuture ? 'opacity-20 cursor-default' : `cursor-pointer hover:ring-1 hover:ring-primary-400/50 ${getIntensityClass(day.sessions)}`}${day.isToday ? ' ring-1 ring-primary-400/30' : ''}`}
             />
           ))}
         </div>

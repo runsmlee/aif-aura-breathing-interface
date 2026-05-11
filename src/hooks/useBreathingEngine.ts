@@ -105,6 +105,14 @@ function buildPhaseSequence(pattern: BreathingPattern): PhaseConfig[] {
   return phases.length > 0 ? phases : [{ phase: 'inhale', duration: 4 }];
 }
 
+function computeBPM(sequence: readonly PhaseConfig[]): number {
+  const totalCycleDur = sequence.reduce(
+    (sum: number, p: PhaseConfig) => sum + p.duration,
+    0
+  );
+  return totalCycleDur > 0 ? Math.round((60 / totalCycleDur) * 10) / 10 : 0;
+}
+
 export function useBreathingEngine(): UseBreathingEngineReturn {
   // Initialize from localStorage preference
   const savedPatternName = useRef<string | null>(loadFromStorage(PATTERN_KEY));
@@ -145,6 +153,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   const phaseIndexRef = useRef(0);
   const phaseElapsedRef = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const wallStartTimeRef = useRef<number>(0);
   const phaseSequenceRef = useRef<PhaseConfig[]>(
     buildPhaseSequence(
       savedPatternName.current
@@ -153,14 +162,13 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     )
   );
 
-  // Compute cycle duration from the phase sequence
-  const getBPM = useCallback((sequence: PhaseConfig[]): number => {
-    const totalCycleDur = sequence.reduce(
-      (sum: number, p: PhaseConfig) => sum + p.duration,
-      0
-    );
-    return totalCycleDur > 0 ? Math.round((60 / totalCycleDur) * 10) / 10 : 0;
-  }, []);
+  // Memoize the phase sequence to avoid creating a new array on every render
+  const phaseSequence = useMemo(
+    () => phaseSequenceRef.current.map((p) => ({ phase: p.phase, seconds: p.duration })),
+    // We use currentPattern as a proxy dependency since phaseSequenceRef is mutated
+    // when the pattern changes via handleSetPattern
+    [currentPattern]
+  );
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current !== null) {
@@ -226,6 +234,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
 
     const now = Date.now();
     setSessionStartTime(now);
+    wallStartTimeRef.current = now;
 
     // Set time remaining based on target duration
     if (targetDuration > 0) {
@@ -257,10 +266,13 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
           setSecondsRemaining(Math.ceil(durationSeconds - elapsed));
         }
 
-        // Update time remaining for target duration using ref + state
-        if (timeRemainingRef.current > 0) {
-          timeRemainingRef.current = Math.max(0, Math.round((timeRemainingRef.current - 0.1) * 10) / 10);
-          setTimeRemaining(timeRemainingRef.current);
+        // Update time remaining using wall-clock to avoid floating-point drift
+        if (targetDuration > 0 && wallStartTimeRef.current > 0) {
+          const wallElapsed = (Date.now() - wallStartTimeRef.current) / 1000;
+          const remaining = Math.max(0, targetDuration * 60 - wallElapsed);
+          const rounded = Math.round(remaining * 10) / 10;
+          timeRemainingRef.current = rounded;
+          setTimeRemaining(rounded);
         }
       } catch {
         clearTimer();
@@ -275,12 +287,12 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     if (cyclesCompletedRef.current > 0 && sessionStartTime !== null) {
       const elapsed = elapsedOverride ?? Math.floor(totalElapsedRef.current);
       recordSession(cyclesCompletedRef.current, elapsed, currentPattern.name, targetDuration);
-      setLastSessionSummary({ completedAt: Date.now(), stats: { cyclesCompleted: cyclesCompletedRef.current, totalDuration: elapsed, breathsPerMinute: getBPM(phaseSequenceRef.current) } });
+      setLastSessionSummary({ completedAt: Date.now(), stats: { cyclesCompleted: cyclesCompletedRef.current, totalDuration: elapsed, breathsPerMinute: computeBPM(phaseSequenceRef.current) } });
     }
 
     setIsActive(false);
     setPhase('idle');
-  }, [clearTimer, sessionStartTime, currentPattern.name, targetDuration, recordSession, getBPM]);
+  }, [clearTimer, sessionStartTime, currentPattern.name, targetDuration, recordSession]);
 
   const reset = useCallback(() => {
     clearTimer();
@@ -294,6 +306,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     timeRemainingRef.current = 0;
     setSessionStartTime(null);
     setTotalElapsedSeconds(0);
+    wallStartTimeRef.current = 0;
     setTimeRemaining(0);
     setLastSessionSummary(null);
     phaseIndexRef.current = 0;
@@ -331,13 +344,13 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
       const elapsed = Math.floor(totalElapsedRef.current);
       if (cyclesCompletedRef.current > 0) {
         recordSession(cyclesCompletedRef.current, elapsed, currentPattern.name, targetDuration);
-        setLastSessionSummary({ completedAt: Date.now(), stats: { cyclesCompleted: cyclesCompletedRef.current, totalDuration: elapsed, breathsPerMinute: getBPM(phaseSequenceRef.current) } });
+        setLastSessionSummary({ completedAt: Date.now(), stats: { cyclesCompleted: cyclesCompletedRef.current, totalDuration: elapsed, breathsPerMinute: computeBPM(phaseSequenceRef.current) } });
       }
       clearTimer();
       setIsActive(false);
       setPhase('idle');
     }
-  }, [isActive, targetDuration, timeRemaining, sessionStartTime, currentPattern, recordSession, clearTimer, getBPM]);
+  }, [isActive, targetDuration, timeRemaining, sessionStartTime, currentPattern, recordSession, clearTimer]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -349,8 +362,8 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
   const stats: SessionStats = useMemo(() => ({
     cyclesCompleted,
     totalDuration: Math.floor(totalElapsedSeconds),
-    breathsPerMinute: getBPM(phaseSequenceRef.current),
-  }), [cyclesCompleted, totalElapsedSeconds, getBPM]);
+    breathsPerMinute: computeBPM(phaseSequenceRef.current),
+  }), [cyclesCompleted, totalElapsedSeconds]);
 
   return {
     phase,
@@ -371,7 +384,7 @@ export function useBreathingEngine(): UseBreathingEngineReturn {
     sessionHistory,
     clearHistory,
     lastSessionSummary,
-    phaseSequence: phaseSequenceRef.current.map((p) => ({ phase: p.phase, seconds: p.duration })),
+    phaseSequence,
     currentPhaseIndex,
   };
 }

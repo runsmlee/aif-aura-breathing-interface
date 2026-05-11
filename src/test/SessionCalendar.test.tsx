@@ -53,7 +53,8 @@ describe('SessionCalendar', () => {
     const onDayClick = vi.fn();
     render(<SessionCalendar history={[]} onDayClick={onDayClick} />);
     const cells = screen.getAllByRole('gridcell');
-    await user.click(cells[27]); // last cell (most recent day)
+    // Click a past date (first cell is always in the past)
+    await user.click(cells[0]);
     expect(onDayClick).toHaveBeenCalledTimes(1);
   });
 
