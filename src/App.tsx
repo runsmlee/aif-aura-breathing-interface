@@ -4,6 +4,8 @@ import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFe
 import { useStreakTracker } from './hooks/useStreakTracker';
 import { useWeeklyGoal } from './hooks/useWeeklyGoal';
 import { usePersonalBest } from './hooks/usePersonalBest';
+import { PHASE_COLORS } from './types';
+import { formatPatternTiming } from './utils';
 
 const BreathingCircle = lazy(() => import('./components/BreathingCircle').then((m) => ({ default: m.BreathingCircle })));
 const Controls = lazy(() => import('./components/Controls').then((m) => ({ default: m.Controls })));
@@ -117,12 +119,14 @@ export function App() {
           secondsRemaining={engine.secondsRemaining}
           phaseSequence={engine.phaseSequence}
           currentPhaseIndex={engine.currentPhaseIndex}
+          cyclesCompleted={engine.cyclesCompleted}
+          patternTiming={formatPatternTiming(engine.currentPattern)}
         />
         </Suspense>
 
         {/* Session stats */}
         <Suspense fallback={null}>
-          <SessionStats stats={engine.stats} isVisible={engine.isActive} />
+          <SessionStats stats={engine.stats} isVisible={engine.isActive} timeRemaining={engine.timeRemaining} targetDuration={engine.targetDuration} />
         </Suspense>
 
         {/* Controls */}
@@ -133,6 +137,7 @@ export function App() {
             onPause={engine.pause}
             onReset={handleReset}
             totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
+            phaseColor={engine.isActive ? PHASE_COLORS[engine.phase] : undefined}
           />
         </Suspense>
 

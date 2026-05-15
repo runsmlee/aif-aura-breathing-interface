@@ -1,1 +1,1 @@
-export { formatCountdown, formatDuration, toLocalDateStr } from './format';
+export { formatCountdown, formatDuration, formatPatternTiming, toLocalDateStr } from './format';

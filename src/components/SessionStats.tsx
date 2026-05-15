@@ -4,6 +4,8 @@ import { formatCountdown } from '../utils/format';
 interface SessionStatsProps {
   stats: SessionStatsType;
   isVisible: boolean;
+  timeRemaining?: number;
+  targetDuration?: number;
 }
 
 function StatItem({ value, label }: { value: string; label: string }) {
@@ -19,10 +21,12 @@ function StatItem({ value, label }: { value: string; label: string }) {
   );
 }
 
-export function SessionStats({ stats, isVisible }: SessionStatsProps) {
+export function SessionStats({ stats, isVisible, timeRemaining, targetDuration }: SessionStatsProps) {
   if (!isVisible) {
     return null;
   }
+
+  const showTimeRemaining = targetDuration !== undefined && targetDuration > 0 && timeRemaining !== undefined && timeRemaining > 0;
 
   return (
     <div
@@ -33,7 +37,11 @@ export function SessionStats({ stats, isVisible }: SessionStatsProps) {
     >
       <StatItem value={String(stats.cyclesCompleted)} label="Cycles" />
       <div className="w-px h-8 bg-gray-800/60" aria-hidden="true" />
-      <StatItem value={formatCountdown(stats.totalDuration)} label="Duration" />
+      {showTimeRemaining ? (
+        <StatItem value={formatCountdown(timeRemaining)} label="Remaining" />
+      ) : (
+        <StatItem value={formatCountdown(stats.totalDuration)} label="Duration" />
+      )}
       <div className="w-px h-8 bg-gray-800/60" aria-hidden="true" />
       <StatItem value={String(stats.breathsPerMinute)} label="BPM" />
     </div>

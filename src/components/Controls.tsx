@@ -4,6 +4,7 @@ interface ControlsProps {
   onPause: () => void;
   onReset: () => void;
   totalCyclesEverCompleted: number;
+  phaseColor?: string;
 }
 
 export function Controls({
@@ -12,9 +13,18 @@ export function Controls({
   onPause,
   onReset,
   totalCyclesEverCompleted,
+  phaseColor,
 }: ControlsProps) {
   return (
     <div className="flex flex-col items-center gap-3">
+      {/* Phase color indicator bar — subtle visual feedback during active session */}
+      {isActive && phaseColor && (
+        <div
+          className="w-20 h-0.5 rounded-full transition-colors duration-300"
+          style={{ backgroundColor: phaseColor, opacity: 0.6 }}
+          aria-hidden="true"
+        />
+      )}
       <div className="flex items-center gap-4">
         {!isActive ? (
           <button

@@ -22,3 +22,13 @@ export function formatDuration(totalSeconds: number): string {
   if (minutes === 0) return `${seconds}s`;
   return `${minutes}m ${seconds}s`;
 }
+
+/** Format a breathing pattern's timing as a compact string (e.g. "4 · 4 · 4 · 4") */
+export function formatPatternTiming(pattern: { inhale: number; hold: number; exhale: number; holdAfterExhale: number }): string {
+  const parts: string[] = [];
+  if (pattern.inhale > 0) parts.push(String(pattern.inhale));
+  if (pattern.hold > 0) parts.push(String(pattern.hold));
+  if (pattern.exhale > 0) parts.push(String(pattern.exhale));
+  if (pattern.holdAfterExhale > 0) parts.push(String(pattern.holdAfterExhale));
+  return parts.join(' · ');
+}

@@ -220,6 +220,11 @@
   animation: celebrationPulse 1.5s ease-in-out 3;
 }
 
+/* Phase color transition on progress bars — smoother gradient */
+.phase-progress-bar {
+  transition: width 150ms ease-in-out, background-color 300ms ease-out;
+}
+
 /* Progress bar with shimmer effect */
 .progress-shimmer {
   background-size: 200% 100%;
@@ -229,9 +234,10 @@
 /* Session-active state — subtle layered background with depth */
 .session-active {
   background:
-    radial-gradient(ellipse at 50% 35%, rgba(20, 184, 166, 0.04), transparent 50%),
-    radial-gradient(ellipse at 30% 70%, rgba(239, 68, 68, 0.02), transparent 40%),
-    radial-gradient(ellipse at 70% 60%, rgba(245, 158, 11, 0.02), transparent 40%);
+    radial-gradient(ellipse at 50% 35%, rgba(20, 184, 166, 0.06), transparent 50%),
+    radial-gradient(ellipse at 30% 70%, rgba(239, 68, 68, 0.03), transparent 40%),
+    radial-gradient(ellipse at 70% 60%, rgba(245, 158, 11, 0.03), transparent 40%);
+  transition: background 0.8s ease-out;
 }
 
 /* Smooth content fade transitions */
@@ -243,4 +249,20 @@
   opacity: 1;
   transform: translateY(0);
   transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+/* Countdown number subtle scale on change — feels like the number breathes */
+.countdown-pulse {
+  animation: countdownPulse 150ms ease-out;
+}
+
+@keyframes countdownPulse {
+  0% {
+    transform: scale(1.08);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

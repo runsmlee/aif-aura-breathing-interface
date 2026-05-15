@@ -9,6 +9,8 @@ interface BreathingCircleProps {
   secondsRemaining: number;
   phaseSequence?: readonly { phase: BreathingPhase; seconds: number }[];
   currentPhaseIndex?: number;
+  cyclesCompleted?: number;
+  patternTiming?: string;
 }
 
 const CIRCLE_SIZE = 224; // 56 * 4 for crisp SVG
@@ -201,12 +203,23 @@ export function BreathingCircle({
   secondsRemaining,
   phaseSequence,
   currentPhaseIndex,
+  cyclesCompleted = 0,
+  patternTiming,
 }: BreathingCircleProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+
   const scaleValue = useMemo(() => {
     if (phase === 'idle') return 0.45;
-    if (phase === 'inhale') return 0.4 + progress * 0.6;
-    if (phase === 'exhale') return 1 - progress * 0.6;
+    if (phase === 'inhale') {
+      // Ease-in-out for natural breathing feel — slow start, accelerate in middle, slow at end
+      const eased = 0.5 - Math.cos(progress * Math.PI) / 2;
+      return 0.4 + eased * 0.6;
+    }
+    if (phase === 'exhale') {
+      // Ease-in-out for natural breathing feel
+      const eased = 0.5 - Math.cos(progress * Math.PI) / 2;
+      return 1 - eased * 0.6;
+    }
     return 1;
   }, [phase, progress]);
 
@@ -214,7 +227,7 @@ export function BreathingCircle({
   const label = PHASE_LABELS[phase];
   const guidance = PHASE_GUIDANCE[phase];
   const isActive = phase !== 'idle';
-  const transitionDuration = prefersReducedMotion ? '0ms' : '100ms';
+  const transitionDuration = prefersReducedMotion ? '0ms' : '150ms';
   const glowTransitionDuration = prefersReducedMotion ? '0ms' : '500ms';
 
   return (
@@ -291,7 +304,7 @@ export function BreathingCircle({
             }`}
             style={{
               transform: `scale(${scaleValue})`,
-              transition: `transform ${transitionDuration} linear, box-shadow ${glowTransitionDuration} ease-out`,
+              transition: `transform ${transitionDuration} ease-in-out, box-shadow ${glowTransitionDuration} ease-out`,
               background: isActive
                 ? `radial-gradient(circle at 35% 35%, ${color}dd, ${color}88 60%, ${color}44)`
                 : 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
@@ -342,12 +355,30 @@ export function BreathingCircle({
               >
                 {label}
               </p>
+              {/* Pattern timing preview in idle state */}
+              {!isActive && patternTiming && (
+                <p
+                  className="text-[10px] sm:text-xs text-gray-500/70 mt-2 font-light tracking-wide tabular-nums"
+                  aria-hidden="true"
+                >
+                  {patternTiming}
+                </p>
+              )}
               {isActive && secondsRemaining > 0 && (
                 <p
                   className="text-4xl sm:text-5xl font-extralight text-white mt-1 tabular-nums tracking-wide"
                   style={{ textShadow: `0 0 30px ${color}66` }}
                 >
                   {secondsRemaining}
+                </p>
+              )}
+              {/* Cycle counter — subtle display below seconds */}
+              {isActive && cyclesCompleted > 0 && (
+                <p
+                  className="text-[10px] sm:text-xs font-light text-white/40 mt-1 tabular-nums tracking-wide"
+                  aria-hidden="true"
+                >
+                  cycle {cyclesCompleted}
                 </p>
               )}
             </div>
@@ -400,7 +431,7 @@ export function BreathingCircle({
             aria-label={`${label} progress`}
           >
             <div
-              className="h-full rounded-full transition-all duration-100 ease-linear"
+              className="h-full rounded-full transition-all duration-150 ease-in-out"
               style={{
                 width: `${progress * 100}%`,
                 backgroundColor: color,
