@@ -272,14 +272,25 @@ export function BreathingCircle({
 
           {/* Ambient ring for idle state — subtle pulsing glow with breathing animation */}
           {!isActive && !prefersReducedMotion && (
-            <div
-              className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-[0.06] blur-xl"
-              style={{
-                backgroundColor: '#6B7280',
-                animation: 'idleBreath 6s ease-in-out infinite',
-              }}
-              aria-hidden="true"
-            />
+            <>
+              <div
+                className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-[0.06] blur-xl"
+                style={{
+                  backgroundColor: '#6B7280',
+                  animation: 'idleBreath 6s ease-in-out infinite',
+                }}
+                aria-hidden="true"
+              />
+              {/* Secondary ambient ring — adds depth to idle state */}
+              <div
+                className="absolute w-80 h-80 sm:w-[22rem] sm:h-[22rem] rounded-full opacity-[0.03] blur-2xl"
+                style={{
+                  backgroundColor: '#6B7280',
+                  animation: 'idleBreath 8s ease-in-out 1s infinite',
+                }}
+                aria-hidden="true"
+              />
+            </>
           )}
           {!isActive && prefersReducedMotion && (
             <div
@@ -338,11 +349,22 @@ export function BreathingCircle({
 
             {/* Ripple effect on phase change */}
             {isActive && !prefersReducedMotion && (
-              <div
-                className="absolute inset-0 rounded-full animate-ping opacity-10"
-                style={{ backgroundColor: color }}
-                aria-hidden="true"
-              />
+              <>
+                <div
+                  className="absolute inset-0 rounded-full animate-ping opacity-10"
+                  style={{ backgroundColor: color }}
+                  aria-hidden="true"
+                />
+                {/* Phase ring highlight — subtle bright ring on phase edge */}
+                <div
+                  className="absolute inset-[-2px] rounded-full opacity-20 pointer-events-none"
+                  style={{
+                    boxShadow: `inset 0 0 12px ${color}44, 0 0 12px ${color}22`,
+                    transition: 'box-shadow 300ms ease-out',
+                  }}
+                  aria-hidden="true"
+                />
+              </>
             )}
 
             {/* Inner content */}

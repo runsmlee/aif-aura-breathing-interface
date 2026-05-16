@@ -17,10 +17,21 @@ export function WeeklyGoal({
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="px-4 py-3 bg-gray-900/40 rounded-xl ring-1 ring-gray-800/40">
+      <div className={`px-4 py-3 rounded-xl ring-1 transition-all duration-500 ${
+        goalReached
+          ? 'bg-primary-500/10 ring-primary-500/20'
+          : 'bg-gray-900/40 ring-gray-800/40'
+      }`}>
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs text-gray-400 font-medium">
-            {sessionsThisWeek} of {weeklyGoal} this week
+            {goalReached ? (
+              <span className="flex items-center gap-1.5">
+                <span className="text-primary-400">&#10003;</span>
+                <span>{sessionsThisWeek} of {weeklyGoal} this week</span>
+              </span>
+            ) : (
+              <span>{sessionsThisWeek} of {weeklyGoal} this week</span>
+            )}
           </span>
           <div className="flex items-center gap-1">
             <button
@@ -51,7 +62,7 @@ export function WeeklyGoal({
           <div
             className={`h-full rounded-full transition-all duration-700 ease-out ${
               goalReached
-                ? 'bg-gradient-to-r from-primary-500 to-primary-400'
+                ? 'goal-complete-glow'
                 : 'bg-primary-500/70'
             }`}
             style={{ width: `${progress}%` }}

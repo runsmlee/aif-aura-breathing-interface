@@ -22,11 +22,12 @@ const mockHistory: SessionRecord[] = [
 ];
 
 describe('SessionHistory', () => {
-  it('renders nothing when history is empty', () => {
-    const { container } = render(
+  it('renders empty state when history is empty', () => {
+    render(
       <SessionHistory history={[]} onClear={vi.fn()} />
     );
-    expect(container.innerHTML).toBe('');
+    expect(screen.getByTestId('session-history-empty')).toBeInTheDocument();
+    expect(screen.getByText(/your breathing sessions will appear here/i)).toBeInTheDocument();
   });
 
   it('renders the history toggle button when history exists', () => {

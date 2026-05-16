@@ -124,7 +124,7 @@ export function SessionCalendar({ history, onDayClick, selectedDay }: SessionCal
               onClick={() => handleClick(day.dateStr)}
               disabled={day.isFuture}
               tabIndex={day.isFuture ? -1 : 0}
-              className={`aspect-square rounded-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-950 ${day.isFuture ? 'opacity-20 cursor-default' : `cursor-pointer hover:ring-1 hover:ring-primary-400/50 ${getIntensityClass(day.sessions)}`}${day.isToday ? ' ring-1 ring-primary-400/30' : ''}`}
+              className={`aspect-square rounded-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 focus-visible:ring-offset-gray-950 ${day.isFuture ? 'opacity-20 cursor-default' : `cursor-pointer hover:ring-1 hover:ring-primary-400/50 hover:scale-110 ${getIntensityClass(day.sessions)}`}${day.isToday ? ' ring-1 ring-primary-400/30' : ''}${selectedDay === day.dateStr ? ' ring-2 ring-primary-400/60 scale-110' : ''}`}
             />
           ))}
         </div>

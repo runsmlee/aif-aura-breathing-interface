@@ -44,7 +44,7 @@ export function DurationSelector({
               disabled={disabled}
               role="radio"
               aria-checked={isSelected}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap
+              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap
                 ${
                   isSelected
                     ? 'bg-primary-500/20 text-primary-400 ring-1 ring-primary-500/50'

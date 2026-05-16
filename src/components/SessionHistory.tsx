@@ -88,7 +88,20 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
     return history.slice(-10).reverse();
   }, [history, selectedDay]);
 
-  if (history.length === 0) return null;
+  if (history.length === 0) {
+    return (
+      <div className="w-full max-w-md mx-auto empty-state-fade" data-testid="session-history-empty">
+        <div className="px-4 py-4 bg-gray-900/30 rounded-xl ring-1 ring-gray-800/30 text-center">
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Your breathing sessions will appear here.
+          </p>
+          <p className="text-[10px] text-gray-600 mt-1">
+            Start a session to begin tracking your progress.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -164,7 +177,7 @@ export function SessionHistory({ history, onClear }: SessionHistoryProps) {
               <li
                 key={`${record.date}-${idx}`}
                 data-date={toDateStr(record.date)}
-                className="px-4 py-2.5 flex items-center justify-between text-xs"
+                className="px-4 py-3 flex items-center justify-between text-xs transition-colors duration-150 hover:bg-gray-800/30"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary-500/60" aria-hidden="true" />

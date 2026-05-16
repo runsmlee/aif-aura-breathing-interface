@@ -29,7 +29,7 @@ export function Controls({
         {!isActive ? (
           <button
             onClick={onStart}
-            className="group relative px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 min-w-[140px] shadow-lg shadow-primary-500/25 hover:shadow-primary-500/35 start-pulse"
+            className="group relative px-8 py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 min-w-[140px] min-h-[44px] shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 start-pulse"
             aria-label="Start breathing session"
           >
             <span className="relative z-10">Start</span>
@@ -39,14 +39,14 @@ export function Controls({
           <>
             <button
               onClick={onPause}
-              className="px-6 py-3 bg-gray-700/90 hover:bg-gray-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 min-w-[100px] backdrop-blur-sm"
+              className="px-6 py-3.5 bg-gray-700/90 hover:bg-gray-600 text-white font-medium rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 min-w-[100px] min-h-[44px] backdrop-blur-sm"
               aria-label="Pause breathing session"
             >
               Pause
             </button>
             <button
               onClick={onReset}
-              className="px-6 py-3 bg-gray-800/80 hover:bg-gray-700 text-gray-300 font-medium rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 min-w-[100px] backdrop-blur-sm"
+              className="px-6 py-3.5 bg-gray-800/80 hover:bg-gray-700 text-gray-300 font-medium rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950 min-w-[100px] min-h-[44px] backdrop-blur-sm"
               aria-label="Reset breathing session"
             >
               Reset

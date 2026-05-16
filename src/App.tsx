@@ -192,7 +192,7 @@ export function App() {
       </main>
 
       <footer className="py-3 sm:py-4 text-center" role="contentinfo">
-        <p className="text-xs text-gray-600 transition-opacity duration-300">
+        <p className="text-[10px] sm:text-xs text-gray-600/80 tracking-wide transition-opacity duration-300">
           Focus on your breath. Find your calm.
         </p>
       </footer>

@@ -313,7 +313,7 @@ export function PatternSelector({
                 disabled={disabled}
                 role="radio"
                 aria-checked={isSelected}
-                className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap
                   ${
                     isSelected
                       ? 'bg-primary-500/20 text-primary-400 ring-1 ring-primary-500/50'
@@ -354,7 +354,7 @@ export function PatternSelector({
           disabled={disabled}
           role="radio"
           aria-checked={isCustomSelected && !customPatterns.some((p) => p.name === currentPattern.name)}
-          className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap
+          className={`flex-shrink-0 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap
             ${
               isCustomSelected && !customPatterns.some((p) => p.name === currentPattern.name)
                 ? 'bg-primary-500/20 text-primary-400 ring-1 ring-primary-500/50'
