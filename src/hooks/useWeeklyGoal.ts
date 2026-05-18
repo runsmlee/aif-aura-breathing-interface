@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { WEEKLY_GOAL_KEY, DEFAULT_WEEKLY_GOAL } from '../types';
+import { toLocalDateStr } from '../utils/format';
 
 interface UseWeeklyGoalReturn {
   weeklyGoal: number;
@@ -40,7 +41,7 @@ function loadSessionsThisWeek(): number {
       const parsed = JSON.parse(raw);
       if (typeof parsed === 'object' && parsed !== null && 'count' in parsed && 'weekStart' in parsed) {
         const monday = getMonday(new Date());
-        const mondayStr = toLocalISOString(monday);
+        const mondayStr = toLocalDateStr(monday);
         if (parsed.weekStart === mondayStr) {
           return parsed.count as number;
         }
@@ -52,17 +53,10 @@ function loadSessionsThisWeek(): number {
   return 0;
 }
 
-function toLocalISOString(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
 function saveSessionsThisWeek(count: number): void {
   try {
     const monday = getMonday(new Date());
-    localStorage.setItem('aura-sessions-this-week', JSON.stringify({ count, weekStart: toLocalISOString(monday) }));
+    localStorage.setItem('aura-sessions-this-week', JSON.stringify({ count, weekStart: toLocalDateStr(monday) }));
   } catch {
     // Storage unavailable
   }
@@ -112,7 +106,7 @@ export function useWeeklyGoal(): UseWeeklyGoalReturn {
   useEffect(() => {
     function checkWeekReset() {
       const monday = getMonday(new Date());
-      const mondayStr = toLocalISOString(monday);
+      const mondayStr = toLocalDateStr(monday);
       try {
         const raw = localStorage.getItem('aura-sessions-this-week');
         if (raw) {

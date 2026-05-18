@@ -95,6 +95,8 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
   const tip = TIPS[currentTip];
   const enterAnimation = prefersReducedMotion ? '' : 'animate-fade-in-up';
 
+  // Force re-trigger animation by using currentTip as part of the key on the inner div
+
   return (
     <div
       className="fixed inset-0 z-40 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
@@ -103,7 +105,7 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
       aria-label="Quick tips"
       aria-describedby="onboarding-tip-description"
     >
-      <div ref={focusTrapRef as RefObject<HTMLDivElement>} className={`w-full max-w-sm bg-gray-900 border border-gray-800/80 rounded-3xl p-6 shadow-2xl shadow-black/50 ${enterAnimation} max-h-[90vh] overflow-y-auto`}>
+      <div ref={focusTrapRef as RefObject<HTMLDivElement>} key={`tip-${currentTip}`} className={`w-full max-w-sm bg-gray-900 border border-gray-800/80 rounded-3xl p-6 shadow-2xl shadow-black/50 ${enterAnimation} max-h-[90vh] overflow-y-auto`}>
         {/* Tip content */}
         <div className="text-center mb-5">
           <span className="text-3xl" role="img" aria-hidden="true">{tip.icon}</span>

@@ -32,3 +32,20 @@ export function formatPatternTiming(pattern: { inhale: number; hold: number; exh
   if (pattern.holdAfterExhale > 0) parts.push(String(pattern.holdAfterExhale));
   return parts.join(' · ');
 }
+
+/** Format a breathing pattern's timing with descriptive labels (e.g. "4s in · 4s hold · 4s out") */
+export function formatPatternTimingDetailed(pattern: { inhale: number; hold: number; exhale: number; holdAfterExhale: number }): string {
+  const parts: string[] = [];
+  if (pattern.inhale > 0) parts.push(`${pattern.inhale}s in`);
+  if (pattern.hold > 0) parts.push(`${pattern.hold}s hold`);
+  if (pattern.exhale > 0) parts.push(`${pattern.exhale}s out`);
+  if (pattern.holdAfterExhale > 0) parts.push(`${pattern.holdAfterExhale}s hold`);
+  return parts.join(' · ');
+}
+
+/** Compute breaths per minute for a breathing pattern, returned as a formatted string */
+export function computePatternBPM(pattern: { inhale: number; hold: number; exhale: number; holdAfterExhale: number }): string {
+  const totalCycleDuration = pattern.inhale + pattern.hold + pattern.exhale + pattern.holdAfterExhale;
+  const bpm = totalCycleDuration > 0 ? Math.round((60 / totalCycleDuration) * 10) / 10 : 0;
+  return bpm.toFixed(1);
+}

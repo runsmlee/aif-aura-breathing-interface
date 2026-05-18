@@ -113,7 +113,7 @@ export function SessionCalendar({ history, onDayClick, selectedDay }: SessionCal
 
       {/* Calendar grid */}
       {rows.map((row, rowIdx) => (
-        <div key={rowIdx} className="grid grid-cols-7 gap-1">
+        <div key={rowIdx} className="grid grid-cols-7 gap-1" role="row">
           {row.map((day) => (
             <button
               key={day.dateStr}

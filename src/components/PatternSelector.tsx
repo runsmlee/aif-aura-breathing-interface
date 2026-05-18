@@ -1,26 +1,12 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { BREATHING_PATTERNS, CUSTOM_PATTERNS_KEY, MAX_CUSTOM_PATTERNS, PHASE_COLORS } from '../types';
 import type { BreathingPattern, CustomPattern } from '../types';
+import { formatPatternTimingDetailed, computePatternBPM } from '../utils/format';
 
 interface PatternSelectorProps {
   currentPattern: BreathingPattern;
   onSelectPattern: (pattern: BreathingPattern) => void;
   disabled: boolean;
-}
-
-function formatPatternTiming(pattern: BreathingPattern): string {
-  const parts: string[] = [];
-  if (pattern.inhale > 0) parts.push(`${pattern.inhale}s in`);
-  if (pattern.hold > 0) parts.push(`${pattern.hold}s hold`);
-  if (pattern.exhale > 0) parts.push(`${pattern.exhale}s out`);
-  if (pattern.holdAfterExhale > 0) parts.push(`${pattern.holdAfterExhale}s hold`);
-  return parts.join(' · ');
-}
-
-function computeBPM(pattern: BreathingPattern): string {
-  const totalCycleDuration = pattern.inhale + pattern.hold + pattern.exhale + pattern.holdAfterExhale;
-  const bpm = totalCycleDuration > 0 ? Math.round((60 / totalCycleDuration) * 10) / 10 : 0;
-  return bpm.toFixed(1);
 }
 
 function loadCustomPatterns(): CustomPattern[] {
@@ -373,10 +359,10 @@ export function PatternSelector({
           {currentPattern.description}
         </p>
         <p className="text-[10px] text-gray-600 mt-1 tracking-wide tabular-nums">
-          {formatPatternTiming(currentPattern)}
+          {formatPatternTimingDetailed(currentPattern)}
         </p>
         <p className="text-[10px] text-gray-600 mt-0.5 tabular-nums">
-          {computeBPM(currentPattern)} breaths/min
+          {computePatternBPM(currentPattern)} breaths/min
         </p>
       </div>
 
