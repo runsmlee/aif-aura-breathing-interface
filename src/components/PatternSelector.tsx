@@ -124,7 +124,7 @@ function CustomPatternEditor({
 
       <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <label className="text-[10px] text-gray-500 uppercase tracking-wider w-14 flex-shrink-0">Inhale</label>
+          <label className="text-[10px] text-gray-400 uppercase tracking-wider w-14 flex-shrink-0">Inhale</label>
           <input
             type="range"
             min={1}
@@ -139,7 +139,7 @@ function CustomPatternEditor({
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-[10px] text-gray-500 uppercase tracking-wider w-14 flex-shrink-0">Hold</label>
+          <label className="text-[10px] text-gray-400 uppercase tracking-wider w-14 flex-shrink-0">Hold</label>
           <input
             type="range"
             min={0}
@@ -154,7 +154,7 @@ function CustomPatternEditor({
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-[10px] text-gray-500 uppercase tracking-wider w-14 flex-shrink-0">Exhale</label>
+          <label className="text-[10px] text-gray-400 uppercase tracking-wider w-14 flex-shrink-0">Exhale</label>
           <input
             type="range"
             min={1}
@@ -169,7 +169,7 @@ function CustomPatternEditor({
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-[10px] text-gray-500 uppercase tracking-wider w-14 flex-shrink-0">Hold</label>
+          <label className="text-[10px] text-gray-400 uppercase tracking-wider w-14 flex-shrink-0">Hold</label>
           <input
             type="range"
             min={0}
@@ -192,7 +192,7 @@ function CustomPatternEditor({
           placeholder={`Custom ${customPatterns.length + 1}`}
           maxLength={30}
           disabled={disabled}
-          className="flex-1 px-3 py-1.5 bg-gray-800/60 rounded-lg text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:opacity-50"
+          className="flex-1 px-3 py-1.5 bg-gray-800/60 rounded-lg text-sm text-gray-300 placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:opacity-50"
           aria-label="Pattern name"
         />
         <button
@@ -325,7 +325,7 @@ export function PatternSelector({
                   }}
                   disabled={disabled}
                   aria-label={`Delete ${pattern.name}`}
-                  className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center rounded-full bg-gray-700 text-gray-400 hover:bg-red-500/80 hover:text-white text-[10px] leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
+                  className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center rounded-full bg-gray-700 text-white hover:bg-red-500/80 hover:text-white text-[10px] leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
                 >
                   ×
                 </button>
@@ -355,13 +355,13 @@ export function PatternSelector({
       </div>
 
       <div className="mt-2 text-center">
-        <p className="text-xs text-gray-500 leading-relaxed">
+        <p className="text-xs text-gray-400 leading-relaxed">
           {currentPattern.description}
         </p>
-        <p className="text-[10px] text-gray-600 mt-1 tracking-wide tabular-nums">
+        <p className="text-[10px] text-gray-500 mt-1 tracking-wide tabular-nums">
           {formatPatternTimingDetailed(currentPattern)}
         </p>
-        <p className="text-[10px] text-gray-600 mt-0.5 tabular-nums">
+        <p className="text-[10px] text-gray-500 mt-0.5 tabular-nums">
           {computePatternBPM(currentPattern)} breaths/min
         </p>
       </div>

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --color-primary: #EF4444;
+    --color-primary: #B91C1C;
     --color-inhale: #14B8A6;
     --color-hold: #F59E0B;
     --color-exhale: #EF4444;
@@ -222,7 +222,7 @@
 
 /* Phase color transition on progress bars — smoother gradient */
 .phase-progress-bar {
-  transition: width 150ms ease-in-out, background-color 300ms ease-out;
+  transition: background-color 300ms ease-out;
 }
 
 /* Progress bar with shimmer effect */

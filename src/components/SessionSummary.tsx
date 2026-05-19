@@ -77,7 +77,7 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${
-        animateIn ? 'bg-black/60 backdrop-blur-sm' : 'bg-black/0'
+        animateIn ? 'bg-slate-950/60 backdrop-blur-sm' : 'bg-slate-950/0'
       }`}
       role="dialog"
       aria-modal="true"
@@ -96,7 +96,7 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
           <h2 className="text-xl font-medium text-white">Session Complete</h2>
           <p id="session-summary-description" className="text-sm text-gray-400 mt-1">{getMotivationalMessage(stats.cyclesCompleted)}</p>
           {getDurationMessage(stats.totalDuration) && (
-            <p className="text-xs text-gray-500 mt-0.5">{getDurationMessage(stats.totalDuration)}</p>
+            <p className="text-xs text-gray-400 mt-0.5">{getDurationMessage(stats.totalDuration)}</p>
           )}
           {/* Personal best badge */}
           {isNewBest && (
@@ -107,7 +107,7 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
           )}
           {/* Previous best comparison */}
           {isNewBest && personalBest && personalBest.totalDuration > 0 && (
-            <p className="text-[10px] text-gray-500 mt-1">
+            <p className="text-[10px] text-gray-400 mt-1">
               Previous best: {formatDuration(personalBest.totalDuration)} ({Math.round(((stats.totalDuration - personalBest.totalDuration) / personalBest.totalDuration) * 100)}% longer)
             </p>
           )}
@@ -122,24 +122,24 @@ export function SessionSummary({ stats, pattern, isVisible, onDismiss, onStartAg
         <div className="grid grid-cols-3 gap-3 mb-6">
           <div className="text-center p-3 bg-gray-800/50 rounded-2xl ring-1 ring-gray-700/30">
             <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">{stats.cyclesCompleted}</p>
-            <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Cycles</p>
+            <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Cycles</p>
           </div>
           <div className="text-center p-3 bg-gray-800/50 rounded-2xl ring-1 ring-gray-700/30">
             <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">{formatDuration(stats.totalDuration)}</p>
-            <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Duration</p>
+            <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Duration</p>
           </div>
           <div className="text-center p-3 bg-gray-800/50 rounded-2xl ring-1 ring-gray-700/30">
             <p className="text-2xl sm:text-3xl font-light text-white tabular-nums">{stats.breathsPerMinute}</p>
-            <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">BPM</p>
+            <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">BPM</p>
           </div>
         </div>
 
         {/* Pattern used */}
         <div className="text-center mb-6">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-400">
             Pattern: {pattern.name}
           </p>
-          <p className="text-[10px] text-gray-600 mt-0.5 tracking-wide tabular-nums">
+          <p className="text-[10px] text-gray-500 mt-0.5 tracking-wide tabular-nums">
             {[pattern.inhale, pattern.hold, pattern.exhale, pattern.holdAfterExhale].some(v => v > 0)
               ? [
                   pattern.inhale > 0 ? `${pattern.inhale}s in` : '',

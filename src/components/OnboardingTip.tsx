@@ -99,13 +99,13 @@ export function OnboardingTip({ hasCompletedASession }: OnboardingTipProps) {
 
   return (
     <div
-      className="fixed inset-0 z-40 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+      className="fixed inset-0 z-40 flex items-end sm:items-center justify-center p-4 bg-slate-950/45 backdrop-blur-sm transition-opacity duration-300"
       role="dialog"
       aria-modal="true"
       aria-label="Quick tips"
       aria-describedby="onboarding-tip-description"
     >
-      <div ref={focusTrapRef as RefObject<HTMLDivElement>} key={`tip-${currentTip}`} className={`w-full max-w-sm bg-gray-900 border border-gray-800/80 rounded-3xl p-6 shadow-2xl shadow-black/50 ${enterAnimation} max-h-[90vh] overflow-y-auto`}>
+      <div ref={focusTrapRef as RefObject<HTMLDivElement>} key={`tip-${currentTip}`} className={`w-full max-w-sm bg-gray-900 border border-gray-800/80 rounded-3xl p-6 shadow-2xl shadow-slate-950/50 ${enterAnimation} max-h-[90vh] overflow-y-auto`}>
         {/* Tip content */}
         <div className="text-center mb-5">
           <span className="text-3xl" role="img" aria-hidden="true">{tip.icon}</span>
