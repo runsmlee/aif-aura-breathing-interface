@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Aura — A calming breathing interface for mindful breathing exercises with guided patterns, visual feedback, and progress tracking." />
+    <meta name="description" content="Aura — Guided breathing exercises with visual feedback, calming patterns, and progress tracking to reduce stress and improve focus." />
+    <meta property="og:title" content="Aura — Guided Breathing for Calm and Focus" />
+    <meta property="og:description" content="Aura — Guided breathing exercises with visual feedback, calming patterns, and progress tracking to reduce stress and improve focus." />
     <meta name="theme-color" content="#EF4444" />
     <meta name="color-scheme" content="dark" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,14 +18,18 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>" />
-    <title>Aura — Breathing Interface</title>
+    <title>Aura — Guided Breathing for Calm and Focus</title>
+    <meta name="aif-mvp-id" content="%VITE_MVP_ID%" />
+    <meta name="aif-api" content="https://www.aifounders.live/api/analytics" />
+    <script async src="https://www.aifounders.live/aif.js"></script>
     <style>
       /* Critical CSS — renders instantly before JS hydrates */
       body{margin:0;background:#030712;color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       #preloader{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh;gap:16px;transition:opacity .4s ease-out}
       #preloader.fade-out{opacity:0;pointer-events:none}
       .preloader-circle{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4B5563,#1F2937);animation:preloaderBreath 4s ease-in-out infinite}
-      .preloader-text{color:#4B5563;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+      .preloader-text{color:#9CA3AF;font-size:14px;letter-spacing:.05em}
+      .preloader-subtext{color:#4B5563;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
       @keyframes preloaderBreath{0%,100%{transform:scale(.45);opacity:.6}50%{transform:scale(.65);opacity:1}}
       @media(prefers-reduced-motion:reduce){.preloader-circle{animation:none;opacity:.8}}
     </style>
@@ -32,14 +38,16 @@
     <div id="root">
       <div id="preloader">
         <div class="preloader-circle"></div>
-        <div class="preloader-text">Loading</div>
+        <div class="preloader-text">Press Start to begin your session</div>
+        <div class="preloader-subtext">Loading</div>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
     <noscript>
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center;color:#9CA3AF;font-family:system-ui,sans-serif">
-        <p style="font-size:1.25rem;color:#fff;margin-bottom:0.5rem">Aura requires JavaScript</p>
-        <p>Please enable JavaScript in your browser settings to use the breathing interface.</p>
+        <h1 style="font-size:1.5rem;color:#fff;margin-bottom:0.5rem">Aura — Guided Breathing</h1>
+        <p style="font-size:1rem;margin-bottom:1rem">Guided breathing exercises with visual feedback, calming patterns, and progress tracking to reduce stress and improve focus.</p>
+        <p style="font-size:0.875rem">Please enable JavaScript in your browser settings to use the breathing interface.</p>
       </div>
     </noscript>
   </body>

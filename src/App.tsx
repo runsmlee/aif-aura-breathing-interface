@@ -1,5 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Header, ErrorBoundary } from './components';
+import { BreathingCircle } from './components/BreathingCircle';
+import { Controls } from './components/Controls';
+import { SessionStats } from './components/SessionStats';
 import { useBreathingEngine, useAudioFeedback, useKeyboardShortcuts, useHapticFeedback } from './hooks';
 import { useStreakTracker } from './hooks/useStreakTracker';
 import { useWeeklyGoal } from './hooks/useWeeklyGoal';
@@ -7,9 +10,6 @@ import { usePersonalBest } from './hooks/usePersonalBest';
 import { PHASE_COLORS } from './types';
 import { formatPatternTiming } from './utils';
 
-const BreathingCircle = lazy(() => import('./components/BreathingCircle').then((m) => ({ default: m.BreathingCircle })));
-const Controls = lazy(() => import('./components/Controls').then((m) => ({ default: m.Controls })));
-const SessionStats = lazy(() => import('./components/SessionStats').then((m) => ({ default: m.SessionStats })));
 const PatternSelector = lazy(() => import('./components/PatternSelector').then((m) => ({ default: m.PatternSelector })));
 const DurationSelector = lazy(() => import('./components/DurationSelector').then((m) => ({ default: m.DurationSelector })));
 const SessionSummary = lazy(() => import('./components/SessionSummary').then((m) => ({ default: m.SessionSummary })));
@@ -108,12 +108,7 @@ export function App() {
 
       <main id="main-content" className={`flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto transition-all duration-500 ${engine.isActive ? 'session-active' : ''}`}>
         {/* Breathing visualization */}
-        <Suspense fallback={
-          <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center bg-gray-900/40 animate-pulse" aria-hidden="true">
-            <div className="w-16 h-16 rounded-full border-2 border-gray-700/50 border-t-primary-500/50 animate-spin" />
-          </div>
-        }>
-          <BreathingCircle
+        <BreathingCircle
           phase={engine.phase}
           progress={engine.progress}
           secondsRemaining={engine.secondsRemaining}
@@ -122,24 +117,19 @@ export function App() {
           cyclesCompleted={engine.cyclesCompleted}
           patternTiming={formatPatternTiming(engine.currentPattern)}
         />
-        </Suspense>
 
         {/* Session stats */}
-        <Suspense fallback={null}>
-          <SessionStats stats={engine.stats} isVisible={engine.isActive} timeRemaining={engine.timeRemaining} targetDuration={engine.targetDuration} />
-        </Suspense>
+        <SessionStats stats={engine.stats} isVisible={engine.isActive} timeRemaining={engine.timeRemaining} targetDuration={engine.targetDuration} />
 
         {/* Controls */}
-        <Suspense fallback={null}>
-          <Controls
-            isActive={engine.isActive}
-            onStart={engine.start}
-            onPause={engine.pause}
-            onReset={handleReset}
-            totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
-            phaseColor={engine.isActive ? PHASE_COLORS[engine.phase] : undefined}
-          />
-        </Suspense>
+        <Controls
+          isActive={engine.isActive}
+          onStart={engine.start}
+          onPause={engine.pause}
+          onReset={handleReset}
+          totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
+          phaseColor={engine.isActive ? PHASE_COLORS[engine.phase] : undefined}
+        />
 
         {/* Duration selector */}
         <Suspense fallback={null}>
