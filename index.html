@@ -29,7 +29,6 @@
       #preloader.fade-out{opacity:0;pointer-events:none}
       .preloader-circle{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4B5563,#1F2937);animation:preloaderBreath 4s ease-in-out infinite}
       .preloader-text{color:#9CA3AF;font-size:14px;letter-spacing:.05em}
-      .preloader-subtext{color:#4B5563;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
       @keyframes preloaderBreath{0%,100%{transform:scale(.45);opacity:.6}50%{transform:scale(.65);opacity:1}}
       @media(prefers-reduced-motion:reduce){.preloader-circle{animation:none;opacity:.8}}
     </style>
@@ -39,7 +38,6 @@
       <div id="preloader">
         <div class="preloader-circle"></div>
         <div class="preloader-text">Press Start to begin your session</div>
-        <div class="preloader-subtext">Loading</div>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>

@@ -210,6 +210,20 @@
   animation: idleGlow 4s ease-in-out infinite;
 }
 
+/* Idle circle gentle scale pulse — main circle breathes before session starts */
+.idle-circle-breath {
+  animation: idleCircleBreath 6s ease-in-out infinite, idleGlow 4s ease-in-out infinite;
+}
+
+@keyframes idleCircleBreath {
+  0%, 100% {
+    transform: scale(0.42);
+  }
+  50% {
+    transform: scale(0.52);
+  }
+}
+
 /* Start button pulse — gentle inviting glow */
 .start-pulse {
   animation: startPulse 2.5s ease-in-out infinite;

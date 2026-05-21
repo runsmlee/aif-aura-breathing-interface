@@ -31,4 +31,26 @@ describe('BreathingCircle idle state improvements', () => {
     const inviteRing = container.querySelector('.border-gray-700\\/20');
     expect(inviteRing).not.toBeInTheDocument();
   });
+
+  it('applies idle-circle-breath animation class in idle state', () => {
+    const { container } = render(<BreathingCircle phase="idle" progress={0} secondsRemaining={0} />);
+    // The main circle should have the idle-circle-breath class for the breathing animation
+    const mainCircle = container.querySelector('.idle-circle-breath');
+    expect(mainCircle).toBeInTheDocument();
+  });
+
+  it('does not apply idle-circle-breath class during active phase', () => {
+    const { container } = render(<BreathingCircle phase="inhale" progress={0.5} secondsRemaining={2} />);
+    const mainCircle = container.querySelector('.idle-circle-breath');
+    expect(mainCircle).not.toBeInTheDocument();
+  });
+
+  it('does not use inline transform in idle state without reduced motion', () => {
+    const { container } = render(<BreathingCircle phase="idle" progress={0} secondsRemaining={0} />);
+    // The main circle should NOT have an inline transform — CSS animation handles scale
+    const mainCircle = container.querySelector('.idle-circle-breath');
+    expect(mainCircle).toBeInTheDocument();
+    // Inline transform should be absent (CSS animation handles it)
+    expect((mainCircle as HTMLElement).style.transform).toBe('');
+  });
 });

@@ -230,6 +230,33 @@ export function BreathingCircle({
   const transitionDuration = prefersReducedMotion ? '0ms' : '150ms';
   const glowTransitionDuration = prefersReducedMotion ? '0ms' : '500ms';
 
+  // Build main circle styles conditionally:
+  // - Active: inline transform driven by engine progress
+  // - Idle + motion OK: CSS animation handles scale breathing (no inline transform)
+  // - Idle + reduced motion: static inline scale
+  const mainCircleClassName = `relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center ${
+    !isActive && !prefersReducedMotion ? 'idle-circle-breath' : ''
+  }`;
+
+  const mainCircleStyle: React.CSSProperties = isActive
+    ? {
+        transform: `scale(${scaleValue})`,
+        transition: `transform ${transitionDuration} ease-in-out, box-shadow ${glowTransitionDuration} ease-out`,
+        background: `radial-gradient(circle at 35% 35%, ${color}dd, ${color}88 60%, ${color}44)`,
+        boxShadow: `0 0 40px ${color}55, 0 0 80px ${color}33, 0 0 120px ${color}11, inset 0 0 30px ${color}22`,
+      }
+    : prefersReducedMotion
+      ? {
+          transform: 'scale(0.45)',
+          background: 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
+          boxShadow: '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
+        }
+      : {
+          // No inline transform — CSS idle-circle-breath animation handles scale
+          background: 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
+          boxShadow: '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
+        };
+
   return (
     <>
       <AmbientBackground phase={phase} />
@@ -310,19 +337,8 @@ export function BreathingCircle({
 
           {/* Main circle */}
           <div
-            className={`relative w-56 h-56 sm:w-64 sm:h-64 rounded-full flex items-center justify-center ${
-              !isActive && !prefersReducedMotion ? 'idle-glow' : ''
-            }`}
-            style={{
-              transform: `scale(${scaleValue})`,
-              transition: `transform ${transitionDuration} ease-in-out, box-shadow ${glowTransitionDuration} ease-out`,
-              background: isActive
-                ? `radial-gradient(circle at 35% 35%, ${color}dd, ${color}88 60%, ${color}44)`
-                : 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
-              boxShadow: isActive
-                ? `0 0 40px ${color}55, 0 0 80px ${color}33, 0 0 120px ${color}11, inset 0 0 30px ${color}22`
-                : '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
-            }}
+            className={mainCircleClassName}
+            style={mainCircleStyle}
           >
             {/* Smooth phase color blend overlay for softer transitions */}
             {isActive && !prefersReducedMotion && (
