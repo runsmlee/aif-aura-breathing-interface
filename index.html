@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Aura — Guided breathing exercises with visual feedback, calming patterns, and progress tracking to reduce stress and improve focus." />
-    <meta property="og:title" content="Aura — Guided Breathing for Calm and Focus" />
-    <meta property="og:description" content="Aura — Guided breathing exercises with visual feedback, calming patterns, and progress tracking to reduce stress and improve focus." />
+    <meta name="description" content="Free guided breathing exercises — box breathing, 4-7-8, and coherent breathing. Visual pacing keeps you on rhythm. Reduce stress, improve focus, and sleep better. No signup, no ads." />
+    <meta property="og:title" content="Aura — Free Breathing Exercises for Calm, Focus & Sleep" />
+    <meta property="og:description" content="Free guided breathing exercises — box breathing, 4-7-8, and coherent breathing. Visual pacing keeps you on rhythm. Reduce stress, improve focus, and sleep better. No signup, no ads." />
     <meta name="theme-color" content="#EF4444" />
     <meta name="color-scheme" content="dark" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -18,10 +18,26 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>" />
-    <title>Aura — Guided Breathing for Calm and Focus</title>
+    <title>Aura — Free Breathing Exercises for Calm, Focus & Sleep</title>
     <meta name="aif-mvp-id" content="%VITE_MVP_ID%" />
     <meta name="aif-api" content="https://www.aifounders.live/api/analytics" />
     <script async src="https://www.aifounders.live/aif.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Aura",
+      "description": "Free guided breathing exercises — box breathing, 4-7-8, and coherent breathing. Visual pacing keeps you on rhythm. Reduce stress, improve focus, and sleep better.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "browserRequirements": "Requires JavaScript"
+    }
+    </script>
     <style>
       /* Critical CSS — renders instantly before JS hydrates */
       body{margin:0;background:#030712;color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -37,14 +53,16 @@
     <div id="root">
       <div id="preloader">
         <div class="preloader-circle"></div>
-        <div class="preloader-text">Press Start to begin your session</div>
+        <div class="preloader-text">Guided breathing exercises — box breathing, 4-7-8, and coherent breathing. Visual pacing keeps you on rhythm.</div>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
     <noscript>
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center;color:#9CA3AF;font-family:system-ui,sans-serif">
-        <h1 style="font-size:1.5rem;color:#fff;margin-bottom:0.5rem">Aura — Guided Breathing</h1>
-        <p style="font-size:1rem;margin-bottom:1rem">Guided breathing exercises with visual feedback, calming patterns, and progress tracking to reduce stress and improve focus.</p>
+        <h1 style="font-size:1.5rem;color:#fff;margin-bottom:0.5rem">Aura — Free Breathing Exercises for Calm, Focus & Sleep</h1>
+        <p style="font-size:1rem;margin-bottom:0.5rem">Simple guided breathing patterns — box breathing, 4-7-8, and coherent breathing. Visual pacing keeps you on rhythm.</p>
+        <p style="font-size:1rem;margin-bottom:0.5rem">Reduce stress, improve focus, and sleep better with proven breathing techniques.</p>
+        <p style="font-size:1rem;margin-bottom:1rem">No signup, no ads, just breathe.</p>
         <p style="font-size:0.875rem">Please enable JavaScript in your browser settings to use the breathing interface.</p>
       </div>
     </noscript>

@@ -107,6 +107,20 @@ export function App() {
       <Header soundEnabled={soundEnabled} onToggleSound={handleToggleSound} streakData={streakData} weeklyGoalData={{ sessionsThisWeek, weeklyGoal }} isSessionActive={engine.isActive} />
 
       <main id="main-content" className={`flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 overflow-y-auto transition-all duration-500 ${engine.isActive ? 'session-active' : ''}`}>
+        {/* SEO-targeted heading and benefit copy — visible when idle */}
+        {!engine.isActive && (
+          <div className="text-center max-w-md space-y-2 mb-2">
+            <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
+              Breathing Exercises for Calm, Focus & Sleep
+            </h1>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Simple guided breathing patterns — box breathing, 4-7-8, and coherent breathing. Visual pacing keeps you on rhythm.
+            </p>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              No signup, no ads, just breathe.
+            </p>
+          </div>
+        )}
         {/* Breathing visualization */}
         <BreathingCircle
           phase={engine.phase}

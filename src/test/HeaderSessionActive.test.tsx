@@ -33,7 +33,6 @@ describe('Header session-active indicator', () => {
       <Header soundEnabled={true} onToggleSound={vi.fn()} isSessionActive={true} />
     );
     expect(screen.getByText('Aura')).toBeInTheDocument();
-    expect(screen.getByText('Breathing Interface')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /mute sound/i })).toBeInTheDocument();
   });
 });

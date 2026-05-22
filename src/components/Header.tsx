@@ -26,12 +26,9 @@ export function Header({ soundEnabled, onToggleSound, streakData, weeklyGoalData
           aria-hidden="true"
         />
         <div>
-          <h1 className="text-lg sm:text-xl font-medium tracking-wide text-white leading-tight">
+          <span className="text-lg sm:text-xl font-medium tracking-wide text-white leading-tight" aria-hidden="true">
             Aura
-          </h1>
-          <p className="text-[10px] sm:text-xs text-gray-500 tracking-wider uppercase">
-            Breathing Interface
-          </p>
+          </span>
         </div>
       </div>
 

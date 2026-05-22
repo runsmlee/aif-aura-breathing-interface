@@ -10,6 +10,21 @@ describe('App', () => {
     expect(screen.getByText('Aura')).toBeInTheDocument();
   });
 
+  it('renders the SEO-targeted H1 heading', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathing Exercises for Calm, Focus & Sleep');
+  });
+
+  it('renders benefit copy text', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+    expect(screen.getByText(/box breathing, 4-7-8, and coherent breathing/i)).toBeInTheDocument();
+    expect(screen.getByText(/no signup, no ads, just breathe/i)).toBeInTheDocument();
+  });
+
   it('renders the Start button', async () => {
     await act(async () => {
       render(<App />);

@@ -4,14 +4,9 @@ import { describe, it, expect, vi } from 'vitest';
 import { Header } from '../components/Header';
 
 describe('Header', () => {
-  it('renders the Aura title', () => {
+  it('renders the Aura brand mark', () => {
     render(<Header soundEnabled={true} onToggleSound={vi.fn()} />);
     expect(screen.getByText('Aura')).toBeInTheDocument();
-  });
-
-  it('renders the subtitle', () => {
-    render(<Header soundEnabled={true} onToggleSound={vi.fn()} />);
-    expect(screen.getByText('Breathing Interface')).toBeInTheDocument();
   });
 
   it('renders sound toggle button with correct label when enabled', () => {
