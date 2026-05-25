@@ -10,11 +10,11 @@ describe('App', () => {
     expect(screen.getByText('Aura')).toBeInTheDocument();
   });
 
-  it('renders the SEO-targeted H1 heading', async () => {
+  it('renders the brand-forward H1 heading', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathing Exercises for Calm, Focus & Sleep');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathe with rhythm. Calm on command.');
   });
 
   it('renders benefit copy text', async () => {
@@ -50,9 +50,9 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText('Box Breathing')).toBeInTheDocument();
+    expect(screen.getAllByText('Box Breathing').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('4-7-8 Relaxation')).toBeInTheDocument();
-    expect(screen.getByText('Coherent Breathing')).toBeInTheDocument();
+    expect(screen.getAllByText('Coherent Breathing').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Energizing Breath')).toBeInTheDocument();
   });
 
@@ -61,5 +61,33 @@ describe('App', () => {
       render(<App />);
     });
     expect(screen.getByText('Ready')).toBeInTheDocument();
+  });
+
+  it('renders structured SEO content with technique H2s', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+    const headings = screen.getAllByRole('heading', { level: 2 });
+    const headingTexts = headings.map((h) => h.textContent);
+    expect(headingTexts).toContain('Box Breathing');
+    expect(headingTexts).toContain('4-7-8 Relaxation Breathing');
+    expect(headingTexts).toContain('Coherent Breathing');
+    expect(headingTexts).toContain('How It Works');
+  });
+
+  it('renders technique descriptions with pattern timing details', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+    expect(screen.getByText(/equal 4-second phases/i)).toBeInTheDocument();
+    expect(screen.getByText(/4-second inhale, 7-second hold, and 8-second exhale/i)).toBeInTheDocument();
+    expect(screen.getByText(/equal 5-second inhale and 5-second exhale/i)).toBeInTheDocument();
+  });
+
+  it('renders the breathing techniques guide section', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+    expect(screen.getByRole('region', { name: /breathing techniques guide/i })).toBeInTheDocument();
   });
 });
