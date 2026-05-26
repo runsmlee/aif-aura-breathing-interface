@@ -14,15 +14,15 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathe with rhythm. Calm on command.');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Guided Breathing Exercises — Box, 4-7-8, Coherent');
   });
 
   it('renders benefit copy text', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText(/box breathing, 4-7-8, and coherent breathing/i)).toBeInTheDocument();
-    expect(screen.getByText(/no signup, no ads, just breathe/i)).toBeInTheDocument();
+    expect(screen.getByText(/visual rhythm guide/i)).toBeInTheDocument();
+    expect(screen.getByText(/reduce stress, improve focus/i)).toBeInTheDocument();
   });
 
   it('renders the Start button', async () => {

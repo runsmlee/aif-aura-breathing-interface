@@ -113,13 +113,10 @@ export function App() {
           {!engine.isActive && (
             <div className="text-center max-w-md space-y-2 mb-2">
               <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
-                Breathe with rhythm. Calm on command.
+                Guided Breathing Exercises — Box, 4-7-8, Coherent
               </h1>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Simple guided breathing patterns — box breathing, 4-7-8, and coherent breathing. Visual pacing keeps you on rhythm.
-              </p>
-              <p className="text-sm text-gray-500 leading-relaxed">
-                No signup, no ads, just breathe.
+                Free visual rhythm guide for box breathing, 4-7-8 relaxation, and coherent breathing. Reduce stress, improve focus, sleep better.
               </p>
             </div>
           )}
