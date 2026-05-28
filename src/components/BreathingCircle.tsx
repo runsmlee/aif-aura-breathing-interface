@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import type { BreathingPhase } from '../types';
 import { PHASE_LABELS, PHASE_COLORS, PHASE_GUIDANCE } from '../types';
 import { usePrefersReducedMotion } from '../hooks';
@@ -11,6 +11,7 @@ interface BreathingCircleProps {
   currentPhaseIndex?: number;
   cyclesCompleted?: number;
   patternTiming?: string;
+  onStart?: () => void;
 }
 
 const CIRCLE_SIZE = 224; // 56 * 4 for crisp SVG
@@ -205,6 +206,7 @@ export function BreathingCircle({
   currentPhaseIndex,
   cyclesCompleted = 0,
   patternTiming,
+  onStart,
 }: BreathingCircleProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -257,12 +259,27 @@ export function BreathingCircle({
           boxShadow: '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
         };
 
+  const canStart = !isActive && !!onStart;
+
+  const handleCircleClick = useCallback(() => {
+    if (canStart) {
+      onStart?.();
+    }
+  }, [canStart, onStart]);
+
+  const handleCircleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (canStart && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      onStart?.();
+    }
+  }, [canStart, onStart]);
+
   return (
     <>
       <AmbientBackground phase={phase} />
-      <div className="flex flex-col items-center justify-center gap-4 sm:gap-6" role="img" aria-label={`Breathing phase: ${label}. ${guidance}`}>
+      <div className="flex flex-col items-center justify-center gap-4 sm:gap-6" role={!canStart ? 'img' : undefined} aria-label={!canStart ? `Breathing phase: ${label}. ${guidance}` : undefined}>
         {/* Outer glow + particle ring */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center" {...(canStart ? { role: 'button', tabIndex: 0, 'aria-label': 'Start breathing session', onClick: handleCircleClick, onKeyDown: handleCircleKeyDown, style: { cursor: 'pointer' } } : {})}>
           {isActive && !prefersReducedMotion && (
             <>
               <div

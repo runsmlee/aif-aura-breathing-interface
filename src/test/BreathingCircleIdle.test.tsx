@@ -10,7 +10,7 @@ describe('BreathingCircle idle state improvements', () => {
 
   it('renders idle guidance text inviting interaction', () => {
     render(<BreathingCircle phase="idle" progress={0} secondsRemaining={0} />);
-    expect(screen.getByText('Press Start to begin your session')).toBeInTheDocument();
+    expect(screen.getByText('Tap the circle to start your breathing session')).toBeInTheDocument();
   });
 
   it('does not render progress bar in idle state', () => {

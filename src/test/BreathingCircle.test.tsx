@@ -10,7 +10,7 @@ describe('BreathingCircle', () => {
 
   it('renders idle guidance text', () => {
     render(<BreathingCircle phase="idle" progress={0} secondsRemaining={0} />);
-    expect(screen.getByText('Press Start to begin your session')).toBeInTheDocument();
+    expect(screen.getByText('Tap the circle to start your breathing session')).toBeInTheDocument();
   });
 
   it('renders the inhale phase with correct label and countdown', () => {

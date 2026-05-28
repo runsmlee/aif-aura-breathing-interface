@@ -129,6 +129,7 @@ export function App() {
             currentPhaseIndex={engine.currentPhaseIndex}
             cyclesCompleted={engine.cyclesCompleted}
             patternTiming={formatPatternTiming(engine.currentPattern)}
+            onStart={!engine.isActive ? engine.start : undefined}
           />
 
           {/* Session stats */}
@@ -196,29 +197,62 @@ export function App() {
 
         {/* Structured SEO content — below the fold, visible only when idle */}
         {!engine.isActive && (
-          <section aria-label="Breathing techniques guide" className="max-w-2xl mx-auto px-6 py-12 sm:py-16 space-y-10">
+          <section aria-label="Breathing techniques guide" className="max-w-2xl mx-auto px-6 py-12 sm:py-16 space-y-12">
             <div>
-              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">Box Breathing</h2>
+              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">Box Breathing for Anxiety and Stress Relief</h2>
+              <p className="text-sm text-gray-400 leading-relaxed mb-4">
+                Box breathing — also known as four-square breathing or tactical breathing — uses equal 4-second phases: inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds, hold for 4 seconds. Originally developed for Navy SEALs to maintain composure under extreme pressure, this technique activates your parasympathetic nervous system and measurably lowers cortisol levels within minutes.
+              </p>
+              <h3 className="text-sm font-medium text-gray-300 mb-2">When to use box breathing for anxiety</h3>
+              <ul className="text-sm text-gray-400 leading-relaxed space-y-1 mb-4 list-disc list-inside">
+                <li>Before a stressful meeting, presentation, or difficult conversation</li>
+                <li>During an anxiety spike or panic episode to regain control</li>
+                <li>Before bed to calm a racing mind</li>
+                <li>Anytime you need to reset quickly and regain focus</li>
+              </ul>
+              <h3 className="text-sm font-medium text-gray-300 mb-2">How It Helps</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Box breathing — also known as four-square breathing — uses equal 4-second phases: inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds, hold for 4 seconds. Originally developed for Navy SEALs to stay calm under pressure, it activates the parasympathetic nervous system and lowers cortisol levels. Use it before a stressful meeting, during an anxiety spike, or anytime you need to reset quickly.
+                The equal timing creates a predictable rhythm that your nervous system can synchronize with. The hold phases give your body time to absorb oxygen and signal safety to your brain. Studies show that just 5 minutes of box breathing can reduce blood pressure and heart rate, making it one of the fastest evidence-based techniques for acute stress relief.
               </p>
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">4-7-8 Relaxation Breathing</h2>
+              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">4-7-8 Breathing for Sleep and Deep Relaxation</h2>
+              <p className="text-sm text-gray-400 leading-relaxed mb-4">
+                The 4-7-8 breathing technique, popularized by Dr. Andrew Weil, follows a structured 4-second inhale, 7-second hold, and 8-second exhale pattern. The extended hold and exhale phases create a natural braking effect on your nervous system, slowing your heart rate and signaling your body that it is safe to relax.
+              </p>
+              <h3 className="text-sm font-medium text-gray-300 mb-2">When to use 4-7-8 breathing for sleep</h3>
+              <ul className="text-sm text-gray-400 leading-relaxed space-y-1 mb-4 list-disc list-inside">
+                <li>Lying in bed when you cannot fall asleep</li>
+                <li>During nighttime anxiety or racing thoughts</li>
+                <li>After a stressful day to decompress</li>
+                <li>For generalized anxiety and panic episodes</li>
+              </ul>
+              <h3 className="text-sm font-medium text-gray-300 mb-2">How It Helps</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                The 4-7-8 technique, developed by Dr. Andrew Weil, follows a 4-second inhale, 7-second hold, and 8-second exhale. The extended hold and exhale phases slow your heart rate and signal safety to your brain. This pattern is especially effective as a sleep aid — practice it lying in bed to drift off faster. It is also useful for generalized anxiety and panic episodes.
+                The long exhale phase activates your vagus nerve, which controls your parasympathetic nervous system. This shifts your body from "fight or flight" to "rest and digest" mode. Many people report falling asleep within minutes of starting the 4-7-8 technique, making it one of the most popular natural sleep aids available.
               </p>
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">Coherent Breathing</h2>
+              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">Coherent Breathing for Heart Rate Variability</h2>
+              <p className="text-sm text-gray-400 leading-relaxed mb-4">
+                Coherent breathing uses equal 5-second inhale and 5-second exhale phases, producing a steady 6 breaths per minute. Research demonstrates that coherent breathing synchronizes your heart rate variability (HRV) with your respiratory cycle, optimizing vagal tone and autonomic balance for whole-body benefits.
+              </p>
+              <h3 className="text-sm font-medium text-gray-300 mb-2">When to use coherent breathing</h3>
+              <ul className="text-sm text-gray-400 leading-relaxed space-y-1 mb-4 list-disc list-inside">
+                <li>Daily practice for long-term stress resilience</li>
+                <li>Before meditation to settle the mind</li>
+                <li>During work sessions to maintain focus and clarity</li>
+                <li>As a warm-up before physical exercise or performance</li>
+              </ul>
+              <h3 className="text-sm font-medium text-gray-300 mb-2">How It Helps</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Coherent breathing uses equal 5-second inhale and 5-second exhale phases for a steady 6 breaths per minute. Research shows this rate synchronizes your heart rate variability with your respiratory cycle, optimizing vagal tone and autonomic balance. It is ideal for daily practice — a 10-minute session can improve focus for hours and build long-term stress resilience.
+                By breathing at 6 breaths per minute, you naturally stimulate your baroreflex — the mechanism that regulates blood pressure. Regular coherent breathing practice improves heart rate variability, which is a key indicator of cardiovascular health and stress resilience. Even a single 10-minute session can improve focus and calm for hours afterward.
               </p>
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">How It Works</h2>
+              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">How Aura&apos;s Breathing Exercises Work</h2>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Aura guides you with a visual breathing circle that expands as you inhale and contracts as you exhale. A color-coded progress ring shows your current phase — teal for inhale, amber for hold, red for exhale — with a countdown timer inside so you always know how many seconds remain. Choose a breathing pattern, press start, and follow the rhythm. No accounts, no subscriptions, no distractions.
+                Aura guides you with a visual breathing circle that expands as you inhale and contracts as you exhale. A color-coded progress ring shows your current phase — teal for inhale, amber for hold, red for exhale — with a countdown timer inside so you always know how many seconds remain. Simply choose a breathing technique, tap the circle to start, and follow the rhythm. No accounts, no subscriptions, no distractions — just free guided breathing exercises that work anywhere, on any device.
               </p>
             </div>
           </section>

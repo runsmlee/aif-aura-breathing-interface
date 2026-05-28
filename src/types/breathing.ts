@@ -105,7 +105,7 @@ export const PHASE_LABELS: Record<BreathingPhase, string> = {
 };
 
 export const PHASE_GUIDANCE: Record<BreathingPhase, string> = {
-  idle: 'Press Start to begin your session',
+  idle: 'Tap the circle to start your breathing session',
   inhale: 'Slowly breathe in through your nose',
   hold: 'Hold your breath gently',
   exhale: 'Slowly release through your mouth',
