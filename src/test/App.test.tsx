@@ -14,15 +14,15 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Guided Breathing Exercises — Box, 4-7-8, Coherent');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Aura — Guided Breathing for Stress, Focus & Sleep');
   });
 
   it('renders benefit copy text', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText(/visual rhythm guide/i)).toBeInTheDocument();
-    expect(screen.getByText(/reduce stress, improve focus/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Follow a visual breathing circle/i)).toBeInTheDocument();
+    expect(screen.getByText(/sessions from two to twenty minutes/i)).toBeInTheDocument();
   });
 
   it('renders the Start button', async () => {
@@ -125,5 +125,14 @@ describe('App', () => {
       render(<App />);
     });
     expect(screen.getAllByText(/tap the circle to start/i).length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('renders brief technique descriptions with rhythm patterns in hero', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+    expect(screen.getByText(/Box Breathing \(4-4-4-4\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/4-7-8 Relaxation \(4-7-8\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Coherent Breathing \(5-0-5-0\)/i)).toBeInTheDocument();
   });
 });

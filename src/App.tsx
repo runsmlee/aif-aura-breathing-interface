@@ -113,11 +113,17 @@ export function App() {
           {!engine.isActive && (
             <div className="text-center max-w-md space-y-2 mb-2">
               <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
-                Guided Breathing Exercises — Box, 4-7-8, Coherent
+                Aura — Guided Breathing for Stress, Focus & Sleep
               </h1>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Free visual rhythm guide for box breathing, 4-7-8 relaxation, and coherent breathing. Reduce stress, improve focus, sleep better.
+                Follow a visual breathing circle through proven techniques. Box breathing for acute stress relief, 4-7-8 for deep sleep, or coherent breathing for daily balance. Sessions from two to twenty minutes — no signup, no ads.
               </p>
+              {/* Brief technique descriptions with rhythm patterns — indexed by search engines */}
+              <div className="text-xs text-gray-500/60 leading-relaxed space-y-0.5 max-w-sm mx-auto mt-1">
+                <p><strong className="text-gray-500/80">Box Breathing (4-4-4-4)</strong> — Equal inhale, hold, exhale, and hold phases. Used by Navy SEALs for stress management. Best before stressful events or during anxiety spikes.</p>
+                <p><strong className="text-gray-500/80">4-7-8 Relaxation (4-7-8)</strong> — Extended exhale for deep relaxation and better sleep. Inhale 4 seconds, hold 7, exhale 8. Ideal for falling asleep or calming racing thoughts.</p>
+                <p><strong className="text-gray-500/80">Coherent Breathing (5-0-5-0)</strong> — Six breaths per minute to optimize heart rate variability. Inhale 5 seconds, exhale 5. Best for daily stress resilience and sustained focus.</p>
+              </div>
             </div>
           )}
           {/* Breathing visualization */}
