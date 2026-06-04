@@ -14,14 +14,17 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Aura — Guided Breathing for Stress, Focus & Sleep');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathing Exercises Online — Box, 4-7-8 & Coherent');
   });
 
   it('renders benefit copy text', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText(/^Follow a visual breathing circle/i)).toBeInTheDocument();
+    expect(screen.getByText(/free breathing exercises with visual pacing/i)).toBeInTheDocument();
+    expect(screen.getByText(/box breathing timer/i)).toBeInTheDocument();
+    expect(screen.getByText(/4-7-8 breathing exercise/i)).toBeInTheDocument();
+    expect(screen.getByText(/coherent breathing pacer/i)).toBeInTheDocument();
     expect(screen.getByText(/sessions from two to twenty minutes/i)).toBeInTheDocument();
   });
 

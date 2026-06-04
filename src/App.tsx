@@ -113,10 +113,10 @@ export function App() {
           {!engine.isActive && (
             <div className="text-center max-w-md space-y-2 mb-2">
               <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
-                Aura — Guided Breathing for Stress, Focus & Sleep
+                Breathing Exercises Online — Box, 4-7-8 &amp; Coherent
               </h1>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Follow a visual breathing circle through proven techniques. Box breathing for acute stress relief, 4-7-8 for deep sleep, or coherent breathing for daily balance. Sessions from two to twenty minutes — no signup, no ads.
+                Free breathing exercises with visual pacing that keeps you on rhythm. Use the box breathing timer for quick stress relief, try a 4-7-8 breathing exercise to fall asleep faster, or follow the coherent breathing pacer for daily calm. Sessions from two to twenty minutes — no signup, no ads, works on any device.
               </p>
               {/* Brief technique descriptions with rhythm patterns — indexed by search engines */}
               <div className="text-xs text-gray-500/60 leading-relaxed space-y-0.5 max-w-sm mx-auto mt-1">
