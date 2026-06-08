@@ -22,13 +22,13 @@ describe('BreathingCircle idle state improvements', () => {
   it('renders the idle invite ring in idle state', () => {
     const { container } = render(<BreathingCircle phase="idle" progress={0} secondsRemaining={0} />);
     // The idle invite ring should be rendered (border ring)
-    const inviteRing = container.querySelector('.border-gray-700\\/20');
+    const inviteRing = container.querySelector('.border-teal-500\\/15');
     expect(inviteRing).toBeInTheDocument();
   });
 
   it('does not render invite ring during active phase', () => {
     const { container } = render(<BreathingCircle phase="inhale" progress={0.5} secondsRemaining={2} />);
-    const inviteRing = container.querySelector('.border-gray-700\\/20');
+    const inviteRing = container.querySelector('.border-teal-500\\/15');
     expect(inviteRing).not.toBeInTheDocument();
   });
 

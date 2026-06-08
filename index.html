@@ -28,14 +28,21 @@
       "@type": "WebApplication",
       "name": "Aura",
       "description": "Free guided breathing exercises with visual pacing. Box, 4-7-8, and coherent breathing techniques for stress relief, focus, and sleep.",
+      "url": "https://wv-aura-breathing-writing-surface.vercel.app",
       "applicationCategory": "HealthApplication",
       "operatingSystem": "Web",
+      "featureList": "Box Breathing, 4-7-8 Relaxation, Coherent Breathing, Energizing Breath, Custom Breathing Patterns, Session Tracking, Weekly Goals, Streak Tracking",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD"
       },
-      "browserRequirements": "Requires JavaScript"
+      "browserRequirements": "Requires JavaScript",
+      "about": {
+        "@type": "Thing",
+        "name": "Breathing Exercises",
+        "description": "Guided breathing techniques for stress relief, anxiety reduction, improved sleep, and heart rate variability optimization."
+      }
     }
     </script>
     <style>
@@ -43,9 +50,9 @@
       body{margin:0;background:#030712;color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       #preloader{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh;gap:16px;transition:opacity .4s ease-out}
       #preloader.fade-out{opacity:0;pointer-events:none}
-      .preloader-circle{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4B5563,#1F2937);animation:preloaderBreath 4s ease-in-out infinite}
+      .preloader-circle{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4F6268,#1C2D35);animation:preloaderBreath 4s ease-in-out infinite}
       .preloader-text{color:#9CA3AF;font-size:14px;letter-spacing:.05em}
-      @keyframes preloaderBreath{0%,100%{transform:scale(.45);opacity:.6}50%{transform:scale(.65);opacity:1}}
+      @keyframes preloaderBreath{0%,100%{transform:scale(.38);opacity:.65}50%{transform:scale(.68);opacity:1}}
       @media(prefers-reduced-motion:reduce){.preloader-circle{animation:none;opacity:.8}}
     </style>
   </head>

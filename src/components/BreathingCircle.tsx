@@ -124,7 +124,27 @@ function PhaseIndicatorRing({
 
 function AmbientBackground({ phase }: { phase: BreathingPhase }) {
   const color = PHASE_COLORS[phase];
-  if (phase === 'idle') return null;
+
+  // Idle state: subtle warm ambient glow to make the page feel alive immediately
+  if (phase === 'idle') {
+    return (
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse at 50% 45%, rgba(20,184,166,0.04), transparent 55%)',
+            animation: 'ambientWave 8s ease-in-out infinite',
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.015]"
+          style={{
+            background: 'radial-gradient(ellipse at 50% 55%, rgba(20,184,166,0.3), transparent 45%)',
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none transition-opacity duration-1000 ease-out" aria-hidden="true">
@@ -198,6 +218,43 @@ function CircularProgressRing({
   );
 }
 
+/**
+ * Idle particle ring — gentle floating particles visible before session starts.
+ * Fewer and more subtle than the active ParticleRing, giving the circle
+ * an alive quality from the very first moment the page loads.
+ */
+function IdleParticleRing() {
+  const particles = useMemo(() => {
+    return Array.from({ length: 6 }, (_, i) => ({
+      id: i,
+      angle: (i * 60) * (Math.PI / 180),
+      delay: i * 0.3,
+      size: 2 + (((i * 3) % 3) * 0.5),
+    }));
+  }, []);
+
+  return (
+    <div className="absolute w-72 h-72 sm:w-80 sm:h-80 pointer-events-none" aria-hidden="true">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            backgroundColor: '#14B8A6',
+            opacity: 0.25,
+            left: '50%',
+            top: '50%',
+            transform: `translate(-50%, -50%) translateX(${Math.cos(p.angle) * 140}px) translateY(${Math.sin(p.angle) * 140}px)`,
+            animation: `particleFloat ${3 + p.delay}s ease-in-out ${p.delay}s infinite`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function BreathingCircle({
   phase,
   progress,
@@ -250,13 +307,14 @@ export function BreathingCircle({
     : prefersReducedMotion
       ? {
           transform: 'scale(0.45)',
-          background: 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
-          boxShadow: '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
+          background: 'radial-gradient(circle at 35% 35%, #4F6268, #1C2D35)',
+          boxShadow: '0 0 30px rgba(20,184,166,0.08), inset 0 0 20px rgba(0,0,0,0.2)',
         }
       : {
           // No inline transform — CSS idle-circle-breath animation handles scale
-          background: 'radial-gradient(circle at 35% 35%, #4B5563, #1F2937)',
-          boxShadow: '0 0 30px rgba(75,85,99,0.15), inset 0 0 20px rgba(0,0,0,0.2)',
+          // Warm teal-tinted gradient — feels alive rather than cold gray
+          background: 'radial-gradient(circle at 35% 35%, #4F6268, #1C2D35)',
+          boxShadow: '0 0 30px rgba(20,184,166,0.08), inset 0 0 20px rgba(0,0,0,0.2)',
         };
 
   const canStart = !isActive && !!onStart;
@@ -314,26 +372,38 @@ export function BreathingCircle({
             />
           )}
 
-          {/* Ambient ring for idle state — subtle pulsing glow with breathing animation */}
+          {/* Ambient rings for idle state — visible warm teal glow that breathes and captivates */}
           {!isActive && !prefersReducedMotion && (
             <>
               <div
-                className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full opacity-[0.06] blur-xl"
+                className="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full blur-xl"
                 style={{
-                  backgroundColor: '#6B7280',
+                  backgroundColor: '#14B8A6',
                   animation: 'idleBreath 6s ease-in-out infinite',
                 }}
                 aria-hidden="true"
               />
-              {/* Secondary ambient ring — adds depth to idle state */}
+              {/* Secondary ambient ring — adds depth with offset timing */}
               <div
-                className="absolute w-80 h-80 sm:w-[22rem] sm:h-[22rem] rounded-full opacity-[0.03] blur-2xl"
+                className="absolute w-80 h-80 sm:w-[22rem] sm:h-[22rem] rounded-full blur-2xl"
                 style={{
-                  backgroundColor: '#6B7280',
+                  backgroundColor: '#14B8A6',
                   animation: 'idleBreath 8s ease-in-out 1s infinite',
                 }}
                 aria-hidden="true"
               />
+              {/* Tertiary atmospheric glow — very subtle wide spread */}
+              <div
+                className="absolute w-96 h-96 sm:w-[26rem] sm:h-[26rem] rounded-full blur-3xl"
+                style={{
+                  backgroundColor: '#14B8A6',
+                  opacity: 0.03,
+                  animation: 'idleBreath 10s ease-in-out 2s infinite',
+                }}
+                aria-hidden="true"
+              />
+              {/* Idle ambient particles — gentle floating dots that make the circle feel alive */}
+              <IdleParticleRing />
             </>
           )}
           {!isActive && prefersReducedMotion && (
@@ -343,10 +413,10 @@ export function BreathingCircle({
             />
           )}
 
-          {/* Idle invite ring — subtle outer ring that invites interaction */}
+          {/* Idle invite ring — warm teal border that invites interaction */}
           {!isActive && !prefersReducedMotion && (
             <div
-              className="absolute w-64 h-64 sm:w-72 sm:h-72 rounded-full border border-gray-700/20"
+              className="absolute w-64 h-64 sm:w-72 sm:h-72 rounded-full border border-teal-500/15"
               style={{ animation: 'idleBreath 6s ease-in-out infinite' }}
               aria-hidden="true"
             />
@@ -375,7 +445,7 @@ export function BreathingCircle({
               style={{
                 background: isActive
                   ? `radial-gradient(circle at 30% 25%, white, transparent 60%)`
-                  : `radial-gradient(circle at 30% 25%, rgba(255,255,255,0.1), transparent 60%)`,
+                  : `radial-gradient(circle at 30% 25%, rgba(20,184,166,0.15), transparent 60%)`,
               }}
               aria-hidden="true"
             />
@@ -404,7 +474,7 @@ export function BreathingCircle({
             <div className="text-center z-10 relative">
               <p
                 className={`text-base sm:text-lg font-medium tracking-wider transition-colors duration-300 ${
-                  isActive ? 'text-white' : 'text-gray-400'
+                  isActive ? 'text-white' : 'text-gray-300'
                 }`}
                 style={{ textShadow: isActive ? `0 0 20px ${color}88` : 'none' }}
               >
