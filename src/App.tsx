@@ -111,13 +111,21 @@ export function App() {
         <div className={`flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 transition-all duration-500 ${engine.isActive ? 'session-active' : ''}`}>
           {/* Brand-forward H1 and benefit copy — visible when idle */}
           {!engine.isActive && (
-            <div className="text-center max-w-md space-y-2 mb-2">
+            <div className="text-center max-w-md space-y-3 mb-2">
               <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
-                Breathing Exercises Online — Box, 4-7-8 &amp; Coherent
+                See Your Breath — Visual Guided Breathing Timer
               </h1>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Free breathing exercises with visual pacing that keeps you on rhythm. Use the box breathing timer for quick stress relief, try a 4-7-8 breathing exercise to fall asleep faster, or follow the coherent breathing pacer for daily calm. Sessions from two to twenty minutes — no signup, no ads, works on any device.
-              </p>
+              <div className="text-sm text-gray-400 leading-relaxed space-y-2">
+                <p>
+                  Aura is a guided breathing animation that paces your breath visually — an expanding and contracting circle that shows you exactly when to inhale, hold, and exhale. Unlike a simple breathing exercise timer that just counts seconds, the visual pacing keeps you locked into the rhythm without needing to think or count. Just follow the motion.
+                </p>
+                <p>
+                  Choose from proven techniques like box breathing for quick stress relief, the 4-7-8 method to fall asleep faster, or coherent breathing for daily calm. Each one uses a different timing pattern — the guided breathing animation adapts automatically so you can focus on breathing, not counting.
+                </p>
+                <p>
+                  Sessions run from two to twenty minutes with no account, no ads, and no downloads. Whether you need a box breathing guide before a meeting, a 4-7-8 breathing exercise for sleep, or a coherent breathing pacer for daily practice, this breathing exercise timer keeps you on rhythm the entire time.
+                </p>
+              </div>
               {/* Brief technique descriptions with rhythm patterns — indexed by search engines */}
               <div className="text-xs text-gray-500/60 leading-relaxed space-y-0.5 max-w-sm mx-auto mt-1">
                 <p><strong className="text-gray-500/80">Box Breathing (4-4-4-4)</strong> — Equal inhale, hold, exhale, and hold phases. Used by Navy SEALs for stress management. Best before stressful events or during anxiety spikes.</p>

@@ -14,18 +14,23 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathing Exercises Online — Box, 4-7-8 & Coherent');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('See Your Breath — Visual Guided Breathing Timer');
   });
 
   it('renders benefit copy text', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText(/free breathing exercises with visual pacing/i)).toBeInTheDocument();
-    expect(screen.getByText(/box breathing timer/i)).toBeInTheDocument();
-    expect(screen.getByText(/4-7-8 breathing exercise/i)).toBeInTheDocument();
-    expect(screen.getByText(/coherent breathing pacer/i)).toBeInTheDocument();
-    expect(screen.getByText(/sessions from two to twenty minutes/i)).toBeInTheDocument();
+    expect(screen.getByText(/guided breathing animation that paces your breath visually/i)).toBeInTheDocument();
+    expect(screen.getByText(/visual pacing keeps you locked into the rhythm/i)).toBeInTheDocument();
+    expect(screen.getByText(/box breathing for quick stress relief/i)).toBeInTheDocument();
+    expect(screen.getByText(/4-7-8 method to fall asleep faster/i)).toBeInTheDocument();
+    expect(screen.getByText(/coherent breathing for daily calm/i)).toBeInTheDocument();
+    expect(screen.getByText(/no account, no ads, and no downloads/i)).toBeInTheDocument();
+    expect(screen.getByText(/box breathing guide before a meeting/i)).toBeInTheDocument();
+    expect(screen.getByText(/4-7-8 breathing exercise for sleep/i)).toBeInTheDocument();
+    expect(screen.getByText(/coherent breathing pacer for daily practice/i)).toBeInTheDocument();
+    expect(screen.getByText(/breathing exercise timer keeps you on rhythm/i)).toBeInTheDocument();
   });
 
   it('renders the Start button', async () => {
