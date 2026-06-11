@@ -113,7 +113,7 @@ export function App() {
           {!engine.isActive && (
             <div className="text-center max-w-md space-y-3 mb-2">
               <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
-                See Your Breath — Visual Guided Breathing Timer
+                Breathing Exercise Timer — Box, 4-7-8 &amp; Coherent
               </h1>
               <div className="text-sm text-gray-400 leading-relaxed space-y-2">
                 <p>

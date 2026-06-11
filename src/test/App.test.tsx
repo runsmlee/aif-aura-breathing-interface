@@ -14,7 +14,7 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('See Your Breath — Visual Guided Breathing Timer');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathing Exercise Timer — Box, 4-7-8 & Coherent');
   });
 
   it('renders benefit copy text', async () => {
