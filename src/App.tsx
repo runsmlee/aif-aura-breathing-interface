@@ -111,27 +111,16 @@ export function App() {
         <div className={`flex-1 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4 py-4 sm:py-6 transition-all duration-500 ${engine.isActive ? 'session-active' : ''}`}>
           {/* Brand-forward H1 and benefit copy — visible when idle */}
           {!engine.isActive && (
-            <div className="text-center max-w-md space-y-3 mb-2">
+            <div className="text-center max-w-md space-y-2 mb-2">
               <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
-                Breathing Exercise Timer — Box, 4-7-8 &amp; Coherent
+                Box Breathing Timer
               </h1>
-              <div className="text-sm text-gray-400 leading-relaxed space-y-2">
-                <p>
-                  Aura is a guided breathing animation that paces your breath visually — an expanding and contracting circle that shows you exactly when to inhale, hold, and exhale. Unlike a simple breathing exercise timer that just counts seconds, the visual pacing keeps you locked into the rhythm without needing to think or count. Just follow the motion.
-                </p>
-                <p>
-                  Choose from proven techniques like box breathing for quick stress relief, the 4-7-8 method to fall asleep faster, or coherent breathing for daily calm. Each one uses a different timing pattern — the guided breathing animation adapts automatically so you can focus on breathing, not counting.
-                </p>
-                <p>
-                  Sessions run from two to twenty minutes with no account, no ads, and no downloads. Whether you need a box breathing guide before a meeting, a 4-7-8 breathing exercise for sleep, or a coherent breathing pacer for daily practice, this breathing exercise timer keeps you on rhythm the entire time.
-                </p>
-              </div>
-              {/* Brief technique descriptions with rhythm patterns — indexed by search engines */}
-              <div className="text-xs text-gray-500/60 leading-relaxed space-y-0.5 max-w-sm mx-auto mt-1">
-                <p><strong className="text-gray-500/80">Box Breathing (4-4-4-4)</strong> — Equal inhale, hold, exhale, and hold phases. Used by Navy SEALs for stress management. Best before stressful events or during anxiety spikes.</p>
-                <p><strong className="text-gray-500/80">4-7-8 Relaxation (4-7-8)</strong> — Extended exhale for deep relaxation and better sleep. Inhale 4 seconds, hold 7, exhale 8. Ideal for falling asleep or calming racing thoughts.</p>
-                <p><strong className="text-gray-500/80">Coherent Breathing (5-0-5-0)</strong> — Six breaths per minute to optimize heart rate variability. Inhale 5 seconds, exhale 5. Best for daily stress resilience and sustained focus.</p>
-              </div>
+              <p className="text-base sm:text-lg font-light text-teal-400/80 tracking-wide">
+                Calm your mind in 60 seconds
+              </p>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Follow the breathing circle to pace each inhale and exhale. Whether you need a quick breathing exercise for anxiety, a breathing technique for sleep, or want to learn how to do 4-7-8 breathing, just tap the circle and follow along. No signup, no ads — just breathe.
+              </p>
             </div>
           )}
           {/* Breathing visualization */}

@@ -14,23 +14,18 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Breathing Exercise Timer — Box, 4-7-8 & Coherent');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Box Breathing Timer');
   });
 
-  it('renders benefit copy text', async () => {
+  it('renders benefit-led hero copy', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText(/guided breathing animation that paces your breath visually/i)).toBeInTheDocument();
-    expect(screen.getByText(/visual pacing keeps you locked into the rhythm/i)).toBeInTheDocument();
-    expect(screen.getByText(/box breathing for quick stress relief/i)).toBeInTheDocument();
-    expect(screen.getByText(/4-7-8 method to fall asleep faster/i)).toBeInTheDocument();
-    expect(screen.getByText(/coherent breathing for daily calm/i)).toBeInTheDocument();
-    expect(screen.getByText(/no account, no ads, and no downloads/i)).toBeInTheDocument();
-    expect(screen.getByText(/box breathing guide before a meeting/i)).toBeInTheDocument();
-    expect(screen.getByText(/4-7-8 breathing exercise for sleep/i)).toBeInTheDocument();
-    expect(screen.getByText(/coherent breathing pacer for daily practice/i)).toBeInTheDocument();
-    expect(screen.getByText(/breathing exercise timer keeps you on rhythm/i)).toBeInTheDocument();
+    expect(screen.getByText(/calm your mind in 60 seconds/i)).toBeInTheDocument();
+    expect(screen.getByText(/breathing exercise for anxiety/i)).toBeInTheDocument();
+    expect(screen.getByText(/breathing technique for sleep/i)).toBeInTheDocument();
+    expect(screen.getByText(/how to do 4-7-8 breathing/i)).toBeInTheDocument();
+    expect(screen.getByText(/no signup, no ads/i)).toBeInTheDocument();
   });
 
   it('renders the Start button', async () => {
@@ -135,12 +130,12 @@ describe('App', () => {
     expect(screen.getAllByText(/tap the circle to start/i).length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders brief technique descriptions with rhythm patterns in hero', async () => {
+  it('renders benefit subheading with high-intent phrases', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText(/Box Breathing \(4-4-4-4\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/4-7-8 Relaxation \(4-7-8\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/Coherent Breathing \(5-0-5-0\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/breathing exercise for anxiety/i)).toBeInTheDocument();
+    expect(screen.getByText(/breathing technique for sleep/i)).toBeInTheDocument();
+    expect(screen.getByText(/how to do 4-7-8 breathing/i)).toBeInTheDocument();
   });
 });
