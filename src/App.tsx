@@ -10,6 +10,12 @@ import { usePersonalBest } from './hooks/usePersonalBest';
 import { PHASE_COLORS } from './types';
 import { formatPatternTiming } from './utils';
 
+function trackEvent(event: string, props?: Record<string, unknown>): void {
+  if (typeof window !== 'undefined' && window.aif?.track) {
+    window.aif.track(event, props);
+  }
+}
+
 const PatternSelector = lazy(() => import('./components/PatternSelector').then((m) => ({ default: m.PatternSelector })));
 const DurationSelector = lazy(() => import('./components/DurationSelector').then((m) => ({ default: m.DurationSelector })));
 const SessionSummary = lazy(() => import('./components/SessionSummary').then((m) => ({ default: m.SessionSummary })));
@@ -48,6 +54,11 @@ export function App() {
     isActive: engine.isActive,
   });
 
+  // Track page view on mount
+  useEffect(() => {
+    trackEvent('page_view', { path: window.location.pathname });
+  }, []);
+
   // Show summary when engine reports a completed session
   useEffect(() => {
     if (engine.lastSessionSummary !== null) {
@@ -61,6 +72,12 @@ export function App() {
       incrementSessions();
       // Record personal best
       recordPersonalBest(engine.lastSessionSummary.stats, engine.currentPattern.name);
+      // Track session completion
+      trackEvent('session_complete', {
+        cycles: engine.lastSessionSummary.stats.cyclesCompleted,
+        duration: engine.lastSessionSummary.stats.totalDuration,
+        pattern: engine.currentPattern.name,
+      });
     }
   }, [engine.lastSessionSummary, playCompletionSound, vibrateCompletion, recordStreak, incrementSessions, recordPersonalBest, engine.currentPattern.name]);
 
@@ -78,7 +95,10 @@ export function App() {
   }, [engine.phase, playPhaseSound, vibratePhase]);
 
   const handleToggleSound = useCallback(() => {
-    setSoundEnabled((prev: boolean) => !prev);
+    setSoundEnabled((prev: boolean) => {
+      trackEvent('sound_toggled', { enabled: !prev });
+      return !prev;
+    });
   }, []);
 
   const handleDismissSummary = useCallback(() => {
@@ -87,13 +107,29 @@ export function App() {
 
   const handleStartAgain = useCallback(() => {
     setShowSummary(false);
+    trackEvent('session_start', { pattern: engine.currentPattern.name });
     engine.start();
-  }, [engine.start]);
+  }, [engine.start, engine.currentPattern.name]);
 
   const handleReset = useCallback(() => {
     engine.reset();
     setShowSummary(false);
   }, [engine.reset]);
+
+  const handleStart = useCallback(() => {
+    trackEvent('session_start', { pattern: engine.currentPattern.name });
+    engine.start();
+  }, [engine.start, engine.currentPattern.name]);
+
+  const handleSetPattern = useCallback((pattern: typeof engine.currentPattern) => {
+    trackEvent('pattern_change', { pattern: pattern.name });
+    engine.setPattern(pattern);
+  }, [engine.setPattern]);
+
+  const handleSetDuration = useCallback((duration: typeof engine.targetDuration) => {
+    trackEvent('duration_change', { duration: String(duration) });
+    engine.setTargetDuration(duration);
+  }, [engine.setTargetDuration]);
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col relative">
@@ -132,7 +168,7 @@ export function App() {
             currentPhaseIndex={engine.currentPhaseIndex}
             cyclesCompleted={engine.cyclesCompleted}
             patternTiming={formatPatternTiming(engine.currentPattern)}
-            onStart={!engine.isActive ? engine.start : undefined}
+            onStart={!engine.isActive ? handleStart : undefined}
           />
 
           {/* Session stats */}
@@ -141,7 +177,7 @@ export function App() {
           {/* Controls */}
           <Controls
             isActive={engine.isActive}
-            onStart={engine.start}
+            onStart={handleStart}
             onPause={engine.pause}
             onReset={handleReset}
             totalCyclesEverCompleted={engine.totalCyclesEverCompleted}
@@ -152,7 +188,7 @@ export function App() {
           <Suspense fallback={null}>
             <DurationSelector
               targetDuration={engine.targetDuration}
-              onSelect={engine.setTargetDuration}
+              onSelect={handleSetDuration}
               disabled={engine.isActive}
               timeRemaining={engine.timeRemaining}
             />
@@ -166,7 +202,7 @@ export function App() {
                 <Suspense fallback={null}>
                   <PatternSelector
                     currentPattern={engine.currentPattern}
-                    onSelectPattern={engine.setPattern}
+                    onSelectPattern={handleSetPattern}
                     disabled={engine.isActive}
                   />
                 </Suspense>
@@ -180,7 +216,10 @@ export function App() {
                     sessionsThisWeek={sessionsThisWeek}
                     goalReached={goalReached}
                     justReachedGoal={justReachedGoal}
-                    onSetGoal={setWeeklyGoal}
+                    onSetGoal={(goal: number) => {
+                      trackEvent('weekly_goal_set', { goal });
+                      setWeeklyGoal(goal);
+                    }}
                   />
                 </Suspense>
               </ErrorBoundary>

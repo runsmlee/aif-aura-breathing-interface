@@ -47,6 +47,9 @@
 
   /* Remove preloader after React mounts */
   #preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
     transition: opacity var(--transition-slow) ease-out;
   }
   #preloader.fade-out {
