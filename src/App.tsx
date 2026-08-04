@@ -149,13 +149,13 @@ export function App() {
           {!engine.isActive && (
             <div className="text-center max-w-md space-y-2 mb-2">
               <h1 className="text-xl sm:text-2xl font-medium tracking-wide text-white leading-snug">
-                Box Breathing Timer
+                Calm Your Mind in 60 Seconds
               </h1>
               <p className="text-base sm:text-lg font-light text-teal-400/80 tracking-wide">
-                Calm your mind in 60 seconds
+                Box breathing timer
               </p>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Follow the breathing circle to pace each inhale and exhale. Whether you need a quick breathing exercise for anxiety, a breathing technique for sleep, or want to learn how to do 4-7-8 breathing, just tap the circle and follow along. No signup, no ads — just breathe.
+                Follow the breathing circle to pace each inhale and exhale. Breathe in, hold, exhale, hold — four seconds each. Just tap the circle and follow along. No signup, no ads — just breathe.
               </p>
             </div>
           )}
@@ -239,7 +239,7 @@ export function App() {
 
         {/* Structured SEO content — below the fold, visible only when idle */}
         {!engine.isActive && (
-          <section aria-label="Breathing techniques guide" className="max-w-2xl mx-auto px-6 py-12 sm:py-16 space-y-12">
+          <section aria-label="Box breathing guide" className="max-w-2xl mx-auto px-6 py-12 sm:py-16 space-y-12">
             <div>
               <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">Box Breathing for Anxiety and Stress Relief</h2>
               <p className="text-sm text-gray-400 leading-relaxed mb-4">
@@ -258,43 +258,9 @@ export function App() {
               </p>
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">4-7-8 Breathing for Sleep and Deep Relaxation</h2>
-              <p className="text-sm text-gray-400 leading-relaxed mb-4">
-                The 4-7-8 breathing technique, popularized by Dr. Andrew Weil, follows a structured 4-second inhale, 7-second hold, and 8-second exhale pattern. The extended hold and exhale phases create a natural braking effect on your nervous system, slowing your heart rate and signaling your body that it is safe to relax.
-              </p>
-              <h3 className="text-sm font-medium text-gray-300 mb-2">When to use 4-7-8 breathing for sleep</h3>
-              <ul className="text-sm text-gray-400 leading-relaxed space-y-1 mb-4 list-disc list-inside">
-                <li>Lying in bed when you cannot fall asleep</li>
-                <li>During nighttime anxiety or racing thoughts</li>
-                <li>After a stressful day to decompress</li>
-                <li>For generalized anxiety and panic episodes</li>
-              </ul>
-              <h3 className="text-sm font-medium text-gray-300 mb-2">How It Helps</h3>
+              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">How the Box Breathing Timer Works</h2>
               <p className="text-sm text-gray-400 leading-relaxed">
-                The long exhale phase activates your vagus nerve, which controls your parasympathetic nervous system. This shifts your body from "fight or flight" to "rest and digest" mode. Many people report falling asleep within minutes of starting the 4-7-8 technique, making it one of the most popular natural sleep aids available.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">Coherent Breathing for Heart Rate Variability</h2>
-              <p className="text-sm text-gray-400 leading-relaxed mb-4">
-                Coherent breathing uses equal 5-second inhale and 5-second exhale phases, producing a steady 6 breaths per minute. Research demonstrates that coherent breathing synchronizes your heart rate variability (HRV) with your respiratory cycle, optimizing vagal tone and autonomic balance for whole-body benefits.
-              </p>
-              <h3 className="text-sm font-medium text-gray-300 mb-2">When to use coherent breathing</h3>
-              <ul className="text-sm text-gray-400 leading-relaxed space-y-1 mb-4 list-disc list-inside">
-                <li>Daily practice for long-term stress resilience</li>
-                <li>Before meditation to settle the mind</li>
-                <li>During work sessions to maintain focus and clarity</li>
-                <li>As a warm-up before physical exercise or performance</li>
-              </ul>
-              <h3 className="text-sm font-medium text-gray-300 mb-2">How It Helps</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                By breathing at 6 breaths per minute, you naturally stimulate your baroreflex — the mechanism that regulates blood pressure. Regular coherent breathing practice improves heart rate variability, which is a key indicator of cardiovascular health and stress resilience. Even a single 10-minute session can improve focus and calm for hours afterward.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-lg sm:text-xl font-medium tracking-wide text-white mb-3">How Aura&apos;s Breathing Exercises Work</h2>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Aura guides you with a visual breathing circle that expands as you inhale and contracts as you exhale. A color-coded progress ring shows your current phase — teal for inhale, amber for hold, red for exhale — with a countdown timer inside so you always know how many seconds remain. Simply choose a breathing technique, tap the circle to start, and follow the rhythm. No accounts, no subscriptions, no distractions — just free guided breathing exercises that work anywhere, on any device.
+                A visual breathing circle expands as you inhale and contracts as you exhale. A color-coded progress ring shows your current phase — teal for inhale, amber for hold, red for exhale — with a countdown timer inside so you always know how many seconds remain. Simply tap the circle to start and follow the rhythm. No accounts, no subscriptions, no distractions — just free guided box breathing that works anywhere, on any device.
               </p>
             </div>
           </section>

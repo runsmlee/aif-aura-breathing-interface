@@ -14,7 +14,7 @@ describe('App', () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Box Breathing Timer');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Calm Your Mind in 60 Seconds');
   });
 
   it('renders benefit-led hero copy', async () => {
@@ -22,9 +22,8 @@ describe('App', () => {
       render(<App />);
     });
     expect(screen.getByText(/calm your mind in 60 seconds/i)).toBeInTheDocument();
-    expect(screen.getByText(/breathing exercise for anxiety/i)).toBeInTheDocument();
-    expect(screen.getByText(/breathing technique for sleep/i)).toBeInTheDocument();
-    expect(screen.getByText(/how to do 4-7-8 breathing/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/box breathing timer/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/breathe in, hold, exhale, hold/i)).toBeInTheDocument();
     expect(screen.getByText(/no signup, no ads/i)).toBeInTheDocument();
   });
 
@@ -67,60 +66,52 @@ describe('App', () => {
     expect(screen.getByText('Ready')).toBeInTheDocument();
   });
 
-  it('renders structured SEO content with technique H2s', async () => {
+  it('renders structured SEO content with box breathing H2s', async () => {
     await act(async () => {
       render(<App />);
     });
     const headings = screen.getAllByRole('heading', { level: 2 });
     const headingTexts = headings.map((h) => h.textContent);
     expect(headingTexts.some(t => t?.includes('Box Breathing'))).toBe(true);
-    expect(headingTexts.some(t => t?.includes('4-7-8'))).toBe(true);
-    expect(headingTexts.some(t => t?.includes('Coherent Breathing'))).toBe(true);
-    expect(headingTexts.some(t => t?.includes('How'))).toBe(true);
+    expect(headingTexts.some(t => t?.includes('How the Box Breathing Timer Works'))).toBe(true);
   });
 
-  it('renders technique descriptions with pattern timing details', async () => {
+  it('renders box breathing technique description with pattern timing details', async () => {
     await act(async () => {
       render(<App />);
     });
     expect(screen.getByText(/equal 4-second phases/i)).toBeInTheDocument();
-    expect(screen.getByText(/4-second inhale, 7-second hold, and 8-second exhale/i)).toBeInTheDocument();
-    expect(screen.getByText(/5-second inhale and 5-second exhale/i)).toBeInTheDocument();
   });
 
-  it('renders SEO keywords for breathing techniques', async () => {
+  it('renders SEO keywords for box breathing', async () => {
     await act(async () => {
       render(<App />);
     });
     expect(screen.getAllByText(/box breathing for anxiety/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/4-7-8 breathing for sleep/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/coherent breathing.*heart rate variability/i).length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders when-to-use guidance for each technique', async () => {
+  it('renders when-to-use guidance for box breathing', async () => {
     await act(async () => {
       render(<App />);
     });
     expect(screen.getByRole('heading', { level: 3, name: /when to use box breathing/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 3, name: /when to use 4-7-8/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 3, name: /when to use coherent breathing/i })).toBeInTheDocument();
   });
 
-  it('renders how-it-helps sections for each technique', async () => {
+  it('renders how-it-helps section for box breathing', async () => {
     await act(async () => {
       render(<App />);
     });
     const howItHelps = screen.getAllByRole('heading', { level: 3 }).filter(h =>
       h.textContent?.includes('How It Helps')
     );
-    expect(howItHelps.length).toBeGreaterThanOrEqual(3);
+    expect(howItHelps.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders the breathing techniques guide section', async () => {
+  it('renders the box breathing guide section', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByRole('region', { name: /breathing techniques guide/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /box breathing guide/i })).toBeInTheDocument();
   });
 
   it('renders click-to-start hint on idle breathing circle', async () => {
@@ -130,12 +121,11 @@ describe('App', () => {
     expect(screen.getAllByText(/tap the circle to start/i).length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders benefit subheading with high-intent phrases', async () => {
+  it('renders benefit subheading focused on box breathing', async () => {
     await act(async () => {
       render(<App />);
     });
-    expect(screen.getByText(/breathing exercise for anxiety/i)).toBeInTheDocument();
-    expect(screen.getByText(/breathing technique for sleep/i)).toBeInTheDocument();
-    expect(screen.getByText(/how to do 4-7-8 breathing/i)).toBeInTheDocument();
+    expect(screen.getByText(/breathe in, hold, exhale, hold/i)).toBeInTheDocument();
+    expect(screen.getByText(/four seconds each/i)).toBeInTheDocument();
   });
 });
